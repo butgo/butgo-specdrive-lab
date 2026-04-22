@@ -19,7 +19,7 @@
 
 ## 2. 현재 상태 한 줄 요약
 
-- 현재는 `specdrive`의 `doc` 단계 1차 검증과 session/git 복구 안정화 변경을 커밋한 뒤, board 프로젝트 문서 작성으로 전환해 `docs/projects/board/03-design.md` 최소 설계 문서 초안을 작성하기 시작한 단계다.
+- 현재는 `specdrive`의 `doc` 단계 1차 검증과 session/git 복구 안정화 변경을 커밋한 뒤, board 프로젝트 문서 작성으로 전환해 `docs/projects/board/03-design.md` 최소 설계 문서 초안과 세션 guardrail 규칙까지 커밋한 상태다.
 
 현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
 현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
@@ -151,6 +151,7 @@
 - `docs/projects/board/03-design.md` 최소 설계 문서 초안 작성 시작
 - `docs/projects/board/index.md` 에 `03-design.md` 문서 역할과 읽기 기준 추가
 - 루트 `AGENTS.md`, `docs/projects/board/AGENTS.md`, `docs/specdrive/session-stage.md`, `specdrive/scripts/session/start.ps1` 에 신규 문서 생성 / 문서 역할 변경 / 단계 전환 전 개발자 확인 규칙을 명시
+- `docs/projects/board/03-design.md`, `docs/projects/board/index.md`, `AGENTS.md`, `docs/projects/board/AGENTS.md`, `docs/specdrive/session-stage.md`, `specdrive/scripts/session/start.ps1`, `docs/AI_CONTEXT.md` 변경을 `docs(board): add board design draft and session guardrails` 커밋으로 저장
 - 현재 확인된 실행 환경 기준으로 `codex-cli 0.121.0` 버전을 기록
 
 ---
@@ -292,7 +293,7 @@
 - `docs/projects/board/03-design.md` 초안이 `02-requirements.md` 와 standards 기준에 맞는지 검토
 - `03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
 - `docs/projects/board/index.md` 의 문서 목록과 역할 설명이 실제 파일 상태와 맞는지 확인
-- 신규 문서 생성 / 문서 단계 전환 전 개발자 확인 규칙이 실제 `session start` 출력에서 충분히 드러나는지 확인
+- 다음 board 문서 생성 또는 `03-design.md` 에 대한 `doc` 흐름 적용 전에는 먼저 개발자 확인을 받기
 
 ### 우선순위 2
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
@@ -415,6 +416,7 @@
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
   - 현재는 board 문서 작성으로 전환해 `docs/projects/board/03-design.md` 설계 초안을 만들고, `docs/projects/board/index.md` 에 문서 목록을 반영한 상태다.
   - 이후 세션에서는 `session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
+  - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
   - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
 
 ---
