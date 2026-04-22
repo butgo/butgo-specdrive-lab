@@ -73,6 +73,7 @@ specdrive/specdrive.ps1 session save
 - 현재 focus / 다음 진입점 확인 보조
 - Codex에 전달할 최소 세션 복구 프롬프트 정규화
 - 불필요한 전체 문서 주입을 줄이기 위한 읽기 순서 안내
+- 작업 대상 영역이 정해진 경우 해당 영역의 전용 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내
 
 ### 4.2 `session save`
 - 현재 세션 변경 요약
@@ -160,6 +161,7 @@ specdrive/specdrive.ps1 session save
 copy prompt 는 다음 원칙을 따른다.
 
 - 세션 복구에 필요한 진입 문서만 먼저 요청한다.
+- 작업 대상 영역이 확인되면 해당 영역의 전용 `AGENTS.md` 를 추가로 읽게 요청한다.
 - `session start` 에서는 현재 브랜치와 Git 변경 요약만 포함한다.
 - `session save` 에서는 변경 파일 전체 목록 대신 변경 요약과 제한된 샘플을 기본으로 포함한다.
 - `session save -Detailed` 를 사용할 때만 상세 변경 파일 목록을 콘솔에 출력한다.
@@ -174,6 +176,7 @@ copy prompt 는 다음 원칙을 따른다.
 - 먼저 읽을 문서 목록
 - 현재 Git 변경 요약
 - 세션 복구용 copy prompt
+- 작업 대상별 후속 확인 문서 안내
 
 `session status` 는 다음 정보를 출력한다.
 

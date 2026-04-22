@@ -20,12 +20,22 @@ $readFirst = @(
     "docs/specdrive/AGENTS.md",
     "docs/specdrive/session-stage.md"
 )
+$readWhenTargetKnown = @(
+    "작업 대상 영역의 AGENTS.md",
+    "작업 대상 영역의 README.md",
+    "작업 대상 영역의 index.md",
+    "현재 수정 또는 작성할 대상 문서"
+)
 $branchLabel = if ([string]::IsNullOrWhiteSpace($branchName)) { "unknown" } else { $branchName }
 
 Write-Host "[session start] repo root : $repoRoot"
 Write-Host "[session start] current branch : $branchLabel"
 Write-Host "[session start] read first:"
 foreach ($path in $readFirst) {
+    Write-Host "  - $path"
+}
+Write-Host "[session start] read when target area is known:"
+foreach ($path in $readWhenTargetKnown) {
     Write-Host "  - $path"
 }
 Write-Host "[session start] git status summary:"
@@ -37,6 +47,8 @@ Write-Host "[session start] codex prompt:"
 Write-Host "----- BEGIN COPY PROMPT -----"
 Write-Host "README.md, AGENTS.md, docs/AI_CONTEXT.md부터 읽고 현재 상태를 복구해줘."
 Write-Host "그 다음 docs/specdrive/AGENTS.md, docs/specdrive/session-stage.md를 확인해서 session 단계의 현재 기준도 함께 반영해줘."
+Write-Host "작업 대상 영역이 정해져 있으면 해당 영역의 AGENTS.md, README.md, index.md, 대상 문서를 추가로 읽어줘."
+Write-Host "신규 문서 생성, 문서 역할 변경, 요구사항에서 설계 또는 설계에서 구현 계획으로 넘어가는 전환점에서는 먼저 개발자에게 확인해줘."
 Write-Host "문서 본문을 새로 붙여넣는 대신, 위 파일들을 직접 읽어서 필요한 최소 문맥만 사용해줘."
 Write-Host "현재 브랜치는 '$branchLabel' 이야."
 Write-Host "현재 Git 상태 요약은 '$statusSummary' 이고, 변경 영역 요약은 '$areaSummary' 이야."

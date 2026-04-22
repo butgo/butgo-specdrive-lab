@@ -19,7 +19,7 @@
 
 ## 2. 현재 상태 한 줄 요약
 
-- 현재는 `specdrive`를 **개발 스펙 문서를 기반으로 AI 협업을 실행하는 엔진 / 운영체계 / CLI 도구**로 정리한 상태에서, `doc reinforce / confirm / history-save` 최소 흐름을 `docs/projects/board/01-overview.md` 기준으로 1차 완료 판정했고, `session` 과 `git` 단계를 별도 운영/전달 단계로 안정화하는 단계다.
+- 현재는 `specdrive`의 `doc` 단계 1차 검증과 session/git 복구 안정화 변경을 커밋한 뒤, board 프로젝트 문서 작성으로 전환해 `docs/projects/board/03-design.md` 최소 설계 문서 초안을 작성하기 시작한 단계다.
 
 현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
 현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
@@ -147,6 +147,10 @@
 - `doc reinforce` 에 한해 `specdrive/scripts/exec/codex-exec.ps1` 를 실제 `codex exec` 로 좁게 연결
 - `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm / history-save` 1차 흐름 검증 수행
 - `docs/specdrive/doc-stage-testing.md` 에 `docs/projects/board/01-overview.md` 기준 `doc` 단계 1차 완료 판정 반영
+- `specdrive/scripts/common/specdrive-common.ps1`, `docs/AI_CONTEXT.md`, `docs/specdrive/doc-stage-testing.md` 변경을 `spec(specdrive): stabilize session recovery status` 커밋으로 저장
+- `docs/projects/board/03-design.md` 최소 설계 문서 초안 작성 시작
+- `docs/projects/board/index.md` 에 `03-design.md` 문서 역할과 읽기 기준 추가
+- 루트 `AGENTS.md`, `docs/projects/board/AGENTS.md`, `docs/specdrive/session-stage.md`, `specdrive/scripts/session/start.ps1` 에 신규 문서 생성 / 문서 역할 변경 / 단계 전환 전 개발자 확인 규칙을 명시
 - 현재 확인된 실행 환경 기준으로 `codex-cli 0.121.0` 버전을 기록
 
 ---
@@ -186,6 +190,8 @@
 - 현재 `session` 단계는 `start / status / save` 를 콘솔 출력 중심으로 실행하며, `status` 는 `docs/AI_CONTEXT.md` 기준의 서술형 현재 상태 조회로 본다.
 - 현재 `git` 단계는 `branch-name / git-message / pr-message` 를 콘솔 출력 중심으로 실행하며, 기본 출력은 변경 수, 변경 영역, 변경 파일 샘플로 제한한다.
 - 현재 Git 상태 조회 helper 는 Windows 경로를 Git safe.directory 에 맞는 `/` 경로로 넘기고, 변경 경로가 없거나 Git 상태 조회가 실패한 경우에도 빈 목록으로 처리해야 한다.
+- 현재 `session start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
+- 신규 문서 생성, 문서 역할 변경, 요구사항에서 설계 또는 설계에서 구현 계획으로 넘어가는 전환점은 개발자 확인 후 진행하는 규칙으로 명시했다.
 - 현재 util 스크립트는 상위 CLI 라우팅에 연결하지 않고 직접 실행하며, 출력은 `.speclab/**` 아래 재생성 가능한 산출물로 둔다.
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
 - 현재 `codex exec` 래퍼는 preview 생성 중심을 유지하되, `doc reinforce` 에 한해 실제 Codex 실행을 좁게 연결한다.
@@ -203,7 +209,7 @@
 
 - `docs/projects/standards/index.md` 와 `phase1-standards-checklist.md` 정합성 최종 점검
 - board 하위 상세 요구사항 문서 구조 확정
-- board 하위 설계 문서 구조 확정
+- board 하위 설계 문서 초안 검토 및 확정
 - board 하위 구현 계획 문서 구조 확정
 - CLI 세부 명령 문법 확정
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
@@ -283,14 +289,15 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
-- `session` 단계 출력 형식과 실제 사용감을 이어서 점검
-- `session save` 에 이번 작업의 다음 진입점 후보를 어떻게 남길지 정리
-- `history-save` 는 최신 confirm preview 를 기준으로 순차 실행해야 한다는 운영 규칙을 다른 관련 문서에도 더 명시할지 판단
+- `docs/projects/board/03-design.md` 초안이 `02-requirements.md` 와 standards 기준에 맞는지 검토
+- `03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
+- `docs/projects/board/index.md` 의 문서 목록과 역할 설명이 실제 파일 상태와 맞는지 확인
+- 신규 문서 생성 / 문서 단계 전환 전 개발자 확인 규칙이 실제 `session start` 출력에서 충분히 드러나는지 확인
 
 ### 우선순위 2
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
-- 다음 board 문서에 `doc` 3단계 흐름을 반복 적용할지 판단
-- `01-overview.md` 기준 preview / output 형식이 사람이 쓰기 편한지 후속 사용감 관점에서 점검
+- `03-design.md` 를 기준으로 `doc reinforce / confirm / history-save` 흐름을 반복 적용할지 판단
+- `04-implementation-plan.md` 같은 구현 계획 문서를 바로 만들지, 먼저 설계 문서를 보강할지 판단
 
 ### 우선순위 3
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
@@ -317,7 +324,7 @@
 - `specdrive/specdrive.ps1` 단일 진입점이 생기더라도 하위 스크립트 책임 경계가 무너지지 않게 하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 세션 운영 보조로만 유지되게 하는 것
 - `git` 단계가 브랜치/메시지 생성에 집중하고 `session` 과 섞이지 않게 유지하는 것
-- `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, 다음 문서에 반복 적용 가능한지 확인하는 것
+- `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
 - 현재 적용한 최소 rule/config 분리 방식을 `dev`, `session`, `git`, 후속 project 문서 흐름에도 점진 적용 가능한지 확인하는 것
 - 현재 실행까지 끝낸 `confirm / history-save` 결과와 실제 history 산출물 묶음은 `doc-stage-testing.md` 의 1차 완료 판정 근거로 유지하는 것
 - `dev` 단계는 아직 본격 설계/테스트하지 않고 실제 코딩 작업이 시작될 때 검증하는 것
@@ -402,10 +409,12 @@
   - 현재 `specdrive/specdrive.ps1` 는 `doc`, `session`, `git` 최소 라우팅을 수행할 수 있다.
   - `context-bundle.ps1` 는 그냥 실행하면 bundle key 번호 선택 메뉴를 보여주고, 비대화식 실행은 `-BundleKey` 로 유지한다.
   - 실제 Codex 실행 시에는 non-zero exit code 가 나와도 `output-last-message` 파일에 본문이 남을 수 있으므로 preview 파일과 output 파일을 함께 확인하는 편이 안전하다.
-  - 다음 선택지는 `session save` 에 다음 진입점을 어떻게 남길지 정리할지, 다음 board 문서에 같은 `doc` 흐름을 반복 적용할지, 또는 `doc reinforce -Execute` 사용감을 더 검증할지 판단하는 것이다.
+  - session/git 복구 안정화와 `01-overview.md` 기준 `doc` 단계 1차 완료 판정은 `spec(specdrive): stabilize session recovery status` 커밋으로 저장했다.
+  - 다음 선택지는 `03-design.md` 초안을 검토/보강할지, 이 문서에 `doc` 흐름을 반복 적용할지, 또는 구현 계획 문서로 넘어갈지 판단하는 것이다.
   - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
-  - 현재 작업 트리에는 복구 중 반영한 `specdrive/scripts/common/specdrive-common.ps1` 변경이 남아 있으며, 이 변경은 Git safe.directory 경로 정규화, 변경 경로 빈 목록 처리, `ChangedPaths` null 허용 보정이다.
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
+  - 현재는 board 문서 작성으로 전환해 `docs/projects/board/03-design.md` 설계 초안을 만들고, `docs/projects/board/index.md` 에 문서 목록을 반영한 상태다.
+  - 이후 세션에서는 `session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
   - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
 
 ---
