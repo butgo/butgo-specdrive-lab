@@ -19,7 +19,7 @@
 
 ## 2. 현재 상태 한 줄 요약
 
-- 현재는 `specdrive`를 **개발 스펙 문서를 기반으로 AI 협업을 실행하는 엔진 / 운영체계 / CLI 도구**로 정리한 상태에서, `doc reinforce / confirm / history-save` 최소 흐름이 `docs/projects/board/01-overview.md` 기준으로 기대한 역할대로 동작하는지 검증하는 한편, `doc reinforce` 는 실제 `codex exec` 로 좁게 연결하고 `session` 과 `git` 단계를 별도 운영/전달 단계로 정리하는 단계다.
+- 현재는 `specdrive`를 **개발 스펙 문서를 기반으로 AI 협업을 실행하는 엔진 / 운영체계 / CLI 도구**로 정리한 상태에서, `doc reinforce / confirm / history-save` 최소 흐름을 `docs/projects/board/01-overview.md` 기준으로 1차 완료 판정했고, `session` 과 `git` 단계를 별도 운영/전달 단계로 안정화하는 단계다.
 
 현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
 현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
@@ -140,10 +140,13 @@
 - `docs/specdrive/cli-manual.md` 에 실제 `specdrive/specdrive.ps1`, `session` 사용 예시 반영
 - `session start / status / save` 출력이 긴 파일 목록보다 현재 상태 서술, 변경 수, 변경 영역, 변경 파일 샘플 중심이 되도록 정리
 - `git branch-name / git-message / pr-message` 출력이 Git 정책을 참고하면서도 기본적으로 변경 요약과 샘플만 출력하도록 정리
+- 저장하지 않고 종료된 세션을 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 기준으로 복구했고, 복구 과정에서 `session status / save`, `git branch-name / git-message / pr-message` 출력 상태를 다시 확인
+- 복구 중 Git safe.directory 및 변경 경로 null 처리 문제로 `session start / status` 가 실패할 수 있음을 확인하고, `specdrive/scripts/common/specdrive-common.ps1` 에 최소 보정 반영
 - `specdrive/scripts/util/context-bundle.ps1`, `project-tree.ps1`, `doc-tree.ps1` 유틸 스크립트 추가
 - `specdrive/config/context-bundle-map.json`, `doc-map.json`, `affected-docs-map.json` draft 설정 추가
 - `doc reinforce` 에 한해 `specdrive/scripts/exec/codex-exec.ps1` 를 실제 `codex exec` 로 좁게 연결
 - `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm / history-save` 1차 흐름 검증 수행
+- `docs/specdrive/doc-stage-testing.md` 에 `docs/projects/board/01-overview.md` 기준 `doc` 단계 1차 완료 판정 반영
 - 현재 확인된 실행 환경 기준으로 `codex-cli 0.121.0` 버전을 기록
 
 ---
@@ -182,6 +185,7 @@
 - 현재 `specdrive/specdrive.ps1` 는 `doc`, `session`, `git` 상위 라우팅을 지원한다.
 - 현재 `session` 단계는 `start / status / save` 를 콘솔 출력 중심으로 실행하며, `status` 는 `docs/AI_CONTEXT.md` 기준의 서술형 현재 상태 조회로 본다.
 - 현재 `git` 단계는 `branch-name / git-message / pr-message` 를 콘솔 출력 중심으로 실행하며, 기본 출력은 변경 수, 변경 영역, 변경 파일 샘플로 제한한다.
+- 현재 Git 상태 조회 helper 는 Windows 경로를 Git safe.directory 에 맞는 `/` 경로로 넘기고, 변경 경로가 없거나 Git 상태 조회가 실패한 경우에도 빈 목록으로 처리해야 한다.
 - 현재 util 스크립트는 상위 CLI 라우팅에 연결하지 않고 직접 실행하며, 출력은 `.speclab/**` 아래 재생성 가능한 산출물로 둔다.
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
 - 현재 `codex exec` 래퍼는 preview 생성 중심을 유지하되, `doc reinforce` 에 한해 실제 Codex 실행을 좁게 연결한다.
@@ -242,6 +246,7 @@
 - 현재 `doc confirm`, `doc history-save` 는 preview prefix 와 history suffix 일부를 action config 에서 읽도록 반영된 상태다.
 - 현재는 preview 기반 반복 검증을 우선하되, `doc reinforce` 에 한해 실제 Codex 실행까지 좁게 확인하기 시작한 단계다.
 - 현재 `01-overview.md` 기준으로 세 단계가 기대한 운영 역할대로 분리되는지 1차 확인을 마친 상태다.
+- 현재 `01-overview.md` 기준 `doc` 단계는 registry 기반 key routing, preview 기반 최소 검증, `doc reinforce` 의 좁은 실제 Codex 연결, `confirm/history-save` 의 실제 history 저장 경로까지 1차 완료 판정한 상태다.
 - 현재 `confirm -Execute`, `history-save -Execute` 는 preview 검토를 넘어서 실제 문서 이력을 `docs/history/projects/**` 에 남기는 방향으로 의미를 바꿔 정리한 상태다.
 
 ### 9.3 projects
@@ -278,14 +283,14 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
-- `docs/projects/board/01-overview.md` 기준 `doc confirm / history-save` 실행 결과와 `docs/history/projects/**` 산출물 묶음이 현재 의도한 문서대장 흐름에 맞는지 최종 점검
-- `01-overview.md` 기준 `doc` 단계 테스트 완료 판정 문구 정리
-- `history-save` 는 최신 confirm preview 를 기준으로 순차 실행해야 한다는 운영 규칙을 관련 문서에 더 명시할지 판단
+- `session` 단계 출력 형식과 실제 사용감을 이어서 점검
+- `session save` 에 이번 작업의 다음 진입점 후보를 어떻게 남길지 정리
+- `history-save` 는 최신 confirm preview 를 기준으로 순차 실행해야 한다는 운영 규칙을 다른 관련 문서에도 더 명시할지 판단
 
 ### 우선순위 2
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
-- `session` 단계 출력 형식과 실제 사용감 점검
-- `session save` 에 이번 작업의 다음 진입점 후보를 어떻게 남길지 정리
+- 다음 board 문서에 `doc` 3단계 흐름을 반복 적용할지 판단
+- `01-overview.md` 기준 preview / output 형식이 사람이 쓰기 편한지 후속 사용감 관점에서 점검
 
 ### 우선순위 3
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
@@ -312,9 +317,9 @@
 - `specdrive/specdrive.ps1` 단일 진입점이 생기더라도 하위 스크립트 책임 경계가 무너지지 않게 하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 세션 운영 보조로만 유지되게 하는 것
 - `git` 단계가 브랜치/메시지 생성에 집중하고 `session` 과 섞이지 않게 유지하는 것
-- `doc` 단계는 `docs/projects/board/01-overview.md` 기준으로 먼저 충분히 테스트하고 완료 기준을 정리하는 것
+- `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, 다음 문서에 반복 적용 가능한지 확인하는 것
 - 현재 적용한 최소 rule/config 분리 방식을 `dev`, `session`, `git`, 후속 project 문서 흐름에도 점진 적용 가능한지 확인하는 것
-- 현재 실행까지 끝낸 `confirm / history-save` 결과와 실제 history 산출물 묶음이 다음 세션에서도 이해 가능한지 확인하는 것
+- 현재 실행까지 끝낸 `confirm / history-save` 결과와 실제 history 산출물 묶음은 `doc-stage-testing.md` 의 1차 완료 판정 근거로 유지하는 것
 - `dev` 단계는 아직 본격 설계/테스트하지 않고 실제 코딩 작업이 시작될 때 검증하는 것
 
 ---
@@ -369,6 +374,10 @@
 - 현재 변경 집합에 맞게 `git branch-name / git-message / pr-message` 초안 생성 로직 보정
 - `session status` 를 파일 변경 상태가 아니라 `docs/AI_CONTEXT.md` 기반 서술형 상태 조회 명령으로 추가
 - session/git 명령의 기본 출력은 토큰 사용량을 줄이기 위해 상세 파일 목록 대신 변경 요약과 샘플을 우선하도록 정리
+- 저장하지 않고 종료된 세션을 복구하면서 `session status`, `session save`, `git branch-name`, `git git-message`, `git pr-message` 를 다시 실행해 현재 진입점과 출력 상태 확인
+- Git safe.directory 소유자 차이와 변경 경로 null 처리로 세션 복구 명령이 실패하지 않도록 `specdrive/scripts/common/specdrive-common.ps1` 에 경로 정규화, 빈 변경 목록 처리, `ChangedPaths` null 허용 보정
+- 보정 후 `session start / status / save`, `git branch-name / git-message / pr-message`, `$null` 변경 경로 입력을 1차 검증
+- `docs/specdrive/doc-stage-testing.md` 에 `01-overview.md` 기준 `doc` 단계 1차 완료 판정 문구 반영
 - ChatGPT 업로드 편의를 위해 `context-bundle-map.json` 기반 bundle key 선택 방식과 번호 선택 메뉴를 추가
 - `readme-ko-all`, `readme-en-all`, `readme-all`, `agents-all`, `onboarding-all` bundle key 를 추가
 - `doc-map.json`, `affected-docs-map.json` draft 설정은 아직 기본 스크립트 동작에는 연결하지 않고 후속 검토 대상으로 유지
@@ -393,7 +402,10 @@
   - 현재 `specdrive/specdrive.ps1` 는 `doc`, `session`, `git` 최소 라우팅을 수행할 수 있다.
   - `context-bundle.ps1` 는 그냥 실행하면 bundle key 번호 선택 메뉴를 보여주고, 비대화식 실행은 `-BundleKey` 로 유지한다.
   - 실제 Codex 실행 시에는 non-zero exit code 가 나와도 `output-last-message` 파일에 본문이 남을 수 있으므로 preview 파일과 output 파일을 함께 확인하는 편이 안전하다.
-  - 다음 선택지는 `01-overview.md` 기준 테스트 완료 판정을 먼저 정리할지, `session save` 에 다음 진입점을 어떻게 남길지 정리할지, 또는 `doc reinforce -Execute` 사용감을 더 검증할지 판단하는 것이다.
+  - 다음 선택지는 `session save` 에 다음 진입점을 어떻게 남길지 정리할지, 다음 board 문서에 같은 `doc` 흐름을 반복 적용할지, 또는 `doc reinforce -Execute` 사용감을 더 검증할지 판단하는 것이다.
+  - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
+  - 현재 작업 트리에는 복구 중 반영한 `specdrive/scripts/common/specdrive-common.ps1` 변경이 남아 있으며, 이 변경은 Git safe.directory 경로 정규화, 변경 경로 빈 목록 처리, `ChangedPaths` null 허용 보정이다.
+  - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
   - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
 
 ---

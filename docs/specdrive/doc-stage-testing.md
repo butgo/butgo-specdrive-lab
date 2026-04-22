@@ -19,7 +19,17 @@
 
 ## 2. 현재 테스트 범위 한 줄 요약
 
-- 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 첫 테스트 문서로 삼아, `reinforce -> confirm -> history-save` 가 기대한 역할대로 분리되는지 검증하는 단계이며, 현재 1차 흐름 검증과 `reinforce` 의 좁은 실제 `codex exec` 연결까지 확인한 상태다.
+- 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 첫 테스트 문서로 삼아, `reinforce -> confirm -> history-save` 가 기대한 역할대로 분리되는지 1차 검증을 완료한 상태다.
+
+현재 1차 완료 판정은 다음 범위까지로 한정한다.
+
+- registry 기반 key routing 확인
+- preview 기반 최소 검증 확인
+- `doc reinforce` 의 좁은 실제 `codex exec` 연결 확인
+- `confirm -Execute`, `history-save -Execute` 의 실제 history 저장 경로 확인
+
+다만 이는 `doc` 단계 전체 안정화 완료가 아니라,
+`01-overview.md` 기준 첫 검증 문서에 대한 1차 완료 판정이다.
 
 ---
 
@@ -140,7 +150,7 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/history-save.ps1
 
 - `doc reinforce` 외 단계까지 실제 `codex exec` 연결을 넓힐지
 - preview 출력 포맷이 사람 검토에 충분한지
-- `01-overview.md` 기준 테스트를 언제 완료 판정할지
+- `01-overview.md` 이후 어떤 문서에 같은 `doc` 흐름을 반복 적용할지
 - `dev` 단계로 넘어가기 전에 `doc` 단계 테스트를 얼마나 더 반복할지
 - Codex 실행 환경 경고를 어디까지 허용 가능한 것으로 볼지
 
@@ -166,23 +176,46 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/history-save.ps1
 현재 기준으로 다음 진입점 후보는 다음과 같다.
 
 1. `01-overview.md` 기준 preview / output 형식이 사람이 쓰기 편한지 최종 점검
-2. `01-overview.md` 기준 `doc` 3단계 테스트 완료 판정 문구 정리
-3. `session` 단계 출력과 운영 흐름 정리
-4. `doc reinforce -Execute` 실제 사용감 점검
-5. `confirm`, `history-save` 까지 실연결을 넓힐지 판단
+2. `session` 단계 출력과 운영 흐름 정리
+3. `doc reinforce -Execute` 실제 사용감 점검
+4. `confirm`, `history-save` 까지 실연결을 넓힐지 판단
+5. 다음 board 문서에 `doc` 3단계 흐름을 반복 적용할지 판단
 
 현재 우선순위는  
-1번과 2번, 3번이 먼저다.  
-4번과 5번은 현재 흐름 정리가 끝난 뒤 판단한다.
+1번과 2번이 먼저다.
+3번 이후는 현재 흐름 정리가 끝난 뒤 판단한다.
 
 ---
 
-## 11. 최종 정리
+## 11. 1차 완료 판정
+
+`docs/projects/board/01-overview.md` 기준 `doc` 단계 1차 테스트는
+현재 완료 판정한다.
+
+완료 판정 근거는 다음과 같다.
+
+- `reinforce` 는 기존 문서를 전면 재작성하지 않고 보강 초안을 만드는 단계로 설명 가능하다.
+- `confirm` 은 사람 검토용 체크리스트와 실제 적용 경로를 분리해 설명 가능하다.
+- `history-save` 는 현재 문서 상태와 판단 흔적을 문서대장 이력으로 남기는 단계로 설명 가능하다.
+- `docs/history/projects/board/01-overview/**` 아래에 confirm/history 산출물 묶음이 남아 있다.
+- `confirm` 과 `history-save` 는 병렬이 아니라 최신 confirm preview 를 기준으로 순차 실행하는 흐름이 맞다는 점을 확인했다.
+
+이 완료 판정은 다음을 의미하지 않는다.
+
+- 모든 project 문서에 `doc` 단계가 충분히 검증됐다는 뜻은 아니다.
+- `dev` 단계로 즉시 넘어간다는 뜻은 아니다.
+- `confirm`, `history-save` 의 실제 Codex 연결 범위를 확정했다는 뜻은 아니다.
+
+따라서 다음 단계는 기능 확장이 아니라,
+`session` 운영 흐름 정리와 다음 board 문서에 같은 패턴을 반복 적용할지 판단하는 것이다.
+
+---
+
+## 12. 최종 정리
 
 현재 `doc` 단계는  
-`docs/projects/board/01-overview.md` 를 기준으로 최소 골격과 1차 역할 분리 테스트까지 연결된 상태다.
+`docs/projects/board/01-overview.md` 를 기준으로 최소 골격과 1차 역할 분리 테스트 완료 판정까지 연결된 상태다.
 
 따라서 새 세션에서는 먼저 이 문서로 테스트 상태를 복구한 뒤,  
-이번 1차 테스트가 기대한 운영 방식과 얼마나 맞는지 확인한 뒤  
-`session` 단계 정리로 넘어가는 것이 자연스럽다.
+`session` 단계 정리 또는 다음 board 문서에 같은 흐름을 반복 적용하는 작업으로 넘어가는 것이 자연스럽다.
 
