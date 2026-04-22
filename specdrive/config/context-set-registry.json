@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "context_sets": {
+    "board-doc-base": {
+      "description": "Base context bundle for board doc-stage validation.",
+      "required_documents": [
+        "README.md",
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/AGENTS.md"
+      ],
+      "optional_documents": [
+        "docs/projects/standards/index.md"
+      ]
+    }
+  }
+}

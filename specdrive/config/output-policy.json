@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "modes": {
+    "review_patch": {
+      "description": "Return a reviewable patch-style draft instead of directly overwriting the target document.",
+      "write_target_document_directly": false,
+      "store_preview_under": ".speclab/review-output",
+      "human_review_required": true
+    },
+    "history_entry": {
+      "description": "Return a history-entry preview instead of directly mutating a history document.",
+      "write_target_document_directly": false,
+      "store_preview_under": ".speclab/history-output",
+      "human_review_required": true
+    }
+  }
+}

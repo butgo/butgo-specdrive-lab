@@ -1,0 +1,309 @@
+{
+  "version": 1,
+  "status": "draft",
+  "description": "문서 영향 관계 점검을 위한 초안 맵이다. 현재 어떤 스크립트도 이 파일을 기본으로 읽지 않는다.",
+  "scopes": {
+    "root": {
+      "description": "저장소 전체 규칙, 진입 문서, 현재 상태 복구 문서 영역이다.",
+      "agents": [
+        "AGENTS.md"
+      ]
+    },
+    "specdrive": {
+      "description": "specdrive 작업 흐름, CLI, 운영 모델에 대한 문서와 규칙 영역이다.",
+      "agents": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md"
+      ]
+    },
+    "projects-common": {
+      "description": "프로젝트 전용 문서에서 공통으로 참조하는 프로젝트 문서와 표준 영역이다.",
+      "agents": [
+        "AGENTS.md"
+      ]
+    },
+    "project-board": {
+      "description": "board 프로젝트 전용 문서와 규칙 영역이다.",
+      "agents": [
+        "AGENTS.md",
+        "docs/projects/board/AGENTS.md"
+      ]
+    }
+  },
+  "entries": {
+    "root-agents": {
+      "path": "AGENTS.md",
+      "scope": "root",
+      "history_recommended": true,
+      "note_template": "루트 AGENTS.md 변경에 따른 전체 작업 규칙 및 하위 AGENTS 정합성 점검",
+      "include_for_bundle": [
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/AGENTS.md",
+        "docs/projects/board/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/AI_CONTEXT.md",
+          "action": "review",
+          "reason": "전체 작업 규칙 변경이 현재 상태 복구 문서와 충돌하는지 확인"
+        },
+        {
+          "path": "docs/specdrive/AGENTS.md",
+          "action": "review",
+          "reason": "specdrive 전용 규칙이 루트 규칙을 위반하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/AGENTS.md",
+          "action": "review",
+          "reason": "board 전용 규칙이 루트 규칙을 위반하지 않는지 확인"
+        }
+      ]
+    },
+    "ai-context": {
+      "path": "docs/AI_CONTEXT.md",
+      "scope": "root",
+      "history_recommended": true,
+      "note_template": "AI_CONTEXT.md 변경에 따른 현재 상태 및 다음 진입점 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/specdrive/doc-stage-testing.md",
+          "action": "review",
+          "reason": "현재 CLI 테스트 상태와 AI_CONTEXT의 진입점 설명이 일치하는지 확인"
+        },
+        {
+          "path": "docs/specdrive/session-stage.md",
+          "action": "review",
+          "reason": "세션 복구 기준과 AI_CONTEXT의 현재 상태 설명이 충돌하지 않는지 확인"
+        }
+      ]
+    },
+    "specdrive-agents": {
+      "path": "docs/specdrive/AGENTS.md",
+      "scope": "specdrive",
+      "history_recommended": true,
+      "note_template": "docs/specdrive/AGENTS.md 변경에 따른 specdrive 문서 및 실행 자산 경계 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/README.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/specdrive/runtime-structure.md",
+          "action": "review",
+          "reason": "실행 자산 구조 설명이 specdrive 전용 규칙과 일치하는지 확인"
+        },
+        {
+          "path": "docs/specdrive/cli-manual.md",
+          "action": "review",
+          "reason": "CLI 운영 매뉴얼이 specdrive 전용 작업 규칙을 벗어나지 않는지 확인"
+        }
+      ]
+    },
+    "specdrive-cli-manual": {
+      "path": "docs/specdrive/cli-manual.md",
+      "scope": "specdrive",
+      "history_recommended": true,
+      "note_template": "cli-manual.md 변경에 따른 CLI 단계 문서 및 util 문서 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/specdrive/session-stage.md",
+          "action": "review",
+          "reason": "session 명령 설명과 session 단계 기준이 일치하는지 확인"
+        },
+        {
+          "path": "docs/specdrive/git-stage.md",
+          "action": "review",
+          "reason": "git 명령 설명과 git 단계 기준이 일치하는지 확인"
+        },
+        {
+          "path": "docs/specdrive/util-scripts.md",
+          "action": "review",
+          "reason": "util 상세 설명이 CLI 매뉴얼의 요약과 일치하는지 확인"
+        }
+      ]
+    },
+    "specdrive-session-stage": {
+      "path": "docs/specdrive/session-stage.md",
+      "scope": "specdrive",
+      "history_recommended": true,
+      "note_template": "session-stage.md 변경에 따른 session CLI 및 AI_CONTEXT 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "specdrive/scripts/session/start.ps1",
+          "action": "review",
+          "reason": "session start 출력 계약이 단계 문서와 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/session/save.ps1",
+          "action": "review",
+          "reason": "session save 출력 계약이 단계 문서와 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/session/status.ps1",
+          "action": "review",
+          "reason": "session status의 서술형 상태 조회가 단계 문서와 일치하는지 확인"
+        }
+      ]
+    },
+    "specdrive-git-stage": {
+      "path": "docs/specdrive/git-stage.md",
+      "scope": "specdrive",
+      "history_recommended": true,
+      "note_template": "git-stage.md 변경에 따른 git CLI 및 git-policy 정합성 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/standards/git-policy.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/standards/git-policy.md",
+          "action": "review",
+          "reason": "git 단계의 메시지 생성 기준이 프로젝트 Git 정책과 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/git/git-message.ps1",
+          "action": "review",
+          "reason": "커밋 메시지 초안 생성이 git 단계 문서와 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/git/pr-message.ps1",
+          "action": "review",
+          "reason": "PR 메시지 초안 생성이 git 단계 문서와 일치하는지 확인"
+        }
+      ]
+    },
+    "specdrive-util-scripts": {
+      "path": "docs/specdrive/util-scripts.md",
+      "scope": "specdrive",
+      "history_recommended": false,
+      "note_template": "util-scripts.md 변경에 따른 util 스크립트 및 출력 위치 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "specdrive/scripts/util/context-bundle.ps1",
+          "action": "review",
+          "reason": "컨텍스트 번들 설명과 실제 출력 위치 및 옵션이 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/util/project-tree.ps1",
+          "action": "review",
+          "reason": "프로젝트 트리 설명과 실제 출력 위치 및 옵션이 일치하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/util/doc-tree.ps1",
+          "action": "review",
+          "reason": "문서 트리 설명과 실제 출력 위치 및 옵션이 일치하는지 확인"
+        }
+      ]
+    },
+    "projects-standards-git-policy": {
+      "path": "docs/projects/standards/git-policy.md",
+      "scope": "projects-common",
+      "history_recommended": true,
+      "note_template": "git-policy.md 변경에 따른 git 단계 및 메시지 생성 스크립트 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/standards/index.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/specdrive/git-stage.md",
+          "action": "review",
+          "reason": "specdrive git 단계가 프로젝트 Git 정책을 올바르게 참조하는지 확인"
+        },
+        {
+          "path": "specdrive/scripts/common/specdrive-common.ps1",
+          "action": "review",
+          "reason": "Git 메시지 초안 공통 함수가 정책 형식을 따르는지 확인"
+        }
+      ]
+    },
+    "board-agents": {
+      "path": "docs/projects/board/AGENTS.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "note_template": "board AGENTS.md 변경에 따른 board 문서 작업 규칙 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/README.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/01-overview.md",
+          "action": "review",
+          "reason": "board 개요 문서가 board 전용 작업 규칙과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/02-requirements.md",
+          "action": "review",
+          "reason": "board 요구사항 문서가 board 전용 작업 규칙과 충돌하지 않는지 확인"
+        }
+      ]
+    },
+    "board-overview": {
+      "path": "docs/projects/board/01-overview.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "note_template": "01-overview.md 변경에 따른 board 요구사항 및 현재 상태 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/README.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/02-requirements.md",
+          "action": "review",
+          "reason": "개요 변경이 요구사항 범위에 영향을 주는지 확인"
+        },
+        {
+          "path": "docs/AI_CONTEXT.md",
+          "action": "review",
+          "reason": "현재 작업 상태나 다음 진입점에 반영이 필요한지 확인"
+        }
+      ]
+    },
+    "board-requirements": {
+      "path": "docs/projects/board/02-requirements.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "note_template": "02-requirements.md 변경에 따른 board 개요 및 후속 개발 기준 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/01-overview.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/01-overview.md",
+          "action": "review",
+          "reason": "요구사항 변경이 개요의 범위 설명과 충돌하지 않는지 확인"
+        }
+      ]
+    }
+  }
+}

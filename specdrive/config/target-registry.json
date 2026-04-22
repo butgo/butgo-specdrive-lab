@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "default_target": "board-overview",
+  "targets": {
+    "board-overview": {
+      "document_path": "docs/projects/board/01-overview.md",
+      "document_kind": "project-overview",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target as the first doc-stage validation document.",
+        "Keep the scope minimal and avoid expanding into detailed API, DB, or UI design."
+      ]
+    },
+    "board-requirements": {
+      "document_path": "docs/projects/board/02-requirements.md",
+      "document_kind": "project-requirements",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target after board-overview is stabilized.",
+        "Keep the scope on minimum board requirements and avoid drifting into detailed design."
+      ]
+    }
+  }
+}

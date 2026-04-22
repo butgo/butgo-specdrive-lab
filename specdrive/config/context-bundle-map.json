@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "status": "draft",
+  "description": "컨텍스트 번들 생성을 위한 문서 묶음 설정이다.",
+  "bundles": {
+    "default": {
+      "description": "기본 세션 복구용 문서 묶음이다.",
+      "name": "context-bundle",
+      "documents": [
+        "README.md",
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md"
+      ]
+    },
+    "readme-ko-all": {
+      "description": "저장소 안의 모든 README.ko.md 문서를 묶는다.",
+      "name": "readme-ko-all",
+      "documents": [
+        "README.ko.md",
+        "docs/README.ko.md",
+        "docs/specdrive/README.ko.md",
+        "docs/projects/README.ko.md",
+        "docs/projects/board/README.ko.md"
+      ]
+    },
+    "readme-en-all": {
+      "description": "저장소 안의 모든 README.md 문서를 묶는다.",
+      "name": "readme-en-all",
+      "documents": [
+        "README.md",
+        "docs/README.md",
+        "docs/specdrive/README.md",
+        "docs/projects/README.md",
+        "docs/projects/board/README.md"
+      ]
+    },
+    "readme-all": {
+      "description": "저장소 안의 모든 README.md 와 README.ko.md 문서를 함께 묶는다.",
+      "name": "readme-all",
+      "documents": [
+        "README.md",
+        "README.ko.md",
+        "docs/README.md",
+        "docs/README.ko.md",
+        "docs/specdrive/README.md",
+        "docs/specdrive/README.ko.md",
+        "docs/projects/README.md",
+        "docs/projects/README.ko.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/README.ko.md"
+      ]
+    },
+    "agents-all": {
+      "description": "저장소 안의 모든 AGENTS.md 문서를 묶는다.",
+      "name": "agents-all",
+      "documents": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md",
+        "docs/projects/board/AGENTS.md"
+      ]
+    },
+    "codex-base-review": {
+      "description": "Codex 기본 문맥 검토용으로 핵심 README, AGENTS, AI_CONTEXT 문서를 묶는다.",
+      "name": "codex-base-review",
+      "documents": [
+        "README.md",
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/specdrive/README.md",
+        "docs/specdrive/AGENTS.md",
+        "docs/projects/README.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/AGENTS.md"
+      ]
+    },
+    "standards-all": {
+      "description": "프로젝트 공통 standards 문서를 함께 묶는다.",
+      "name": "standards-all",
+      "documents": [
+        "docs/projects/standards/index.md",
+        "docs/projects/standards/api-standard.md",
+        "docs/projects/standards/db-standard.md",
+        "docs/projects/standards/git-policy.md",
+        "docs/projects/standards/java-coding-standard.md",
+        "docs/projects/standards/naming-standard.md",
+        "docs/projects/standards/package-structure-standard.md",
+        "docs/projects/standards/phase1-standards-checklist.md"
+      ]
+    },
+    "onboarding-all": {
+      "description": "ChatGPT 업로드용으로 모든 README.md, README.ko.md, AGENTS.md 문서를 함께 묶는다.",
+      "name": "onboarding-all",
+      "documents": [
+        "README.md",
+        "README.ko.md",
+        "AGENTS.md",
+        "docs/README.md",
+        "docs/README.ko.md",
+        "docs/specdrive/README.md",
+        "docs/specdrive/README.ko.md",
+        "docs/specdrive/AGENTS.md",
+        "docs/projects/README.md",
+        "docs/projects/README.ko.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/README.ko.md",
+        "docs/projects/board/AGENTS.md"
+      ]
+    }
+  }
+}

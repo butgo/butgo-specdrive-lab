@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "doc-reinforce": {
+      "path": "specdrive/skills/doc/reinforce.md",
+      "stage": "doc",
+      "action": "reinforce",
+      "description": "Reinforce the current document draft without rewriting it from scratch."
+    },
+    "doc-confirm": {
+      "path": "specdrive/skills/doc/confirm.md",
+      "stage": "doc",
+      "action": "confirm",
+      "description": "Generate a human review checklist to decide whether the current document can be treated as confirmed."
+    },
+    "doc-history-save": {
+      "path": "specdrive/skills/doc/history-save.md",
+      "stage": "doc",
+      "action": "history-save",
+      "description": "Generate a history preview that records the document change context and next entry point."
+    }
+  }
+}

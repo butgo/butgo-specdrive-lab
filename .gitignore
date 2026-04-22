@@ -1,0 +1,36 @@
+# Project-local generated files
+.gocache/
+.gomodcache/
+.speclab/
+temp/
+
+# Build outputs
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+bin/
+build/
+dist/
+
+# Go workspace artifacts
+go.work
+go.work.sum
+
+# Editor settings
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# Environment files
+.env
+.env.*
+
+# Logs and OS noise
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store

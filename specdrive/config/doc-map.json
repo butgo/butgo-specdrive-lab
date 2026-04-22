@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "status": "draft",
+  "description": "문서 목록과 역할을 정리하기 위한 초안 맵이다. 현재 어떤 스크립트도 이 파일을 기본으로 읽지 않는다.",
+  "history_documents": {
+    "include_as_entries": false,
+    "root": "docs/history",
+    "reason": "히스토리 파일은 생성된 추적 산출물이므로, 이 맵은 모든 히스토리 스냅샷 대신 현재 기준 문서를 추적한다."
+  },
+  "scopes": {
+    "root": {
+      "description": "저장소 수준의 진입 문서, 규칙 문서, 상태 문서 영역이다."
+    },
+    "docs-root": {
+      "description": "문서 디렉터리 전체를 설명하는 문서 영역이다."
+    },
+    "specdrive": {
+      "description": "specdrive 작업 흐름, CLI, 실행 구조, 운영 모델을 설명하는 문서 영역이다."
+    },
+    "projects-common": {
+      "description": "프로젝트 공통 문서와 표준 문서 영역이다."
+    },
+    "project-board": {
+      "description": "board 프로젝트 전용 문서 영역이다."
+    }
+  },
+  "documents": {
+    "root-readme": {
+      "path": "README.md",
+      "scope": "root",
+      "kind": "entry",
+      "title": "README.md",
+      "role": "저장소와 butgo-specdrive의 대표 진입 문서"
+    },
+    "root-readme-ko": {
+      "path": "README.ko.md",
+      "scope": "root",
+      "kind": "entry",
+      "title": "README.ko.md",
+      "role": "저장소 대표 진입 문서의 한국어 버전"
+    },
+    "root-agents": {
+      "path": "AGENTS.md",
+      "scope": "root",
+      "kind": "rule",
+      "title": "AGENTS.md",
+      "role": "저장소 전체에 적용되는 최상위 작업 규칙 문서"
+    },
+    "ai-context": {
+      "path": "docs/AI_CONTEXT.md",
+      "scope": "root",
+      "kind": "state",
+      "title": "AI_CONTEXT.md",
+      "role": "현재 상태 복구와 다음 작업 진입점을 정리하는 문서"
+    },
+    "docs-readme": {
+      "path": "docs/README.md",
+      "scope": "docs-root",
+      "kind": "entry",
+      "title": "docs/README.md",
+      "role": "docs 문서군 전체의 대표 진입 문서"
+    },
+    "docs-readme-ko": {
+      "path": "docs/README.ko.md",
+      "scope": "docs-root",
+      "kind": "entry",
+      "title": "docs/README.ko.md",
+      "role": "docs 문서군 전체 대표 진입 문서의 한국어 버전"
+    },
+    "specdrive-readme": {
+      "path": "docs/specdrive/README.md",
+      "scope": "specdrive",
+      "kind": "entry",
+      "title": "docs/specdrive/README.md",
+      "role": "specdrive 영역의 대표 개요 문서"
+    },
+    "specdrive-readme-ko": {
+      "path": "docs/specdrive/README.ko.md",
+      "scope": "specdrive",
+      "kind": "entry",
+      "title": "docs/specdrive/README.ko.md",
+      "role": "specdrive 영역 대표 개요 문서의 한국어 버전"
+    },
+    "specdrive-agents": {
+      "path": "docs/specdrive/AGENTS.md",
+      "scope": "specdrive",
+      "kind": "rule",
+      "title": "docs/specdrive/AGENTS.md",
+      "role": "specdrive 영역에 적용되는 전용 작업 규칙 문서"
+    },
+    "specdrive-index": {
+      "path": "docs/specdrive/index.md",
+      "scope": "specdrive",
+      "kind": "index",
+      "title": "docs/specdrive/index.md",
+      "role": "specdrive 문서 목록과 역할을 안내하는 인덱스 문서"
+    },
+    "specdrive-runtime-structure": {
+      "path": "docs/specdrive/runtime-structure.md",
+      "scope": "specdrive",
+      "kind": "structure",
+      "title": "runtime-structure.md",
+      "role": "specdrive 실행 자산 구조와 책임 경계를 설명하는 문서"
+    },
+    "specdrive-cli-manual": {
+      "path": "docs/specdrive/cli-manual.md",
+      "scope": "specdrive",
+      "kind": "manual",
+      "title": "cli-manual.md",
+      "role": "현재 PowerShell CLI 실행 방법과 검증 흐름을 설명하는 운영 매뉴얼"
+    },
+    "specdrive-cli-key-routing": {
+      "path": "docs/specdrive/cli-key-routing.md",
+      "scope": "specdrive",
+      "kind": "design",
+      "title": "cli-key-routing.md",
+      "role": "target, skill, context-set key 기반 CLI 라우팅 구조 문서"
+    },
+    "specdrive-cli-single-entry": {
+      "path": "docs/specdrive/cli-single-entry.md",
+      "scope": "specdrive",
+      "kind": "design",
+      "title": "cli-single-entry.md",
+      "role": "specdrive.ps1 단일 진입점의 책임과 경계를 설명하는 문서"
+    },
+    "specdrive-doc-stage-testing": {
+      "path": "docs/specdrive/doc-stage-testing.md",
+      "scope": "specdrive",
+      "kind": "status",
+      "title": "doc-stage-testing.md",
+      "role": "doc 단계 테스트 상태와 다음 검증 흐름을 복구하는 문서"
+    },
+    "specdrive-doc-reinforce-flow": {
+      "path": "docs/specdrive/doc-reinforce-flow.md",
+      "scope": "specdrive",
+      "kind": "flow",
+      "title": "doc-reinforce-flow.md",
+      "role": "doc reinforce 흐름과 실행 기준을 설명하는 문서"
+    },
+    "specdrive-doc-confirm-flow": {
+      "path": "docs/specdrive/doc-confirm-flow.md",
+      "scope": "specdrive",
+      "kind": "flow",
+      "title": "doc-confirm-flow.md",
+      "role": "doc confirm 흐름과 적용 기준을 설명하는 문서"
+    },
+    "specdrive-doc-history-save-flow": {
+      "path": "docs/specdrive/doc-history-save-flow.md",
+      "scope": "specdrive",
+      "kind": "flow",
+      "title": "doc-history-save-flow.md",
+      "role": "doc history-save 흐름과 history 저장 기준을 설명하는 문서"
+    },
+    "specdrive-session-stage": {
+      "path": "docs/specdrive/session-stage.md",
+      "scope": "specdrive",
+      "kind": "stage",
+      "title": "session-stage.md",
+      "role": "session 단계의 세션 복구/저장 책임과 출력 계약을 설명하는 문서"
+    },
+    "specdrive-git-stage": {
+      "path": "docs/specdrive/git-stage.md",
+      "scope": "specdrive",
+      "kind": "stage",
+      "title": "git-stage.md",
+      "role": "git 단계의 브랜치명, commit, PR 메시지 생성 책임을 설명하는 문서"
+    },
+    "specdrive-util-scripts": {
+      "path": "docs/specdrive/util-scripts.md",
+      "scope": "specdrive",
+      "kind": "manual",
+      "title": "util-scripts.md",
+      "role": "context bundle, tree 출력, 문서 맵 같은 보조 유틸 스크립트 설명 문서"
+    },
+    "specdrive-todo-session-automation": {
+      "path": "docs/specdrive/todo/session-automation-todo.md",
+      "scope": "specdrive",
+      "kind": "todo",
+      "title": "session-automation-todo.md",
+      "role": "session 자동 실행과 Codex/IDE 연동 후보를 나중에 검토하기 위한 메모"
+    },
+    "specdrive-todo-affected-docs-map": {
+      "path": "docs/specdrive/todo/affected-docs-map-todo.md",
+      "scope": "specdrive",
+      "kind": "todo",
+      "title": "affected-docs-map-todo.md",
+      "role": "affected-docs-map 정식화와 후속 연결을 검토하기 위한 메모"
+    },
+    "projects-readme": {
+      "path": "docs/projects/README.md",
+      "scope": "projects-common",
+      "kind": "entry",
+      "title": "docs/projects/README.md",
+      "role": "projects 문서군의 대표 진입 문서"
+    },
+    "projects-readme-ko": {
+      "path": "docs/projects/README.ko.md",
+      "scope": "projects-common",
+      "kind": "entry",
+      "title": "docs/projects/README.ko.md",
+      "role": "projects 문서군 대표 진입 문서의 한국어 버전"
+    },
+    "standards-index": {
+      "path": "docs/projects/standards/index.md",
+      "scope": "projects-common",
+      "kind": "index",
+      "title": "standards/index.md",
+      "role": "projects 공통 표준 문서 목록과 역할을 안내하는 문서"
+    },
+    "standards-api": {
+      "path": "docs/projects/standards/api-standard.md",
+      "scope": "projects-common",
+      "kind": "standard",
+      "title": "api-standard.md",
+      "role": "프로젝트 공통 API 설계 표준 문서"
+    },
+    "standards-db": {
+      "path": "docs/projects/standards/db-standard.md",
+      "scope": "projects-common",
+      "kind": "standard",
+      "title": "db-standard.md",
+      "role": "프로젝트 공통 DB 설계 표준 문서"
+    },
+    "standards-git-policy": {
+      "path": "docs/projects/standards/git-policy.md",
+      "scope": "projects-common",
+      "kind": "policy",
+      "title": "git-policy.md",
+      "role": "브랜치명, commit message, PR 메시지 정책 문서"
+    },
+    "standards-java-coding": {
+      "path": "docs/projects/standards/java-coding-standard.md",
+      "scope": "projects-common",
+      "kind": "standard",
+      "title": "java-coding-standard.md",
+      "role": "프로젝트 공통 Java 코딩 표준 문서"
+    },
+    "standards-naming": {
+      "path": "docs/projects/standards/naming-standard.md",
+      "scope": "projects-common",
+      "kind": "standard",
+      "title": "naming-standard.md",
+      "role": "프로젝트 공통 명명 규칙 문서"
+    },
+    "standards-package-structure": {
+      "path": "docs/projects/standards/package-structure-standard.md",
+      "scope": "projects-common",
+      "kind": "standard",
+      "title": "package-structure-standard.md",
+      "role": "프로젝트 공통 패키지 구조 표준 문서"
+    },
+    "standards-phase1-checklist": {
+      "path": "docs/projects/standards/phase1-standards-checklist.md",
+      "scope": "projects-common",
+      "kind": "checklist",
+      "title": "phase1-standards-checklist.md",
+      "role": "Phase 1 표준 적용 여부를 점검하는 체크리스트 문서"
+    },
+    "board-readme": {
+      "path": "docs/projects/board/README.md",
+      "scope": "project-board",
+      "kind": "entry",
+      "title": "docs/projects/board/README.md",
+      "role": "board 프로젝트 문서군의 대표 진입 문서"
+    },
+    "board-readme-ko": {
+      "path": "docs/projects/board/README.ko.md",
+      "scope": "project-board",
+      "kind": "entry",
+      "title": "docs/projects/board/README.ko.md",
+      "role": "board 프로젝트 대표 진입 문서의 한국어 버전"
+    },
+    "board-agents": {
+      "path": "docs/projects/board/AGENTS.md",
+      "scope": "project-board",
+      "kind": "rule",
+      "title": "docs/projects/board/AGENTS.md",
+      "role": "board 프로젝트 전용 작업 규칙 문서"
+    },
+    "board-index": {
+      "path": "docs/projects/board/index.md",
+      "scope": "project-board",
+      "kind": "index",
+      "title": "docs/projects/board/index.md",
+      "role": "board 프로젝트 문서 목록과 읽는 순서를 안내하는 문서"
+    },
+    "board-overview": {
+      "path": "docs/projects/board/01-overview.md",
+      "scope": "project-board",
+      "kind": "project-overview",
+      "title": "01-overview.md",
+      "role": "board 프로젝트의 목적, 성격, 현재 범위를 설명하는 개요 문서",
+      "target_key": "board-overview"
+    },
+    "board-requirements": {
+      "path": "docs/projects/board/02-requirements.md",
+      "scope": "project-board",
+      "kind": "project-requirements",
+      "title": "02-requirements.md",
+      "role": "board 프로젝트의 최소 요구사항과 범위를 정리하는 문서",
+      "target_key": "board-requirements"
+    }
+  }
+}

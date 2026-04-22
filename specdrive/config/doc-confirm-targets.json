@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "default_target": "board-overview",
+  "targets": {
+    "board-overview": {
+      "document_path": "docs/projects/board/01-overview.md",
+      "document_kind": "project-overview",
+      "project": "board",
+      "stage": "doc",
+      "action": "confirm",
+      "skill_path": "specdrive/skills/doc/confirm.md",
+      "context_documents": [
+        "README.md",
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/AGENTS.md"
+      ],
+      "review_output_directory": ".speclab/review-output",
+      "output_mode": "review_patch",
+      "human_review_required": true
+    }
+  }
+}

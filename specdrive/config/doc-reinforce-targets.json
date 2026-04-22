@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "default_target": "board-overview",
+  "targets": {
+    "board-overview": {
+      "document_path": "docs/projects/board/01-overview.md",
+      "document_kind": "project-overview",
+      "project": "board",
+      "stage": "doc",
+      "action": "reinforce",
+      "skill_path": "specdrive/skills/doc/reinforce.md",
+      "context_documents": [
+        "README.md",
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/AGENTS.md"
+      ],
+      "optional_context_documents": [
+        "docs/projects/standards/index.md"
+      ],
+      "output_mode": "review_patch",
+      "human_review_required": true,
+      "notes": [
+        "Use this target as the first doc reinforce validation case.",
+        "Keep the scope minimal and avoid expanding into detailed API, DB, or UI design."
+      ]
+    }
+  }
+}

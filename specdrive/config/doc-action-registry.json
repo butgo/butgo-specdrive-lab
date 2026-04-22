@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "actions": {
+    "reinforce": {
+      "stage": "doc",
+      "skill_key": "doc-reinforce",
+      "output_mode": "review_patch",
+      "human_review_required": true,
+      "execute_allowed": true,
+      "preview_base_name_prefix": "doc-reinforce"
+    },
+    "confirm": {
+      "stage": "doc",
+      "skill_key": "doc-confirm",
+      "output_mode": "review_patch",
+      "human_review_required": true,
+      "review_output_directory": ".speclab/review-output",
+      "execute_allowed": true,
+      "execute_requires": [
+        "reinforce_codex_output"
+      ],
+      "preview_base_name_prefix": "doc-confirm",
+      "lookup_reinforce_preview_prefix": "doc-reinforce",
+      "lookup_reinforce_codex_output_prefix": "doc-reinforce-codex-output",
+      "lookup_reinforce_codex_note_prefix": "doc-reinforce-codex-output",
+      "history_suffix_codex_output": "confirm-source-codex-output",
+      "history_suffix_codex_note": "confirm-source-codex-output.note",
+      "history_suffix_applied": "confirm-applied"
+    },
+    "history-save": {
+      "stage": "doc",
+      "skill_key": "doc-history-save",
+      "output_mode": "history_entry",
+      "human_review_required": true,
+      "review_output_directory": ".speclab/review-output",
+      "execute_allowed": true,
+      "preview_base_name_prefix": "doc-history-save",
+      "lookup_reinforce_preview_prefix": "doc-reinforce",
+      "lookup_confirm_preview_prefix": "doc-confirm",
+      "history_suffix_applied": "history-applied",
+      "history_suffix_applied_note": "history-applied.note",
+      "history_suffix_reinforce_preview": "history-source-reinforce-preview",
+      "history_suffix_confirm_preview": "history-source-confirm-preview"
+    }
+  }
+}
