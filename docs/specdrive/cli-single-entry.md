@@ -71,9 +71,11 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/history-save.ps1
 현재 단계에서 추천하는 최소 명령 구조는 다음과 같다.
 
 ```powershell
+specdrive/specdrive.ps1 doc draft-save -Target board-overview
+specdrive/specdrive.ps1 doc reinforce-prompt -Target board-overview -Mode interactive
 specdrive/specdrive.ps1 doc reinforce -Target board-overview
 specdrive/specdrive.ps1 doc confirm -Target board-overview
-specdrive/specdrive.ps1 doc history-save -Target board-overview
+specdrive/specdrive.ps1 doc history-save -Target board-overview -Source codex-reinforce
 specdrive/specdrive.ps1 session start
 specdrive/specdrive.ps1 session save
 specdrive/specdrive.ps1 git branch-name
@@ -142,13 +144,12 @@ specdrive/specdrive.ps1 dev task-split ...
 
 현재 기준 추천 흐름은 다음과 같다.
 
-1. 사용자가 `specdrive/specdrive.ps1 doc reinforce -Target board-overview` 를 실행한다.
-2. `specdrive/specdrive.ps1` 가 stage=`doc`, action=`reinforce`, target=`board-overview` 를 해석한다.
-3. `specdrive/specdrive.ps1` 가 `specdrive/scripts/doc/reinforce.ps1` 를 호출한다.
-4. `reinforce.ps1` 가 registry 와 output policy 를 읽고 실행 계획을 조합한다.
-5. 필요 시 `codex-exec.ps1` 로 handoff 한다.
-6. `codex-exec.ps1` 가 preview 를 생성한다.
-7. 결과는 `.speclab/**` 아래 preview 출력으로 돌아온다.
+1. 사용자가 `specdrive/specdrive.ps1 doc reinforce-prompt -Target board-overview -Mode interactive` 를 실행한다.
+2. `specdrive/specdrive.ps1` 가 stage=`doc`, action=`reinforce-prompt`, target=`board-overview` 를 해석한다.
+3. `specdrive/specdrive.ps1` 가 `specdrive/scripts/doc/reinforce-prompt.ps1` 를 호출한다.
+4. `reinforce-prompt.ps1` 가 registry 와 context 문서를 읽고 copy prompt 를 생성한다.
+5. 필요 시 사용자는 이어서 `specdrive/specdrive.ps1 doc reinforce -Target board-overview -Execute` 로 실제 Codex 실행 연결을 테스트한다.
+6. 보강 결과를 사람이 반영한 뒤 `specdrive/specdrive.ps1 doc history-save -Target board-overview -Source codex-reinforce` 를 실행한다.
 
 이 구조에서 중요한 것은 다음이다.
 
@@ -166,14 +167,20 @@ specdrive/specdrive.ps1 dev task-split ...
 - `-Target`
 - `-DryRun`
 - `-Execute`
+- `-Mode`
+- `-Source`
+- `-Note`
+- `-Focus`
 
 ### `doc` 단계 공통 예시
 
 ```powershell
+specdrive/specdrive.ps1 doc draft-save -Target board-overview
+specdrive/specdrive.ps1 doc reinforce-prompt -Target board-overview -Mode interactive
 specdrive/specdrive.ps1 doc reinforce -Target board-overview -DryRun
 specdrive/specdrive.ps1 doc reinforce -Target board-overview -Execute
 specdrive/specdrive.ps1 doc confirm -Target board-overview
-specdrive/specdrive.ps1 doc history-save -Target board-overview
+specdrive/specdrive.ps1 doc history-save -Target board-overview -Source codex-reinforce
 specdrive/specdrive.ps1 session start
 specdrive/specdrive.ps1 git branch-name
 specdrive/specdrive.ps1 git git-message
@@ -210,7 +217,7 @@ specdrive/specdrive.ps1 git pr-message
 현재 기준으로는 다음 순서가 자연스럽다.
 
 1. 이 문서로 `specdrive/specdrive.ps1` 책임과 최소 문법을 고정한다.
-2. `specdrive/specdrive.ps1` 에서 `doc reinforce|confirm|history-save` 3개만 먼저 라우팅한다.
+2. `specdrive/specdrive.ps1` 에서 `doc draft-save|reinforce-prompt|reinforce|confirm|history-save` 라우팅을 정리한다.
 3. 이후 `session start|save`, `git branch-name|git-message|pr-message` 상위 라우팅을 검토한다.
 4. 기존 하위 스크립트 호출이 끊기지 않는지 확인한다.
 5. 현재 preview 결과가 기존 직접 실행 방식과 동일한지 비교한다.

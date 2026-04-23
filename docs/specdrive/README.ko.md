@@ -107,6 +107,8 @@ AI가 보강한 문서는 초안 또는 보강안일 뿐이다.
 
 핵심 흐름:
 
+- draft-save
+- reinforce-prompt
 - reinforce
 - confirm
 - history-save
@@ -119,9 +121,26 @@ AI가 보강한 문서는 초안 또는 보강안일 뿐이다.
 
 현재 기준으로 더 정확히 적으면 다음과 같다.
 
-- `reinforce`: 보강안과 review 산출물을 만든다.
+- `draft-save`: Codex 보강 전에 현재 개발자 초안을 history 로 저장한다.
+- `reinforce-prompt`: Codex 대화를 specdrive 규칙 안에서 시작할 수 있도록 정규화된 copy prompt 를 만든다.
+- `reinforce`: 보강안과 review 산출물을 만들고, 필요 시 실제 Codex 실행 테스트 경로를 유지한다.
 - `confirm`: 보강안을 실제 project 문서에 적용할지 판단하고, 적용 근거를 history로 남긴다.
 - `history-save`: 현재 적용된 문서 상태와 사람 판단을 history에 고정한다.
+
+현재 기준에서는 한 가지를 더 분명히 본다.
+
+문서 작업은 “CLI가 자동으로 다 적용하는 흐름”보다  
+다음 같은 명시적 history 중심 루프로 이해하는 편이 더 맞다.
+
+1. 개발자가 초안을 작성한다.
+2. `draft-save` 로 초안을 history 로 남긴다.
+3. `reinforce-prompt` 로 정규화된 Codex 대화를 시작한다.
+4. 개발자와 Codex가 direct 또는 interactive 방식으로 문서를 함께 다듬는다.
+5. `history-save` 로 의미 있는 반영 결과를 history 에 남긴다.
+6. confirm 이 필요할 시점까지 반복한다.
+
+즉 현재 specdrive CLI는 단순 실행 래퍼만이 아니라,  
+프롬프트를 정규화하고 문서 이력 루프를 안정적으로 유지하기 위한 도구로 보는 편이 맞다.
 
 ### 5.2 dev 단계
 확정된 문서를 기준으로 실제 개발 작업을 진행하는 단계다.
@@ -151,6 +170,18 @@ AI가 보강한 문서는 초안 또는 보강안일 뿐이다.
 
 - 세션 시작 시 현재 상태와 다음 진입점을 복구한다.
 - 세션 종료 시 세션 메모와 다음 진입점을 정리한다.
+
+현재 `session start` 는 자동 작업 시작 명령으로 보기보다  
+Codex가 관련 문서를 읽고 현재 상태를 복구한 뒤, 먼저 focus 와 다음 진입점을 정리하게 만드는 copy prompt 출력 명령으로 이해하는 편이 맞다.  
+즉 복구 요약을 먼저 보고, 개발자가 실제 작업을 요청한 뒤에만 문서 수정이나 후속 작업으로 들어간다.
+
+현재 `session save` 는 자동 저장 명령으로 보기보다  
+`docs/AI_CONTEXT.md` 반영 초안을 Codex에게 요청하는 copy prompt 출력 명령으로 이해하는 편이 맞다.  
+즉 copy prompt 로 초안을 만든 뒤, 개발자가 검토하고 "저장해줘" 라고 명시적으로 요청한 경우에만 실제 반영을 진행한다.
+
+현재 `session status` 는 copy prompt를 만들지 않고  
+`docs/AI_CONTEXT.md` 기준 현재 상태를 읽기 전용으로 확인하는 명령으로 이해하는 편이 맞다.  
+즉 복구 확인용 조회에 가깝고, 직접 수정이나 저장을 시작하는 명령은 아니다.
 
 ### 5.4 git 단계
 브랜치명, Git commit message, PR 제목/설명 생성을 다루는 전달 단계다.

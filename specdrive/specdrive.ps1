@@ -13,9 +13,11 @@ $commonScript = Join-Path $PSScriptRoot "scripts\common\specdrive-common.ps1"
 
 function Show-SpecdriveUsage {
     Write-Host "specdrive/specdrive.ps1 usage:"
+    Write-Host "  specdrive/specdrive.ps1 doc draft-save -Target board-overview [-Note ""...""] [-DryRun]"
+    Write-Host "  specdrive/specdrive.ps1 doc reinforce-prompt -Target board-overview [-Mode direct|interactive] [-Focus ""...""] [-Note ""...""]"
     Write-Host "  specdrive/specdrive.ps1 doc reinforce -Target board-overview [-DryRun] [-Execute]"
     Write-Host "  specdrive/specdrive.ps1 doc confirm -Target board-overview [-DryRun] [-Execute]"
-    Write-Host "  specdrive/specdrive.ps1 doc history-save -Target board-overview [-DryRun] [-Execute]"
+    Write-Host "  specdrive/specdrive.ps1 doc history-save -Target board-overview [-Source codex-reinforce] [-Note ""...""] [-DryRun] [-PreviewOnly]"
     Write-Host "  specdrive/specdrive.ps1 session start [-DryRun]"
     Write-Host "  specdrive/specdrive.ps1 session status [-DryRun] [-Detailed] [-MaxChangedPaths 10]"
     Write-Host "  specdrive/specdrive.ps1 session save [-DryRun] [-Detailed] [-MaxChangedPaths 10]"
@@ -80,6 +82,8 @@ $namedArgs = ConvertTo-SpecdriveNamedArgs -ArgsToConvert $RemainingArgs
 switch ($Stage) {
     "doc" {
         switch ($Action) {
+            "draft-save" { Invoke-SpecdriveScript -ScriptRelativePath "specdrive/scripts/doc/draft-save.ps1" -NamedArgs $namedArgs; exit 0 }
+            "reinforce-prompt" { Invoke-SpecdriveScript -ScriptRelativePath "specdrive/scripts/doc/reinforce-prompt.ps1" -NamedArgs $namedArgs; exit 0 }
             "reinforce" { Invoke-SpecdriveScript -ScriptRelativePath "specdrive/scripts/doc/reinforce.ps1" -NamedArgs $namedArgs; exit 0 }
             "confirm" { Invoke-SpecdriveScript -ScriptRelativePath "specdrive/scripts/doc/confirm.ps1" -NamedArgs $namedArgs; exit 0 }
             "history-save" { Invoke-SpecdriveScript -ScriptRelativePath "specdrive/scripts/doc/history-save.ps1" -NamedArgs $namedArgs; exit 0 }

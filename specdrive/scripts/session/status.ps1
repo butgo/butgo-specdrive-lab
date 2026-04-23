@@ -181,8 +181,9 @@ if ($Detailed) {
 }
 
 Write-Host ""
+Write-Host "[session status] mode: read-only status check"
 Write-Host "[session status] source: docs/AI_CONTEXT.md"
-Write-Host "[session status] no prompt generated and no artifact saved."
+Write-Host "[session status] no prompt generated, no file updated, and no artifact saved."
 
 if ($DryRun) {
     Write-Host "[session status] dry-run only."

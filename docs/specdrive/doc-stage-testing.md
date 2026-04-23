@@ -19,7 +19,7 @@
 
 ## 2. 현재 테스트 범위 한 줄 요약
 
-- 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 첫 테스트 문서로 삼아, `reinforce -> confirm -> history-save` 가 기대한 역할대로 분리되는지 1차 검증을 완료한 상태다.
+- 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 첫 테스트 문서로 삼아, `draft-save -> reinforce-prompt -> history-save` 수동 보강 루프와 `reinforce -> confirm -> history-save` 기존 실행 흐름을 함께 비교 정리하는 단계다.
 
 현재 1차 완료 판정은 다음 범위까지로 한정한다.
 
@@ -55,6 +55,8 @@
 
 ### 4.2 스크립트
 - `specdrive/scripts/doc/reinforce.ps1`
+- `specdrive/scripts/doc/reinforce-prompt.ps1`
+- `specdrive/scripts/doc/draft-save.ps1`
 - `specdrive/scripts/doc/confirm.ps1`
 - `specdrive/scripts/doc/history-save.ps1`
 - `specdrive/scripts/exec/codex-exec.ps1`
@@ -84,9 +86,11 @@
 
 보통 아래 순서로 테스트한다.
 
-1. `doc reinforce`
-2. `doc confirm`
-3. `doc history-save`
+1. 개발자 초안 작성
+2. `doc draft-save`
+3. `doc reinforce-prompt`
+4. 필요 시 `doc reinforce`
+5. `doc history-save`
 
 PowerShell 예시는 다음과 같다.
 
@@ -95,6 +99,8 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/reinforce.ps1
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/confirm.ps1
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/doc/history-save.ps1
 ```
+
+현재 `doc confirm` 은 별도 검토 체크리스트나 project 문서 적용 경로가 필요할 때 유지하는 후속 명령으로 본다.
 
 ---
 

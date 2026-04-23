@@ -105,6 +105,8 @@ This is the stage of making documents implementation-ready.
 
 Core flow:
 
+- draft-save
+- reinforce-prompt
 - reinforce
 - confirm
 - history-save
@@ -117,9 +119,26 @@ Basic meaning:
 
 At the current stage, this is better understood more concretely as follows.
 
-- `reinforce`: create reinforcement drafts and review artifacts.
+- `draft-save`: save the current developer draft into history before Codex reinforcement starts.
+- `reinforce-prompt`: generate a normalized copy prompt for Codex so the conversation can start inside specdrive rules.
+- `reinforce`: create reinforcement drafts and review artifacts, and keep a narrow path for actual Codex execution tests.
 - `confirm`: decide whether to apply the reinforced draft to the real project document and leave the evidence in history.
 - `history-save`: fix the current applied document state and human judgment into history.
+
+One more point matters at the current stage.
+
+The preferred document loop is shifting away from a fully automatic “CLI applies everything” idea.
+Instead, specdrive is being shaped around the following rhythm.
+
+1. The developer writes a draft.
+2. `draft-save` records the draft as history.
+3. `reinforce-prompt` starts a normalized Codex conversation.
+4. The developer and Codex refine the document through direct or interactive dialogue.
+5. `history-save` explicitly records the meaningful applied state.
+6. Repeat until the document is ready for confirm.
+
+This means specdrive currently treats the CLI not only as an execution wrapper,
+but also as a way to standardize prompts and preserve a clean document-history loop.
 
 ### 5.2 dev Stage
 This is the stage of performing actual development work based on confirmed documents.
@@ -149,6 +168,18 @@ Basic meaning:
 
 - Recover the current state and next entry point at session start.
 - Save session notes and the next entry point at session end.
+
+At the current stage, `session start` is better understood not as an automatic work-start command,
+but as a command that prints a copy prompt so Codex can read the relevant documents, recover the current state,
+and summarize the focus and next entry point first.
+Actual document edits or follow-up work begin only after the developer explicitly asks for them.
+
+At the current stage, `session save` is better understood not as an automatic save command,
+but as a command that prints a copy prompt asking Codex for a `docs/AI_CONTEXT.md` update draft.
+The draft is reviewed first, and the real `docs/AI_CONTEXT.md` edit happens only after the developer explicitly asks to save it.
+
+At the current stage, `session status` is better understood as a read-only status check based on `docs/AI_CONTEXT.md`.
+It does not generate a copy prompt and does not start document edits or save flows by itself.
 
 ### 5.4 git Stage
 This is the stage for generating Git delivery artifacts.

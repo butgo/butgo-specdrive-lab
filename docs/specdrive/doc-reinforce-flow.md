@@ -7,7 +7,7 @@
 
 목적은 다음과 같다.
 
-- `doc reinforce` 가 어떤 입력으로 시작되는지 정리한다.
+- `doc reinforce-prompt`, `doc reinforce` 가 어떤 입력으로 시작되는지 정리한다.
 - CLI, script, skill, Codex 실행이 어디서 연결되는지 정리한다.
 - 사람이 어디서 검토하고 판단해야 하는지 고정한다.
 - 실제 테스트 문서를 기준으로 최소 검증 흐름을 만든다.
@@ -35,7 +35,32 @@
 
 ---
 
-## 3. `doc reinforce`가 하는 일
+## 3. 현재 권장 reinforce 흐름
+
+현재 권장 흐름은 다음 두 단계로 나눈다.
+
+1. `doc reinforce-prompt`
+2. 필요 시 `doc reinforce`
+
+`doc reinforce-prompt` 는 Codex 대화를 시작할 때 쓰는  
+정규화된 앵커 프롬프트 출력 명령이다.
+
+이 명령은 다음 역할을 가진다.
+
+- 대상 문서와 context 문서를 직접 읽게 유도한다.
+- 현재 저장소 규칙을 벗어나지 않는 대화 시작점을 만든다.
+- direct / interactive 모드로 보강 스타일을 나눈다.
+
+interactive 모드에서는  
+바로 문서 전체를 다시 쓰지 않고,  
+먼저 문제점과 선택지를 좁힌 뒤 개발자와 맞춰가도록 유도한다.
+
+`doc reinforce` 는 필요 시 실제 `codex exec` 연결까지 테스트하는  
+후속 실행 경로로 유지한다.
+
+---
+
+## 4. `doc reinforce`가 하는 일
 
 현재 기준에서 `doc reinforce` 는 다음 역할을 가진다.
 
@@ -55,11 +80,11 @@
 
 ---
 
-## 4. 현재 기준 실행 흐름
+## 5. 현재 기준 실행 흐름
 
 현재 기준의 최소 실행 흐름은 아래와 같다.
 
-1. 사용자가 `doc reinforce` 명령을 시작한다.
+1. 사용자가 `doc reinforce-prompt` 또는 `doc reinforce` 명령을 시작한다.
 2. CLI가 대상 문서를 `docs/projects/board/01-overview.md` 로 인식한다.
 3. 현재 스크립트는 legacy config 에서 `default_target` fallback 을 읽는다.
 4. `specdrive/config/target-registry.json` 에서 대상 문서와 `context_set_key` 를 읽는다.
@@ -68,13 +93,14 @@
 7. `specdrive/config/output-policy.json` 에서 출력 정책을 읽는다.
 8. `specdrive/scripts/doc/**` 가 reinforce 실행 흐름을 조합한다.
 9. 필요하면 `specdrive/skills/doc/**` 에서 문서 보강 규칙 자산을 참조한다.
-10. `specdrive/scripts/exec/**` 를 통해 Codex 실행 흐름으로 연결한다.
-11. 현재 `codex-exec.ps1` 는 보강 실행 대신 prompt preview 를 생성한다.
-12. 사용자가 결과를 검토하고, 필요하면 수정하거나 confirm 단계로 넘긴다.
+10. `doc reinforce-prompt` 는 copy prompt 와 preview 파일을 만든다.
+11. 필요 시 `doc reinforce` 는 `specdrive/scripts/exec/**` 를 통해 Codex 실행 흐름으로 연결한다.
+12. 사용자가 Codex와 대화하며 보강 방향을 맞추거나, 보강 결과를 검토한 뒤 문서에 반영한다.
+13. 의미 있는 반영이 끝나면 `doc history-save` 로 history 를 남긴다.
 
 ---
 
-## 5. 현재 기준 책임 분리
+## 6. 현재 기준 책임 분리
 
 ### 5.1 CLI
 - 사용자의 진입점
@@ -87,6 +113,7 @@
 - skill / config / exec 연결
 - 결과 반영 방식 제어
 - 현재 첫 기준 스크립트: `specdrive/scripts/doc/reinforce.ps1`
+- 프롬프트 시작점 출력 스크립트: `specdrive/scripts/doc/reinforce-prompt.ps1`
 
 ### 5.3 `specdrive/skills/doc/**`
 - 보강 규칙 자산 제공
@@ -114,7 +141,7 @@
 
 ---
 
-## 6. 입력 기준
+## 7. 입력 기준
 
 현재 `doc reinforce` 최소 테스트에서 필요한 입력은 다음과 같다.
 
@@ -141,10 +168,11 @@
 
 ---
 
-## 7. 기대 출력
+## 8. 기대 출력
 
 현재 기준에서 기대하는 출력은 다음과 같다.
 
+- direct / interactive 모드에 맞는 정규화 prompt
 - 문서 구조가 더 명확해진 보강안
 - 빠진 핵심 항목에 대한 제안
 - 중복되거나 모호한 표현에 대한 정리
@@ -155,7 +183,7 @@
 
 ---
 
-## 8. 검토 체크포인트
+## 9. 검토 체크포인트
 
 `docs/projects/board/01-overview.md` 에 대해 reinforce 결과를 볼 때는 아래를 확인한다.
 
@@ -168,12 +196,12 @@
 
 ---
 
-## 9. 현재 단계에서의 성공 기준
+## 10. 현재 단계에서의 성공 기준
 
 이번 첫 `doc reinforce` 테스트는 아래를 만족하면 성공으로 본다.
 
 - 흐름상 어느 계층이 무슨 역할을 하는지 설명 가능하다.
-- `01-overview.md` 를 기준으로 실제 보강 작업을 한 번 수행할 수 있다.
+- `01-overview.md` 를 기준으로 실제 보강 대화를 한 번 시작할 수 있다.
 - 결과를 사람이 검토하고 다음 단계로 넘길 수 있다.
 - 이후 `02-requirements.md` 같은 후속 문서에도 같은 흐름을 반복 적용할 수 있다.
 
@@ -182,17 +210,17 @@
 
 ---
 
-## 10. 다음 단계
+## 11. 다음 단계
 
 이 문서 기준으로 다음에는 보통 아래로 이어진다.
 
 1. `specdrive/config/**` 에 대상 문서 매핑 규칙 초안 추가
    - 현재 기준 registry: `specdrive/config/target-registry.json`
 2. `specdrive/skills/doc/reinforce.md` 에 reinforce용 기본 skill 초안 추가
-3. `specdrive/scripts/doc/reinforce.ps1` 에 reinforce 진입 스크립트 초안 추가
+3. `specdrive/scripts/doc/reinforce-prompt.ps1`, `reinforce.ps1` 에 reinforce 진입 흐름 추가
 4. `specdrive/scripts/exec/codex-exec.ps1` 에 Codex 실행 래퍼 초안 추가
 5. `docs/projects/board/01-overview.md` 에 대해 실제 reinforce 시뮬레이션 수행
-6. 결과를 검토하고 `doc confirm` 흐름 문서로 확장
+6. 결과를 검토하고 history 저장 흐름과 연결
 
 ---
 

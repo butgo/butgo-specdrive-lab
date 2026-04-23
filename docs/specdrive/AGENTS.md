@@ -172,13 +172,15 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 핵심 흐름 예:
 
 - start
+- status
 - save
 
 원칙:
 
 - `session` 은 세션 복구와 저장을 돕는 메타 운영 단계다.
-- `session start` 는 현재 상태 복구와 진입점 정리를 돕는다.
-- `session save` 는 세션 메모와 다음 진입점 정리를 돕는다.
+- `session start` 는 현재 상태 복구와 진입점 정리를 시작하는 copy prompt 출력을 돕는다.
+- `session status` 는 `docs/AI_CONTEXT.md` 기준 현재 상태를 읽기 전용으로 확인하는 조회 명령이다.
+- `session save` 는 `docs/AI_CONTEXT.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
 - `session` 은 `doc` / `dev` 내부 처리 로직을 대신하지 않는다.
 
 ### 6.4 git 단계
@@ -228,6 +230,7 @@ specdrive 문서와 스크립트를 설계할 때 `doc`, `dev`, `session`, `git`
 
 ### 세션 단계
 - `session start`
+- `session status`
 - `session save`
 
 ### Git 단계

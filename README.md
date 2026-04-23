@@ -140,6 +140,8 @@ This is the stage that makes documents ready for implementation.
 
 Core flow:
 
+- draft-save
+- reinforce-prompt
 - reinforce
 - confirm
 - history-save
@@ -147,10 +149,29 @@ Core flow:
 Basic flow:
 
 1. A developer writes an initial document draft
-2. AI reinforces the document
-3. The developer reviews it
-4. The document is confirmed
-5. The history is saved
+2. The developer saves the current draft into history
+3. A normalized reinforce prompt is generated for Codex
+4. The developer and Codex refine the document through direct or interactive reinforcement
+5. Meaningful document changes are saved into history
+6. The document is confirmed when needed
+
+At the current stage, an important point is that the repository is leaning toward
+an explicit history-first document loop rather than a fully automatic CLI apply flow.
+
+- `draft-save`: save the current developer draft into history before reinforcement
+- `reinforce-prompt`: print a normalized prompt that can be copied into Codex
+- `reinforce`: keep a narrow path for actual Codex execution tests when needed
+- `history-save`: explicitly save the current applied document state and reinforcement context into history
+
+In other words, the preferred loop is not “run one command and let the CLI decide everything.”
+It is closer to the following.
+
+1. Write a draft
+2. Save the draft history
+3. Start a normalized Codex reinforcement conversation
+4. Apply meaningful changes deliberately
+5. Save the changed state into history
+6. Repeat as needed
 
 ### 5.2 Development Stage (`dev`)
 This is the stage that executes actual development work units based on confirmed documents.
@@ -320,6 +341,8 @@ specdrive is currently guided by the following direction:
 The current first-priority items are as follows.
 
 ### Document Stage
+- `doc draft-save`
+- `doc reinforce-prompt`
 - `doc reinforce`
 - `doc confirm`
 - `doc history-save`

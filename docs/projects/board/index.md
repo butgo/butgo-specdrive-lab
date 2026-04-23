@@ -116,7 +116,7 @@ board 프로젝트의 가장 기초적인 개요 문서다.
 
 ---
 
-### 4.5 `docs/projects/board/02-requirements.md`
+### 4.5 `docs/projects/board/specs/02-requirements.md`
 board 프로젝트의 현재 단계 최소 요구사항 문서다.
 
 다음 내용을 다룬다.
@@ -130,8 +130,8 @@ board 프로젝트의 현재 단계 최소 요구사항 문서다.
 
 ---
 
-### 4.6 `docs/projects/board/03-design.md`
-board 프로젝트의 현재 단계 최소 설계 문서다.
+### 4.6 `docs/projects/board/specs/03-design.md`
+board 프로젝트의 현재 단계 최소 상위 설계 문서다.
 
 다음 내용을 다룬다.
 
@@ -141,7 +141,91 @@ board 프로젝트의 현재 단계 최소 설계 문서다.
 - 후속 구현 계획 문서가 받아야 할 구조 판단
 
 이 문서는
-**board를 어떤 구조로 만들지 정리할 때** 읽는다.
+**board 설계의 전체 방향과 범위를 먼저 정리할 때** 읽는다.
+
+---
+
+### 4.7 `docs/projects/board/specs/04-application-structure.md`
+board 프로젝트의 애플리케이션 구조 문서다.
+
+다음 내용을 다룬다.
+
+- 패키지 구조
+- 계층 책임
+- 모듈 및 호출 흐름 구조
+
+이 문서는
+**애플리케이션 구조와 계층 경계를 구체화할 때** 읽는다.
+
+---
+
+### 4.8 `docs/projects/board/specs/05-domain-model.md`
+board 프로젝트의 도메인 모델 문서다.
+
+다음 내용을 다룬다.
+
+- 핵심 도메인 용어
+- 엔티티와 값 구조
+- 도메인 관계와 제약
+
+이 문서는
+**핵심 도메인 모델을 정리할 때** 읽는다.
+
+---
+
+### 4.9 `docs/projects/board/specs/06-api-spec.md`
+board 프로젝트의 API 명세 문서다.
+
+다음 내용을 다룬다.
+
+- 엔드포인트
+- request / response 형식
+- 상태 코드와 API 계약
+
+이 문서는
+**외부 API 계약을 구체화할 때** 읽는다.
+
+---
+
+### 4.10 `docs/projects/board/specs/07-db-design.md`
+board 프로젝트의 DB 설계 문서다.
+
+다음 내용을 다룬다.
+
+- 테이블 구조
+- 컬럼과 제약
+- 인덱스와 영속성 기준
+
+이 문서는
+**DB 구조를 구체화할 때** 읽는다.
+
+---
+
+### 4.11 `docs/projects/board/impl/01-implementation-plan.md`
+board 프로젝트의 구현 계획 문서다.
+
+다음 내용을 다룬다.
+
+- 구현 순서
+- 작업 단위
+- 검증 순서
+
+이 문서는
+**설계를 실제 구현 작업으로 나눌 때** 읽는다.
+
+---
+
+### 4.12 `docs/projects/board/status/current-status.md`
+board 프로젝트의 현재 상태 문서다.
+
+다음 내용을 다룬다.
+
+- 현재 focus
+- 현재 진행 상태
+- 다음 진입점
+
+이 문서는
+**현재 활성 작업과 다음 진입점을 복구할 때** 읽는다.
 
 ---
 
@@ -222,6 +306,7 @@ board 프로젝트의 현재 단계 최소 설계 문서다.
 
 1. `docs/projects/board/README.md`
 2. `docs/projects/board/AGENTS.md`
+3. `docs/projects/board/index.md`
 
 ---
 
@@ -232,7 +317,8 @@ board 프로젝트의 현재 단계 최소 설계 문서다.
 2. `docs/AI_CONTEXT.md`
 3. `docs/projects/board/AGENTS.md`
 4. `docs/projects/board/README.md`
-5. 현재 수정 대상 문서
+5. `docs/projects/board/index.md`
+6. 현재 수정 대상 문서
 
 ---
 
@@ -265,8 +351,9 @@ board 프로젝트의 현재 단계 최소 설계 문서다.
 3. `docs/AI_CONTEXT.md`
 4. `docs/projects/board/README.md`
 5. `docs/projects/board/AGENTS.md`
-6. 관련 요구사항 / 설계 / 구현 계획 문서
-7. 필요 시 관련 `docs/projects/standards/**` 문서
+6. `docs/projects/board/index.md`
+7. 관련 요구사항 / 설계 / 구현 계획 문서
+8. 필요 시 관련 `docs/projects/standards/**` 문서
 
 ---
 

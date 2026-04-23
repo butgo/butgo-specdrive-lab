@@ -1,4 +1,4 @@
-# docs/projects/board/03-design.md
+# docs/projects/board/specs/03-design.md
 
 ## 1. 문서 목적
 
@@ -6,7 +6,7 @@
 
 목적은 다음과 같다.
 
-- `02-requirements.md` 의 최소 요구사항을 구현 가능한 구조로 옮긴다.
+- `specs/02-requirements.md` 의 최소 요구사항을 구현 가능한 구조로 옮긴다.
 - Spring Boot 기반 레이어드 구조에서 각 계층의 책임을 고정한다.
 - board에서 공통 standards를 어떻게 적용할지 정리한다.
 - 후속 구현 계획 문서가 작업 단위를 나눌 수 있는 기준을 제공한다.
@@ -29,7 +29,7 @@ Spring Boot 레이어드 구조로 구현하는 방향을 채택한다.
 이 문서는 다음 문서를 기준으로 한다.
 
 - `docs/projects/board/01-overview.md`
-- `docs/projects/board/02-requirements.md`
+- `docs/projects/board/specs/02-requirements.md`
 - `docs/projects/board/AGENTS.md`
 - `docs/projects/standards/naming-standard.md`
 - `docs/projects/standards/package-structure-standard.md`

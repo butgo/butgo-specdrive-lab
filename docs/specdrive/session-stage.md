@@ -74,6 +74,7 @@ specdrive/specdrive.ps1 session save
 - Codex에 전달할 최소 세션 복구 프롬프트 정규화
 - 불필요한 전체 문서 주입을 줄이기 위한 읽기 순서 안내
 - 작업 대상 영역이 정해진 경우 해당 영역의 전용 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내
+- 먼저 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 짧게 정리하게 하고, 개발자 요청 전에는 파일을 직접 수정하지 않도록 경계 유지
 
 ### 4.2 `session save`
 - 현재 세션 변경 요약
@@ -81,16 +82,50 @@ specdrive/specdrive.ps1 session save
 - 필요 시 상태/히스토리 반영 후보 정리
 - 다음 세션에서 다시 사용할 수 있는 진입점 요약 형식 정규화
 - 긴 대화 전체를 넘기지 않고 변경 요약, 변경 영역, 변경 파일 샘플, 판단 후보 중심으로 저장할 수 있게 보조
+- Codex에 붙여넣을 `docs/AI_CONTEXT.md` 반영 초안 요청 프롬프트 출력
+- 초안 검토 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 않도록 경계 유지
 
 ### 4.3 `session status`
 - `docs/AI_CONTEXT.md` 기준 현재 작업 상태를 서술형으로 요약
 - 현재 작업 모드, 현재 focus, 다음 진입점, 보류 사항을 짧게 확인
 - Git 변경 상태는 보조 정보로만 출력
 - Codex copy prompt를 만들지 않고 현재 상태만 빠르게 확인
+- 읽기 전용 상태 확인 명령으로 두고, 문서 수정이나 저장 흐름으로 바로 이어지지 않게 유지
 
 현재 기준으로 `session` 단계는 일회성 preview 파일을 남기지 않는다.  
 즉 `session start`, `session save` 는 콘솔 출력 중심의 운영 보조 명령으로 보고,  
 영속적으로 남겨야 할 내용은 `docs/AI_CONTEXT.md` 같은 상태 문서나 `docs/history/projects/**` 같은 실제 이력 문서에 반영한다.
+
+현재 `session start` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. `session start` 가 현재 브랜치, Git 변경 요약, 읽을 문서 목록, copy prompt 를 출력한다.
+2. 개발자가 그 copy prompt 를 Codex 대화에 붙여넣는다.
+3. Codex 는 지정된 문서를 직접 읽고 현재 상태를 복구한다.
+4. Codex 는 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 먼저 짧게 정리한다.
+5. 개발자가 실제 작업을 요청한 뒤에만 문서 수정이나 후속 작업으로 들어간다.
+
+즉 현재 `session start` 는 자동 작업 명령이 아니라  
+**세션 복구와 진입점 확인을 안전하게 시작하는 운영 보조 명령**으로 보는 편이 맞다.
+
+현재 `session save` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. `session save` 가 현재 브랜치와 변경 요약, copy prompt 를 출력한다.
+2. 개발자가 그 copy prompt 를 Codex 대화에 붙여넣는다.
+3. Codex 는 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안한다.
+4. 개발자가 초안을 검토한 뒤 "저장해줘" 같이 명시적으로 요청하면 그때 실제 `docs/AI_CONTEXT.md` 반영을 진행한다.
+
+즉 현재 `session save` 는 자동 저장 명령이 아니라  
+**AI_CONTEXT 반영 초안을 안전하게 시작하는 운영 보조 명령**으로 보는 편이 맞다.
+
+현재 `session status` 의 의도는 다음처럼 이해하는 편이 맞다.
+
+1. `session status` 가 `docs/AI_CONTEXT.md` 기준 현재 상태를 짧게 요약한다.
+2. 현재 작업 모드, focus, 다음 진입점, 보류 후보를 읽기 전용으로 확인한다.
+3. Git 변경 정보는 보조적으로만 확인한다.
+4. 필요하면 그 다음에 `session start`, `doc`, `session save` 같은 후속 흐름으로 넘어간다.
+
+즉 현재 `session status` 는  
+**복구 확인용 읽기 전용 상태 조회 명령**으로 보는 편이 맞다.
 
 ---
 
@@ -168,6 +203,9 @@ copy prompt 는 다음 원칙을 따른다.
 - 전체 문서 내용을 붙여넣지 않고, Codex가 필요한 파일을 직접 읽도록 지시한다.
 - 후속 검토용 todo 문서는 기본 문맥에 포함하지 않는다.
 - session 명령은 문서 수정, history 저장, Git 메시지 생성을 직접 수행하지 않는다.
+- `session start` copy prompt 는 먼저 현재 상태 요약을 보여주고, 개발자 요청 전에는 파일을 직접 수정하지 말라는 경계를 함께 준다.
+- `session save` copy prompt 는 먼저 반영 초안을 보여주고, 개발자 승인 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 말라는 경계를 함께 준다.
+- `session status` 는 copy prompt를 만들지 않고, 현재 상태를 읽기 전용으로만 보여준다.
 
 `session start` 는 다음 정보를 출력한다.
 

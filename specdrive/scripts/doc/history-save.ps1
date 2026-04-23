@@ -1,7 +1,10 @@
 param(
     [string]$Target = "",
+    [string]$Source = "manual-update",
+    [string]$Note = "",
     [switch]$DryRun,
-    [switch]$Execute
+    [switch]$Execute,
+    [switch]$PreviewOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -119,6 +122,10 @@ function Show-HistoryPlan {
 
     Write-Host "[doc history-save] target: $TargetName"
     Write-Host "  document : $($Routing.Target.document_path)"
+    Write-Host "  source   : $Source"
+    if (-not [string]::IsNullOrWhiteSpace($Note)) {
+        Write-Host "  note     : $Note"
+    }
     Write-Host "  skill    : $($Routing.Skill.path)"
     Write-Host "  output   : $($Routing.Action.output_mode)"
     Write-Host "  review   : $($Routing.Action.human_review_required)"
@@ -158,7 +165,7 @@ Show-HistoryPlan -TargetName $routing.Name -Routing $routing -OutputPolicy $outp
 
 if ($DryRun) {
     Write-Host ""
-    Write-Host "[doc history-save] dry-run only. No history preview generated."
+    Write-Host "[doc history-save] dry-run only. No history saved."
     exit 0
 }
 
@@ -184,15 +191,12 @@ $historyLines = @(
 
 $historyPreviewPath = Save-SpecdrivePreviewFile -RepoRoot $repoRoot -RelativeOutputDirectory $outputPolicy.Config.store_preview_under -BaseName ($historyPreviewPrefix + "-" + [System.IO.Path]::GetFileNameWithoutExtension($routing.Target.document_path)) -Content ($historyLines -join [Environment]::NewLine)
 
-Write-Host ""
-Write-Host "[doc history-save] preview file : $historyPreviewPath"
-Write-Host "[doc history-save] history preview generated."
-
-if (-not $Execute) {
+if ($PreviewOnly) {
+    Write-Host ""
+    Write-Host "[doc history-save] preview file : $historyPreviewPath"
+    Write-Host "[doc history-save] preview-only mode completed."
     exit 0
 }
-
-Test-SpecdriveActionExecuteAllowed -ActionConfig $routing.Action -ActionLabel "history-save" -Execute:$Execute
 
 $targetDocumentPath = Join-SpecdriveRepoPath -RepoRoot $repoRoot -RelativePath $routing.Target.document_path
 $targetDocumentContent = Get-Content -Path $targetDocumentPath -Raw
@@ -201,17 +205,20 @@ $historyNoteContent = @(
     "# history note",
     "",
     "- document: $($routing.Target.document_path)",
+    "- source: $Source",
     "- saved current applied document snapshot",
     "- latest reinforce preview: $(if ($latestReinforcePreview) { $latestReinforcePreview.FullName } else { 'none' })",
     "- latest confirm preview: $(if ($latestConfirmPreview) { $latestConfirmPreview.FullName } else { 'none' })",
+    $(if (-not [string]::IsNullOrWhiteSpace($Note)) { "- note: $Note" } else { $null }),
     "",
     "## Summary",
-    "- history-save was used to keep the currently applied document state.",
+    "- history-save was used to keep the currently applied document state as an explicit history step.",
     "- this path is intended for manual updates or prompt-driven updates after the document is already applied.",
     "",
     "## Next Entry",
     "- continue from the saved document snapshot when needed."
-) -join [Environment]::NewLine
+) | Where-Object { $null -ne $_ } | ForEach-Object { $_ }
+$historyNoteContent = $historyNoteContent -join [Environment]::NewLine
 $historyNotePath = Save-SpecdriveHistoryFile -RepoRoot $repoRoot -Project $routing.Target.project -DocumentPath $routing.Target.document_path -Suffix $historyAppliedNoteSuffix -Content $historyNoteContent
 $historyReinforcePath = if ($null -ne $latestReinforcePreview) {
     Copy-SpecdriveFileToHistory -RepoRoot $repoRoot -Project $routing.Target.project -DocumentPath $routing.Target.document_path -SourcePath $latestReinforcePreview.FullName -Suffix $historyReinforceSuffix
@@ -224,9 +231,11 @@ $historyConfirmPath = if ($null -ne $latestConfirmPreview) {
     $null
 }
 
-Write-Host "[doc history-save] execute mode saved the current applied document into history."
+Write-Host ""
+Write-Host "[doc history-save] saved the current applied document into history."
 Write-Host "[doc history-save] history snapshot : $historySnapshotPath"
 Write-Host "[doc history-save] history note     : $historyNotePath"
+Write-Host "[doc history-save] preview file      : $historyPreviewPath"
 if ($null -ne $historyReinforcePath) {
     Write-Host "[doc history-save] history reinforce: $historyReinforcePath"
 }

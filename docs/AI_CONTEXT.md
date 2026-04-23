@@ -19,7 +19,7 @@
 
 ## 2. 현재 상태 한 줄 요약
 
-- 현재는 `specdrive`의 `doc` 단계 1차 검증과 session/git 복구 안정화 변경을 커밋한 뒤, board 프로젝트 문서 작성으로 전환해 `docs/projects/board/03-design.md` 최소 설계 문서 초안과 세션 guardrail 규칙까지 커밋한 상태다.
+- 현재는 board 문서 구조를 `01-overview.md / specs / impl / status` 기준으로 재정리하고, specdrive의 `doc` 단계 흐름과 `session start / status / save` 해석을 함께 안정화하는 작업을 진행 중이다.
 
 현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
 현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
@@ -56,12 +56,13 @@
 - `doc` / `dev` / `session` / `git` 작업 단계 구분 고정
 - Codex가 프로젝트 성격을 안정적으로 이해할 수 있도록 진입 문서 정비
 - `specdrive/{scripts,skills,config}` 구조 고정
-- `doc reinforce / confirm / history-save` 최소 흐름 문서화
+- `doc draft-save / reinforce-prompt / reinforce / confirm / history-save` 최소 흐름 문서화
 - `target / skill / context-set / action` registry 기준 설명 정리
 - action registry / output policy 를 활용한 최소 rule/config 분리 적용 시작
 - PowerShell 스크립트 기반 preview 출력 검증
 - board `01-overview.md` 를 첫 테스트 문서로 사용한 흐름 검증
 - `01-overview.md` 기준 `reinforce / confirm / history-save` 역할 분리 테스트 정리
+- `draft-save -> reinforce-prompt -> history-save` 수동 보강 루프 정리
 - 의미 있는 문서 변경을 `docs/history/projects/**` 에 실제 이력으로 남기는 흐름 정리
 
 현재 범위에 포함하지 않는 것은 다음과 같다.
@@ -103,6 +104,10 @@
 17. `docs/specdrive/README.md`
 18. `docs/projects/README.md`
 19. `docs/projects/standards/index.md`
+20. `docs/projects/board/index.md`
+21. `docs/projects/board/01-overview.md`
+22. `docs/projects/board/specs/02-requirements.md`
+23. `docs/projects/board/specs/03-design.md`
 
 ---
 
@@ -148,11 +153,21 @@
 - `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm / history-save` 1차 흐름 검증 수행
 - `docs/specdrive/doc-stage-testing.md` 에 `docs/projects/board/01-overview.md` 기준 `doc` 단계 1차 완료 판정 반영
 - `specdrive/scripts/common/specdrive-common.ps1`, `docs/AI_CONTEXT.md`, `docs/specdrive/doc-stage-testing.md` 변경을 `spec(specdrive): stabilize session recovery status` 커밋으로 저장
-- `docs/projects/board/03-design.md` 최소 설계 문서 초안 작성 시작
-- `docs/projects/board/index.md` 에 `03-design.md` 문서 역할과 읽기 기준 추가
+- board 문서 구조를 `01-overview.md / specs / impl / status` 기준으로 재정리 시작
+- `docs/projects/board/specs/04-application-structure.md`, `05-domain-model.md`, `06-api-spec.md`, `07-db-design.md`, `impl/01-implementation-plan.md`, `status/current-status.md` 파일 골격 추가
+- `docs/projects/board/index.md`, `docs/projects/board/README.md`, `docs/projects/board/specs/02-requirements.md`, `docs/projects/board/specs/03-design.md` 를 새 구조와 참조 경로에 맞게 정리
 - 루트 `AGENTS.md`, `docs/projects/board/AGENTS.md`, `docs/specdrive/session-stage.md`, `specdrive/scripts/session/start.ps1` 에 신규 문서 생성 / 문서 역할 변경 / 단계 전환 전 개발자 확인 규칙을 명시
 - `docs/projects/board/03-design.md`, `docs/projects/board/index.md`, `AGENTS.md`, `docs/projects/board/AGENTS.md`, `docs/specdrive/session-stage.md`, `specdrive/scripts/session/start.ps1`, `docs/AI_CONTEXT.md` 변경을 `docs(board): add board design draft and session guardrails` 커밋으로 저장
 - 현재 확인된 실행 환경 기준으로 `codex-cli 0.121.0` 버전을 기록
+- `specdrive/config/target-registry.json`, `doc-map.json`, `affected-docs-map.json` 에 새 board 문서 타깃 추가
+- `specdrive/specdrive.ps1` 에 `doc draft-save`, `doc reinforce-prompt` 라우팅 추가
+- `specdrive/scripts/doc/draft-save.ps1`, `reinforce-prompt.ps1` 추가
+- `specdrive/scripts/doc/history-save.ps1` 를 명시적 history 저장 중심으로 정리
+- `README.md`, `docs/specdrive/README.md`, `docs/specdrive/README.ko.md`, `docs/specdrive/cli-manual.md`, `docs/specdrive/cli-single-entry.md`, `docs/specdrive/doc-reinforce-flow.md`, `docs/specdrive/doc-stage-testing.md` 를 새 `doc` 루프 의도에 맞게 정리
+- `specdrive/scripts/session/save.ps1` 를 출력 전용으로 유지하면서 `docs/AI_CONTEXT.md` 반영용 세션 저장 초안 프롬프트를 출력하도록 정리
+- `specdrive/scripts/session/start.ps1`, `status.ps1`, `save.ps1` 와 관련 문서를 함께 정리해 `session` 3종의 역할을 현재 기준으로 맞춤
+- `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session start / status / save` 해석을 문서 전반에 동기화
+- `butgo-specdrive-lab.code-workspace` 멀티루트 workspace 설정 추가
 
 ---
 
@@ -170,7 +185,7 @@
 - `docs/projects/board/AGENTS.md` 는 board 애플리케이션 문서군의 전용 규칙을 다룬다.
 - 현재는 README / AGENTS / AI_CONTEXT를 먼저 정비한 뒤 이 문서들로 CLI 흐름을 검증한다.
 - 현재 작업 단계는 구조적으로 핵심 작업 단계 `doc`, `dev`, 별도 운영 단계 `session`, 전달 단계 `git` 으로 정리한다.
-- 문서 단계 핵심 흐름은 `reinforce / confirm / history-save` 다.
+- 문서 단계 핵심 흐름은 현재 `draft-save / reinforce-prompt / reinforce / confirm / history-save` 로 정리 중이다.
 - 개발 단계 핵심 흐름은 `task-split / phase / cycle / status` 다.
 - 세션 단계 핵심 흐름은 `start / save` 다.
 - Git 단계 핵심 흐름은 `branch-name / git-message / pr-message` 다.
@@ -189,6 +204,11 @@
 - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 기준으로 주로 `default_target` fallback 용 legacy config 로 남아 있다.
 - 현재 `specdrive/specdrive.ps1` 는 `doc`, `session`, `git` 상위 라우팅을 지원한다.
 - 현재 `session` 단계는 `start / status / save` 를 콘솔 출력 중심으로 실행하며, `status` 는 `docs/AI_CONTEXT.md` 기준의 서술형 현재 상태 조회로 본다.
+- 현재 `session start` 는 관련 문서를 읽고 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 먼저 정리하는 세션 복구용 copy prompt 를 출력하는 명령으로 본다.
+- 현재 `session status` 는 `docs/AI_CONTEXT.md` 기준 현재 상태를 읽기 전용으로 확인하는 조회 명령으로 본다.
+- 현재 `session save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영용 세션 저장 초안 프롬프트를 출력하는 명령으로 본다.
+- 현재 `session save` 로 만든 초안은 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어지는 흐름을 기준으로 본다.
+- 현재 `session` 단계의 권장 해석은 `start = 복구 시작용 copy prompt`, `status = 읽기 전용 상태 조회`, `save = AI_CONTEXT 반영 초안 요청용 copy prompt` 로 구분하는 것이다.
 - 현재 `git` 단계는 `branch-name / git-message / pr-message` 를 콘솔 출력 중심으로 실행하며, 기본 출력은 변경 수, 변경 영역, 변경 파일 샘플로 제한한다.
 - 현재 Git 상태 조회 helper 는 Windows 경로를 Git safe.directory 에 맞는 `/` 경로로 넘기고, 변경 경로가 없거나 Git 상태 조회가 실패한 경우에도 빈 목록으로 처리해야 한다.
 - 현재 `session start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
@@ -197,6 +217,7 @@
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
 - 현재 `codex exec` 래퍼는 preview 생성 중심을 유지하되, `doc reinforce` 에 한해 실제 Codex 실행을 좁게 연결한다.
 - 원래 의도한 `doc` 단계의 목적은 preview 파일을 쌓는 것이 아니라, 의미 있는 문서 작업이 발생할 때 SI 프로젝트의 문서대장처럼 실제 문서 이력을 남기는 것이다.
+- 현재 `doc` 단계의 권장 수동 루프는 개발자 초안 작성 -> `draft-save` -> `reinforce-prompt` -> 사람/Codex 보강 대화 -> `history-save` 반복으로 본다.
 - 현재 기준에서 `confirm -Execute` 는 Codex가 보강한 문서를 실제 `docs/projects/**` 대상 문서에 반영하고, 적용 근거와 snapshot 을 `docs/history/projects/**` 아래 남기는 실행 경로로 본다.
 - 현재 기준에서 `history-save -Execute` 는 프롬프트 대화 기반 수정이나 사람이 직접 반영한 현재 문서 상태를 `docs/history/projects/**` 아래 snapshot 과 note 로 남기는 실행 경로로 본다.
 - 현재는 `dev` 단계 설계보다 **문서 정체성과 `doc` 단계 검증 안정화**가 우선이다.
@@ -213,6 +234,7 @@
 - board 하위 설계 문서 초안 검토 및 확정
 - board 하위 구현 계획 문서 구조 확정
 - CLI 세부 명령 문법 확정
+- `confirm` 명령을 새 `draft-save / reinforce-prompt / history-save` 루프 안에서 어떤 위치와 의미로 둘지 판단
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
 - `git branch-name` 에 phase / cycle / 문서 읽기 연결 범위 확정
 - skill 상세 구조 일반화 여부 판단
@@ -255,6 +277,8 @@
 - 현재 `01-overview.md` 기준으로 세 단계가 기대한 운영 역할대로 분리되는지 1차 확인을 마친 상태다.
 - 현재 `01-overview.md` 기준 `doc` 단계는 registry 기반 key routing, preview 기반 최소 검증, `doc reinforce` 의 좁은 실제 Codex 연결, `confirm/history-save` 의 실제 history 저장 경로까지 1차 완료 판정한 상태다.
 - 현재 `confirm -Execute`, `history-save -Execute` 는 preview 검토를 넘어서 실제 문서 이력을 `docs/history/projects/**` 에 남기는 방향으로 의미를 바꿔 정리한 상태다.
+- 현재 `draft-save`, `reinforce-prompt` 가 추가되면서 `doc` 단계는 자동 실행 중심보다 정규화 프롬프트 + 명시적 history 저장 루프로 정리되는 중이다.
+- 현재 `session save` 는 `.speclab/**` 저장보다 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 운영 보조 명령으로 해석한다.
 
 ### 9.3 projects
 - projects는 “예제 문서 모음”이 아니라 “실제 애플리케이션 개발 스펙 문서 작업공간”으로 정리된 상태다.
@@ -263,7 +287,8 @@
 ### 9.4 board
 - board는 specdrive의 하위 기능이 아니라 첫 번째 실제 애플리케이션 프로젝트 문서군으로 정리된 상태다.
 - `docs/projects/board/AGENTS.md` 는 board 전용 규칙 문서로 재정리된 상태다.
-- 아직 board의 상세 요구사항 / 설계 / 구현 계획 문서는 본격 진행 전 단계다.
+- 현재 board 문서 구조는 `01-overview.md`, `specs/**`, `impl/**`, `status/**` 로 재정리되는 중이다.
+- `specs/04~07`, `impl/01`, `status/current-status` 는 파일 골격만 생성된 상태다.
 
 ### 9.5 standards
 - `docs/projects/standards/**` 는 projects 하위의 공통 개발 기준 문서군으로 보는 방향이 유지되고 있다.
@@ -290,15 +315,17 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
-- `docs/projects/board/03-design.md` 초안이 `02-requirements.md` 와 standards 기준에 맞는지 검토
-- `03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
+- `docs/projects/board/01-overview.md` 의 문서 연결과 역할 설명이 새 구조와 맞는지 점검
+- `docs/projects/board/specs/03-design.md` 초안이 `specs/02-requirements.md` 와 standards 기준에 맞는지 검토
+- `specs/03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
 - `docs/projects/board/index.md` 의 문서 목록과 역할 설명이 실제 파일 상태와 맞는지 확인
-- 다음 board 문서 생성 또는 `03-design.md` 에 대한 `doc` 흐름 적용 전에는 먼저 개발자 확인을 받기
+- 새 구조 기준 다음 board 문서 보강 또는 단계 전환 전에는 먼저 개발자 확인을 받기
 
 ### 우선순위 2
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
-- `03-design.md` 를 기준으로 `doc reinforce / confirm / history-save` 흐름을 반복 적용할지 판단
-- `04-implementation-plan.md` 같은 구현 계획 문서를 바로 만들지, 먼저 설계 문서를 보강할지 판단
+- `draft-save -> reinforce-prompt -> history-save` 루프를 `01-overview.md`, `specs/02-requirements.md`, `specs/03-design.md` 에 어떻게 반복 적용할지 판단
+- `confirm` 을 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
+- 새로 정리한 `session start / status / save` 해석을 실제 사용 루프에서 반복 확인
 
 ### 우선순위 3
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
@@ -320,12 +347,13 @@
 - specdrive를 **도구/엔진/운영체계**로, projects를 **애플리케이션 스펙 작업공간**으로 명확히 분리하는 것
 - 현재는 함께 검증하지만 장기적으로 분리 가능한 구조를 전제로 문서 서술을 고정하는 것
 - README / AGENTS / AI_CONTEXT를 통해 새 세션에서 빠르게 복귀 가능한 문서 체계를 만드는 것
-- `doc` 단계의 최소 흐름을 preview 출력까지 반복 가능하게 유지하는 것
+- `doc` 단계의 최소 흐름을 정규화 프롬프트 + 명시적 history 저장 중심으로 반복 가능하게 유지하는 것
 - `docs/specdrive` 문서가 실제 registry 기반 라우팅 상태를 정확히 설명하도록 유지하는 것
 - `specdrive/specdrive.ps1` 단일 진입점이 생기더라도 하위 스크립트 책임 경계가 무너지지 않게 하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 세션 운영 보조로만 유지되게 하는 것
+- `session start / status / save` 3종의 해석이 스크립트 출력과 문서 설명에서 계속 같은 의미를 유지하게 하는 것
 - `git` 단계가 브랜치/메시지 생성에 집중하고 `session` 과 섞이지 않게 유지하는 것
-- `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
+- `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `specs/02-requirements.md`, `specs/03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
 - 현재 적용한 최소 rule/config 분리 방식을 `dev`, `session`, `git`, 후속 project 문서 흐름에도 점진 적용 가능한지 확인하는 것
 - 현재 실행까지 끝낸 `confirm / history-save` 결과와 실제 history 산출물 묶음은 `doc-stage-testing.md` 의 1차 완료 판정 근거로 유지하는 것
 - `dev` 단계는 아직 본격 설계/테스트하지 않고 실제 코딩 작업이 시작될 때 검증하는 것
@@ -349,7 +377,7 @@
 
 ## 14. 마지막 갱신 기준
 
-- 마지막 갱신 일시: 2026-04-22
+- 마지막 갱신 일시: 2026-04-23
 - 마지막으로 반영한 주요 변경:
   - 루트 README / 루트 AGENTS / specdrive 전용 AGENTS / board 전용 AGENTS 재정리
   - specdrive를 엔진 / 운영체계 / CLI 중심 도구로 재정의
@@ -377,6 +405,8 @@
 - README / AGENTS / AI_CONTEXT를 먼저 정비한 뒤 CLI 테스트를 진행하는 방향 반영
 - standards 1차 문서 세트와 후속 2차 문서 후보 상태 반영
 - `doc` 단계 기본 target, preview 탐색 규칙, execute 조건, artifact naming 일부를 config 중심으로 이동
+- `session start`, `session status`, `session save` 를 각각 복구 시작용 copy prompt / 읽기 전용 상태 조회 / AI_CONTEXT 반영 초안 요청용 copy prompt 로 해석하는 현재 기준을 문서와 스크립트에 함께 반영
+- `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session` 단계 설명을 현재 기준으로 동기화
 - `docs/projects/board/01-overview.md` 에 `confirm -Execute` 적용 및 관련 근거/history 산출물 저장
 - `history-save -Execute` 를 최신 confirm preview 기준으로 다시 실행해 실제 history 산출물 묶음 정리
 - 현재 변경 집합에 맞게 `git branch-name / git-message / pr-message` 초안 생성 로직 보정
@@ -414,7 +444,9 @@
   - 다음 선택지는 `03-design.md` 초안을 검토/보강할지, 이 문서에 `doc` 흐름을 반복 적용할지, 또는 구현 계획 문서로 넘어갈지 판단하는 것이다.
   - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
-  - 현재는 board 문서 작성으로 전환해 `docs/projects/board/03-design.md` 설계 초안을 만들고, `docs/projects/board/index.md` 에 문서 목록을 반영한 상태다.
+  - 현재는 board 문서 구조를 `specs / impl / status` 기준으로 다시 정리하고, 관련 진입 문서와 참조 경로를 맞추는 작업을 진행했다.
+  - 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `history-save` 중심의 수동 보강 루프를 먼저 정리하고, `confirm` 위치는 후속 판단 대상으로 남겨 두었다.
+  - 현재 `session save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 명령으로 해석하는 편이 맞다.
   - 이후 세션에서는 `session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
   - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
   - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
