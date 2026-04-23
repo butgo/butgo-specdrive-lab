@@ -108,22 +108,24 @@ Core flow:
 - draft-save
 - reinforce-prompt
 - reinforce
-- confirm
-- history-save
+- confirm-prompt
+- apply-prompt
+- apply-only-prompt
 
 Basic meaning:
 
 - AI reinforces the current documents.
-- A human reviews and confirms them.
-- Important decisions and results are recorded in history.
+- A human reviews the reinforcement result through a normalized prompt.
+- Meaningful applied results are prepared together with history notes.
 
 At the current stage, this is better understood more concretely as follows.
 
 - `draft-save`: save the current developer draft into history before Codex reinforcement starts.
 - `reinforce-prompt`: generate a normalized copy prompt for Codex so the conversation can start inside specdrive rules.
 - `reinforce`: create reinforcement drafts and review artifacts, and keep a narrow path for actual Codex execution tests.
-- `confirm`: decide whether to apply the reinforced draft to the real project document and leave the evidence in history.
-- `history-save`: fix the current applied document state and human judgment into history.
+- `confirm-prompt`: generate a normalized review prompt before real document updates.
+- `apply-prompt`: generate a normalized prompt for deliberate document apply + history save.
+- `apply-only-prompt`: generate a normalized prompt for document-only apply when history save is intentionally skipped.
 
 One more point matters at the current stage.
 
@@ -134,8 +136,9 @@ Instead, specdrive is being shaped around the following rhythm.
 2. `draft-save` records the draft as history.
 3. `reinforce-prompt` starts a normalized Codex conversation.
 4. The developer and Codex refine the document through direct or interactive dialogue.
-5. `history-save` explicitly records the meaningful applied state.
-6. Repeat until the document is ready for confirm.
+5. `confirm-prompt` reviews whether the proposal is ready to apply.
+6. `apply-prompt` explicitly prepares the meaningful applied state and history note.
+7. Repeat as needed.
 
 This means specdrive currently treats the CLI not only as an execution wrapper,
 but also as a way to standardize prompts and preserve a clean document-history loop.
@@ -207,7 +210,7 @@ At the current stage, specdrive covers the following.
 - Session start and context recovery
 - Session save and next-entry preservation
 - Branch naming and Git / PR message generation support
-- Document reinforcement / confirmation / history-save procedures
+- Document reinforcement / review / apply-history procedures
 - Task decomposition procedures
 - The management direction of phase / cycle / status
 - CLI command structure
@@ -312,7 +315,7 @@ The current priorities of specdrive are as follows.
 
 ### Priority 3
 - Validate the minimum CLI flow
-- `doc reinforce / confirm / history-save`
+- `doc reinforce / confirm-prompt / apply-prompt`
 - `dev phase / cycle / status / task-split`
 - `session start / save`
 - `git branch-name / git-message / pr-message`

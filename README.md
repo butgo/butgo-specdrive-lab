@@ -143,8 +143,9 @@ Core flow:
 - draft-save
 - reinforce-prompt
 - reinforce
-- confirm
-- history-save
+- confirm-prompt
+- apply-prompt
+- apply-only-prompt
 
 Basic flow:
 
@@ -152,8 +153,8 @@ Basic flow:
 2. The developer saves the current draft into history
 3. A normalized reinforce prompt is generated for Codex
 4. The developer and Codex refine the document through direct or interactive reinforcement
-5. Meaningful document changes are saved into history
-6. The document is confirmed when needed
+5. The reinforcement result is reviewed before any real document update
+6. Meaningful document changes and history are applied deliberately when needed
 
 At the current stage, an important point is that the repository is leaning toward
 an explicit history-first document loop rather than a fully automatic CLI apply flow.
@@ -161,7 +162,9 @@ an explicit history-first document loop rather than a fully automatic CLI apply 
 - `draft-save`: save the current developer draft into history before reinforcement
 - `reinforce-prompt`: print a normalized prompt that can be copied into Codex
 - `reinforce`: keep a narrow path for actual Codex execution tests when needed
-- `history-save`: explicitly save the current applied document state and reinforcement context into history
+- `confirm-prompt`: print a normalized review/confirmation prompt before real document updates
+- `apply-prompt`: print a normalized prompt for deliberate document apply + history save
+- `apply-only-prompt`: print a normalized prompt for document-only apply when history save is intentionally skipped
 
 In other words, the preferred loop is not “run one command and let the CLI decide everything.”
 It is closer to the following.
@@ -169,9 +172,10 @@ It is closer to the following.
 1. Write a draft
 2. Save the draft history
 3. Start a normalized Codex reinforcement conversation
-4. Apply meaningful changes deliberately
-5. Save the changed state into history
-6. Repeat as needed
+4. Review the proposed changes deliberately
+5. Apply meaningful changes with human approval
+6. Save the changed state into history
+7. Repeat as needed
 
 ### 5.2 Development Stage (`dev`)
 This is the stage that executes actual development work units based on confirmed documents.
@@ -344,8 +348,10 @@ The current first-priority items are as follows.
 - `doc draft-save`
 - `doc reinforce-prompt`
 - `doc reinforce`
-- `doc confirm`
-- `doc history-save`
+- `doc confirm-prompt`
+- `doc apply-prompt`
+- `doc apply-only-prompt`
+- current interpretation direction: prompt-first reinforce / review / apply flow
 
 ### Development Stage
 - `dev task-split`
@@ -380,7 +386,7 @@ In other words, the current stage assumes
 **VS Code + Codex extension + codex-cli + PowerShell**  
 as the default development environment.
 
-To actually test flows such as `doc reinforce`, `doc confirm`, and `doc history-save`,  
+To actually test flows such as `doc reinforce`, `doc confirm-prompt`, and `doc apply-prompt`,  
 it is recommended to have `codex-cli` installed locally.
 
 Example:
@@ -437,7 +443,7 @@ It is a **tool that executes and operates AI collaboration based on project docu
 
 The current scope includes the following:
 
-- Document reinforcement / confirmation / history-save flow
+- Document reinforcement / review / apply-history flow
 - Task decomposition flow
 - phase / cycle state management
 - Separation of project documents and shared standards

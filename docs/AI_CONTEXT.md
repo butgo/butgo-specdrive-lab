@@ -56,14 +56,16 @@
 - `doc` / `dev` / `session` / `git` 작업 단계 구분 고정
 - Codex가 프로젝트 성격을 안정적으로 이해할 수 있도록 진입 문서 정비
 - `specdrive/{scripts,skills,config}` 구조 고정
-- `doc draft-save / reinforce-prompt / reinforce / confirm / history-save` 최소 흐름 문서화
+- `doc draft-save / reinforce-prompt / reinforce / confirm-prompt / apply-prompt / apply-only-prompt` 최소 흐름 문서화
+- `doc` 단계의 prompt-first 해석과 apply 중심 반영 경로 재정리
 - `target / skill / context-set / action` registry 기준 설명 정리
 - action registry / output policy 를 활용한 최소 rule/config 분리 적용 시작
 - PowerShell 스크립트 기반 preview 출력 검증
 - board `01-overview.md` 를 첫 테스트 문서로 사용한 흐름 검증
-- `01-overview.md` 기준 `reinforce / confirm / history-save` 역할 분리 테스트 정리
-- `draft-save -> reinforce-prompt -> history-save` 수동 보강 루프 정리
+- `01-overview.md` 기준 `reinforce / confirm-prompt / apply-prompt` 역할 분리 테스트 정리
+- `draft-save -> reinforce-prompt -> apply-prompt` 수동 보강 루프 정리
 - 의미 있는 문서 변경을 `docs/history/projects/**` 에 실제 이력으로 남기는 흐름 정리
+- 현재 기준 문서/스크립트 정리 시 `docs/history/**` 는 기본 관리 대상에서 제외하고 보존 이력로만 취급
 
 현재 범위에 포함하지 않는 것은 다음과 같다.
 
@@ -75,6 +77,7 @@
 - 모바일 앱 구조 본격 착수
 - standards 2차 문서 전체 작성
 - phase / cycle 기반 실제 구현 운영의 본격 재도입
+- 개발자 명시 요청 없는 `docs/history/**` 재검토, 재정리, 명칭 정비
 
 ---
 
@@ -126,13 +129,13 @@
 - 현재는 **Codex 중심 + PowerShell CLI**로 최소 흐름을 검증한다는 방향 정리
 - README / AGENTS / AI_CONTEXT를 먼저 만든 뒤 이 문서들로 CLI 테스트를 진행하는 흐름 정리
 - `specdrive/{scripts,skills,config}` 폴더 구조 고정
-- `doc reinforce / confirm / history-save` 흐름 문서 초안 작성
+- `doc reinforce / confirm-prompt / apply-prompt` 흐름 문서 초안 작성
 - `specdrive/scripts/doc/*.ps1`, `specdrive/scripts/exec/codex-exec.ps1`, `specdrive/scripts/common/specdrive-common.ps1` 최소 골격 작성
 - `specdrive/skills/doc/*.md`, `specdrive/config/*.json` 최소 자산 작성
 - `.speclab/review-output`, `.speclab/history-output` preview 출력 흐름 검증
 - `.speclab/**` 를 재생성 가능한 실행 산출물로 보고 필요 시 정리 가능한 대상으로 유지
 - `target-registry / skill-registry / context-set-registry / doc-action-registry` 기준 key routing 초안 반영
-- `doc confirm`, `doc history-save` 에서 preview 탐색 규칙을 action config 우선, output policy fallback 구조로 해석하도록 최소 rule/config 분리 반영
+- `doc confirm-prompt`, `doc apply-prompt` 에서 preview 탐색 규칙을 action config 우선, output policy fallback 구조로 해석하도록 최소 rule/config 분리 반영
 - `doc` 단계 기본 target 해석을 `target-registry.json` 우선, legacy target config fallback 구조로 정리 시작
 - `doc-action-registry.json` 에 execute 허용 여부와 일부 execute 선행조건을 올리는 최소 실행 규칙 분리 시작
 - `doc-action-registry.json` 에 preview prefix / history suffix 일부를 올리는 최소 artifact naming 규칙 분리 시작
@@ -150,7 +153,7 @@
 - `specdrive/scripts/util/context-bundle.ps1`, `project-tree.ps1`, `doc-tree.ps1` 유틸 스크립트 추가
 - `specdrive/config/context-bundle-map.json`, `doc-map.json`, `affected-docs-map.json` draft 설정 추가
 - `doc reinforce` 에 한해 `specdrive/scripts/exec/codex-exec.ps1` 를 실제 `codex exec` 로 좁게 연결
-- `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm / history-save` 1차 흐름 검증 수행
+- `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm-prompt / apply-prompt` 1차 흐름 검증 수행
 - `docs/specdrive/doc-stage-testing.md` 에 `docs/projects/board/01-overview.md` 기준 `doc` 단계 1차 완료 판정 반영
 - `specdrive/scripts/common/specdrive-common.ps1`, `docs/AI_CONTEXT.md`, `docs/specdrive/doc-stage-testing.md` 변경을 `spec(specdrive): stabilize session recovery status` 커밋으로 저장
 - board 문서 구조를 `01-overview.md / specs / impl / status` 기준으로 재정리 시작
@@ -162,7 +165,7 @@
 - `specdrive/config/target-registry.json`, `doc-map.json`, `affected-docs-map.json` 에 새 board 문서 타깃 추가
 - `specdrive/specdrive.ps1` 에 `doc draft-save`, `doc reinforce-prompt` 라우팅 추가
 - `specdrive/scripts/doc/draft-save.ps1`, `reinforce-prompt.ps1` 추가
-- `specdrive/scripts/doc/history-save.ps1` 를 명시적 history 저장 중심으로 정리
+- `specdrive/scripts/doc/confirm-prompt.ps1`, `apply-prompt.ps1`, `apply-only-prompt.ps1` 추가
 - `README.md`, `docs/specdrive/README.md`, `docs/specdrive/README.ko.md`, `docs/specdrive/cli-manual.md`, `docs/specdrive/cli-single-entry.md`, `docs/specdrive/doc-reinforce-flow.md`, `docs/specdrive/doc-stage-testing.md` 를 새 `doc` 루프 의도에 맞게 정리
 - `specdrive/scripts/session/save.ps1` 를 출력 전용으로 유지하면서 `docs/AI_CONTEXT.md` 반영용 세션 저장 초안 프롬프트를 출력하도록 정리
 - `specdrive/scripts/session/start.ps1`, `status.ps1`, `save.ps1` 와 관련 문서를 함께 정리해 `session` 3종의 역할을 현재 기준으로 맞춤
@@ -185,7 +188,8 @@
 - `docs/projects/board/AGENTS.md` 는 board 애플리케이션 문서군의 전용 규칙을 다룬다.
 - 현재는 README / AGENTS / AI_CONTEXT를 먼저 정비한 뒤 이 문서들로 CLI 흐름을 검증한다.
 - 현재 작업 단계는 구조적으로 핵심 작업 단계 `doc`, `dev`, 별도 운영 단계 `session`, 전달 단계 `git` 으로 정리한다.
-- 문서 단계 핵심 흐름은 현재 `draft-save / reinforce-prompt / reinforce / confirm / history-save` 로 정리 중이다.
+- 문서 단계 핵심 흐름은 현재 기준 `draft-save / reinforce-prompt / reinforce / confirm-prompt / apply-prompt / apply-only-prompt` 로 정리한다.
+- 현재 `doc` 단계는 execute-first 보다 prompt-first 해석을 우선하고, 정식 반영은 가능한 한 `apply-prompt` 중심으로 본다.
 - 개발 단계 핵심 흐름은 `task-split / phase / cycle / status` 다.
 - 세션 단계 핵심 흐름은 `start / save` 다.
 - Git 단계 핵심 흐름은 `branch-name / git-message / pr-message` 다.
@@ -194,8 +198,8 @@
 - 현재는 멀티 AI 엔진 지원을 우선하지 않는다.
 - 현재 테스트 대상 문서는 `docs/projects/board/01-overview.md` 다.
 - 현재 `doc` 단계는 preview 출력까지 검증된 상태다.
-- 현재 `doc` 단계 테스트는 `docs/projects/board/01-overview.md` 문서를 기준으로 `reinforce / confirm / history-save` 흐름을 반복 검증하는 방식으로 진행한다.
-- 현재 `01-overview.md` 기준으로 `reinforce / confirm / history-save` 가 각각 보강 초안 / 사람 검토 / 기록 후보 생성 단계로 분리되어 동작하는지 확인하는 것이 우선이다.
+- 현재 `doc` 단계 테스트는 `docs/projects/board/01-overview.md` 문서를 기준으로 `reinforce / confirm-prompt / apply-prompt` 흐름을 반복 검증하는 방식으로 진행한다.
+- 현재 `01-overview.md` 기준으로 `reinforce / confirm-prompt / apply-prompt` 가 각각 보강 초안 / 사람 검토 / 반영+history 초안 단계로 분리되어 동작하는지 확인하는 것이 우선이다.
 - 현재 `doc` 단계의 주 config 경로는 `target / skill / context-set / action` registry 구조다.
 - 현재는 rule layer 를 별도 폴더로 크게 도입하지 않고, `config` 를 최소 rule/config layer 로 확장하는 방향을 택한다.
 - 현재 기본 target 은 action별 legacy config 보다 `target-registry.json` 의 공통 `default_target` 을 우선 해석한다.
@@ -217,9 +221,9 @@
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
 - 현재 `codex exec` 래퍼는 preview 생성 중심을 유지하되, `doc reinforce` 에 한해 실제 Codex 실행을 좁게 연결한다.
 - 원래 의도한 `doc` 단계의 목적은 preview 파일을 쌓는 것이 아니라, 의미 있는 문서 작업이 발생할 때 SI 프로젝트의 문서대장처럼 실제 문서 이력을 남기는 것이다.
-- 현재 `doc` 단계의 권장 수동 루프는 개발자 초안 작성 -> `draft-save` -> `reinforce-prompt` -> 사람/Codex 보강 대화 -> `history-save` 반복으로 본다.
-- 현재 기준에서 `confirm -Execute` 는 Codex가 보강한 문서를 실제 `docs/projects/**` 대상 문서에 반영하고, 적용 근거와 snapshot 을 `docs/history/projects/**` 아래 남기는 실행 경로로 본다.
-- 현재 기준에서 `history-save -Execute` 는 프롬프트 대화 기반 수정이나 사람이 직접 반영한 현재 문서 상태를 `docs/history/projects/**` 아래 snapshot 과 note 로 남기는 실행 경로로 본다.
+- 현재 `doc` 단계의 권장 수동 루프는 개발자 초안 작성 -> `draft-save` -> `reinforce-prompt` -> 사람/Codex 보강 대화 -> 검토/승인 -> 필요 시 history 저장 반복으로 본다.
+- 현재 기준에서 정식 문서 반영과 history 저장은 `apply-prompt` 중심의 승인 흐름으로 정리한다.
+- 현재 기준에서 history note 는 diff 자체보다 Codex가 실제로 어떤 보강과 정리를 수행했는지 요약하는 기록을 우선한다.
 - 현재는 `dev` 단계 설계보다 **문서 정체성과 `doc` 단계 검증 안정화**가 우선이다.
 - 현재 `dev` 단계 테스트는 아직 시작하지 않으며, 실제 코딩 작업에 들어갈 때 검증을 시작한다.
 
@@ -234,13 +238,14 @@
 - board 하위 설계 문서 초안 검토 및 확정
 - board 하위 구현 계획 문서 구조 확정
 - CLI 세부 명령 문법 확정
-- `confirm` 명령을 새 `draft-save / reinforce-prompt / history-save` 루프 안에서 어떤 위치와 의미로 둘지 판단
+- `reinforce` 실제 Codex 실행 범위를 현재 수준으로 유지할지 판단
+- `apply-only-prompt` 를 어느 정도 예외 경로로 유지할지 판단
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
 - `git branch-name` 에 phase / cycle / 문서 읽기 연결 범위 확정
 - skill 상세 구조 일반화 여부 판단
 - `doc reinforce` 외 단계까지 `codex exec` 실제 실행 연동 범위 확정
-- `01-overview.md` 기준 `doc reinforce / confirm / history-save` 완료 판정 기준 확정
-- `doc reinforce / confirm / history-save` 반복 테스트와 출력 품질 검증
+- `01-overview.md` 기준 `doc reinforce / confirm-prompt / apply-prompt` 완료 판정 기준 확정
+- `doc reinforce / confirm-prompt / apply-prompt` 반복 테스트와 출력 품질 검증
 - `docs/history/projects/**` 폴더 구조와 문서대장 운영 규칙 고정
 - `doc reinforce -Execute` 실행 시 Codex 환경 경고 처리 기준 확정
 - `dev phase / cycle / status / task-split` 실제 흐름 검증
@@ -269,14 +274,14 @@
 - `specdrive/specdrive.ps1` 와 `specdrive/scripts/git/*.ps1` 로 `git` 최소 실행 경로가 연결된 상태다.
 - `specdrive/scripts/**`, `specdrive/skills/**`, `specdrive/config/**` 아래 최소 검증 골격이 생성된 상태다.
 - 현재 `doc` 스크립트는 registry 를 주 경로로 사용하고, legacy action별 target config 는 `default_target` fallback 용으로 일부 남아 있다.
-- 현재 `doc confirm`, `doc history-save` 는 preview 탐색 규칙을 action config 와 output policy 조합으로 해석하도록 반영된 상태다.
-- 현재 `doc reinforce`, `doc confirm`, `doc history-save` 는 공통 helper 로 기본 target 해석을 공유하도록 반영된 상태다.
-- 현재 `doc confirm` 은 `execute_requires` 로 `reinforce_codex_output` 선행조건을 확인하도록 반영된 상태다.
-- 현재 `doc confirm`, `doc history-save` 는 preview prefix 와 history suffix 일부를 action config 에서 읽도록 반영된 상태다.
+- 현재 `doc confirm-prompt`, `doc apply-prompt` 는 preview 탐색 규칙을 action config 와 output policy 조합으로 해석하도록 반영된 상태다.
+- 현재 `doc reinforce`, `doc confirm-prompt`, `doc apply-prompt` 는 공통 helper 로 기본 target 해석을 공유하도록 반영된 상태다.
+- 현재 `doc confirm-prompt`, `doc apply-prompt` 는 필요한 preview 전제조건과 출력 연결 규칙 일부를 action config 에서 읽도록 반영된 상태다.
+- 현재 `doc confirm-prompt`, `doc apply-prompt` 는 preview prefix 와 history suffix 일부를 action config 에서 읽도록 반영된 상태다.
 - 현재는 preview 기반 반복 검증을 우선하되, `doc reinforce` 에 한해 실제 Codex 실행까지 좁게 확인하기 시작한 단계다.
 - 현재 `01-overview.md` 기준으로 세 단계가 기대한 운영 역할대로 분리되는지 1차 확인을 마친 상태다.
-- 현재 `01-overview.md` 기준 `doc` 단계는 registry 기반 key routing, preview 기반 최소 검증, `doc reinforce` 의 좁은 실제 Codex 연결, `confirm/history-save` 의 실제 history 저장 경로까지 1차 완료 판정한 상태다.
-- 현재 `confirm -Execute`, `history-save -Execute` 는 preview 검토를 넘어서 실제 문서 이력을 `docs/history/projects/**` 에 남기는 방향으로 의미를 바꿔 정리한 상태다.
+- 현재 `01-overview.md` 기준 `doc` 단계는 registry 기반 key routing, preview 기반 최소 검증, `doc reinforce` 의 좁은 실제 Codex 연결, `confirm-prompt/apply-prompt` 중심 반영 경로까지 1차 완료 판정한 상태다.
+- 과거 실행형 반영/history 저장으로 남은 산출물은 `docs/history/projects/**` 아래 이력으로 유지하되, 현재 명령 체계는 prompt-first 기준으로 재정리한 상태다.
 - 현재 `draft-save`, `reinforce-prompt` 가 추가되면서 `doc` 단계는 자동 실행 중심보다 정규화 프롬프트 + 명시적 history 저장 루프로 정리되는 중이다.
 - 현재 `session save` 는 `.speclab/**` 저장보다 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 운영 보조 명령으로 해석한다.
 
@@ -323,8 +328,8 @@
 
 ### 우선순위 2
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
-- `draft-save -> reinforce-prompt -> history-save` 루프를 `01-overview.md`, `specs/02-requirements.md`, `specs/03-design.md` 에 어떻게 반복 적용할지 판단
-- `confirm` 을 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
+- `draft-save -> reinforce-prompt -> apply-prompt` 루프를 `01-overview.md`, `specs/02-requirements.md`, `specs/03-design.md` 에 어떻게 반복 적용할지 판단
+- `confirm-prompt` 를 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
 - 새로 정리한 `session start / status / save` 해석을 실제 사용 루프에서 반복 확인
 
 ### 우선순위 3
@@ -372,6 +377,7 @@
 - 현재 결정과 후속 후보가 섞이지 않았는가?
 - 지금 함께 운영하는 구조가 최종 구조로 오해되지 않도록 서술하고 있는가?
 - `doc` / `dev` 단계가 문서에서 섞이지 않았는가?
+- 현재 작업이 실제 기준 문서 정리인지, 과거 이력(`docs/history/**`) 재확인인지 먼저 구분했는가?
 
 ---
 
@@ -389,7 +395,7 @@
 - `session` 단계를 별도 운영 단계로 문서 반영
 - `git` 단계를 별도 전달 단계로 문서 반영
 - `specdrive/{scripts,skills,config}` 구조 반영
-- `doc reinforce / confirm / history-save` 흐름 문서 및 최소 스크립트 골격 반영
+- `doc reinforce / confirm-prompt / apply-prompt` 흐름 문서 및 최소 스크립트 골격 반영
 - `target / skill / context-set` registry 초안 반영 및 `doc` 스크립트 연동 시작
 - `codex-exec.ps1` 의 `-TargetKey` 기반 preview 테스트 경로 반영
 - `docs/specdrive/runtime-structure.md`, `doc-stage-testing.md`, `cli-manual.md`, `cli-key-routing.md` 최신 상태 반영
@@ -407,8 +413,8 @@
 - `doc` 단계 기본 target, preview 탐색 규칙, execute 조건, artifact naming 일부를 config 중심으로 이동
 - `session start`, `session status`, `session save` 를 각각 복구 시작용 copy prompt / 읽기 전용 상태 조회 / AI_CONTEXT 반영 초안 요청용 copy prompt 로 해석하는 현재 기준을 문서와 스크립트에 함께 반영
 - `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session` 단계 설명을 현재 기준으로 동기화
-- `docs/projects/board/01-overview.md` 에 `confirm -Execute` 적용 및 관련 근거/history 산출물 저장
-- `history-save -Execute` 를 최신 confirm preview 기준으로 다시 실행해 실제 history 산출물 묶음 정리
+- `docs/projects/board/01-overview.md` 기준으로 과거 실행형 반영/history 산출물을 `docs/history/projects/**` 아래 이력으로 보존
+- 현재 기준 반영 흐름은 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 중심으로 재정리
 - 현재 변경 집합에 맞게 `git branch-name / git-message / pr-message` 초안 생성 로직 보정
 - `session status` 를 파일 변경 상태가 아니라 `docs/AI_CONTEXT.md` 기반 서술형 상태 조회 명령으로 추가
 - session/git 명령의 기본 출력은 토큰 사용량을 줄이기 위해 상세 파일 목록 대신 변경 요약과 샘플을 우선하도록 정리
@@ -422,14 +428,14 @@
 - 현재 기준 작업자 메모:
   - 지금은 `doc` 단계 흐름을 더 만들어내기보다 실제 반복 테스트를 통해 어색한 지점을 찾는 것이 중요하다.
   - 새 세션에서는 먼저 이 문서와 `docs/specdrive/doc-stage-testing.md` 에서 현재 테스트 상태를 복구한 뒤 작업 대상 문서로 들어간다.
-  - 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 대상으로 `reinforce / confirm / history-save` 를 테스트한다.
-  - `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm / history-save` preview 생성이 실제로 정상 동작하는 것을 확인했다.
+  - 현재 `doc` 단계는 `docs/projects/board/01-overview.md` 를 대상으로 `reinforce / confirm-prompt / apply-prompt` 를 테스트한다.
+  - `docs/projects/board/01-overview.md` 기준으로 `reinforce / confirm-prompt / apply-prompt` preview 생성이 실제로 정상 동작하는 것을 확인했다.
   - `01-overview.md` 기준으로 `reinforce` 는 보강 초안, `confirm` 은 사람 검토 체크리스트, `history-save` 는 기록 후보 생성 단계로 분리되어 동작하는 것을 1차 확인했다.
-  - 이후 원래 의도했던 문서 이력 자동 저장 목적에 맞게 `confirm -Execute`, `history-save -Execute` 를 `docs/history/projects/**` 에 실제 적용 문서와 관련 산출물을 남기는 실행 경로로 확장했다.
-  - `confirm` 과 `history-save` 는 병렬보다 순차 실행이 맞고, 최신 confirm preview 를 기준으로 history preview 를 생성해야 한다.
-  - 이번 세션에서는 `docs/projects/board/01-overview.md` 에 실제 `confirm -Execute` 를 적용했고, `history-save -Execute` 는 최신 confirm preview 기준으로 다시 실행해 산출물을 정리했다.
+  - 이후 원래 의도했던 문서 이력 자동 저장 목적에 맞게 과거 실행형 반영/history 저장 경로를 시험했고, 그 산출물은 `docs/history/projects/**` 에 이력으로 남겨 두었다.
+  - 현재 기준에서는 `confirm-prompt` 와 `apply-prompt` 를 순차 사용해 검토와 반영을 분리하는 흐름이 더 자연스럽다고 정리했다.
+  - 이번 정리 이후에는 실제 CLI 명령 기준도 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 중심으로 맞추었다.
   - 현재 `docs/history/projects/board/01-overview/**` 아래에는 2026-04-19 00:01:55, 00:02:07 기준 confirm/history 산출물이 추가된 상태다.
-  - `specdrive/config/target-registry.json`, `skill-registry.json`, `context-set-registry.json`, `doc-action-registry.json` 초안을 만들었고 `reinforce / confirm / history-save` 는 이 registry 를 주 경로로 읽도록 연결했다.
+  - `specdrive/config/target-registry.json`, `skill-registry.json`, `context-set-registry.json`, `doc-action-registry.json` 초안을 만들었고 `reinforce / confirm-prompt / apply-prompt` 는 이 registry 를 주 경로로 읽도록 연결했다.
   - 현재 `doc-action-registry.json` 은 execute 허용 여부, 일부 execute 선행조건, preview prefix, history suffix 일부를 담는 최소 rule/config layer 역할을 시작했다.
   - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 `default_target` fallback 용 legacy config 로 남아 있다.
   - `specdrive/scripts/exec/codex-exec.ps1` 는 `-TargetKey board-overview` 로 registry 기반 preview 테스트가 가능하고, `doc reinforce -Execute` 에서 실제 Codex 호출도 좁게 수행할 수 있다.
@@ -445,7 +451,9 @@
   - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
   - 현재는 board 문서 구조를 `specs / impl / status` 기준으로 다시 정리하고, 관련 진입 문서와 참조 경로를 맞추는 작업을 진행했다.
-  - 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `history-save` 중심의 수동 보강 루프를 먼저 정리하고, `confirm` 위치는 후속 판단 대상으로 남겨 두었다.
+- 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `confirm-prompt`, `apply-prompt` 중심의 수동 보강 루프를 먼저 정리하고, 실제 저장 자동화 범위는 후속 판단 대상으로 남겨 두었다.
+- 현재 `doc` 단계 문서는 execute-first 보다 prompt-first 해석을 우선하도록 재정리 중이다.
+- 현재 구현 명령과 문서 해석 모두 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 기준으로 정리한 상태다.
   - 현재 `session save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 명령으로 해석하는 편이 맞다.
   - 이후 세션에서는 `session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
   - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.

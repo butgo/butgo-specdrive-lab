@@ -53,7 +53,7 @@ specdrive/
 
 ### 3.1 `specdrive/scripts/doc/`
 - 문서 단계 명령 실행 흐름
-- 예: `doc reinforce`, `doc confirm`, `doc history-save`
+- 예: `doc reinforce`, `doc confirm-prompt`, `doc apply-prompt`
 - 문서를 읽고, skill 또는 Codex 실행과 연결하고, 결과 반영 흐름을 조합
 
 ### 3.2 `specdrive/scripts/dev/`
@@ -152,7 +152,7 @@ specdrive/
 - action 별 판단 기준은 `doc-action-registry.json` 같은 action registry 로 모은다.
 - 스크립트는 가능한 한 config 에서 해석된 결과를 소비한다.
 
-예를 들어 현재 `doc confirm`, `doc history-save` 는
+예를 들어 현재 `doc confirm-prompt`, `doc apply-prompt` 는
 preview 탐색 위치를 스크립트 내부 하드코딩 대신
 action config 우선, output policy fallback 규칙으로 해석한다.
 
@@ -160,14 +160,14 @@ action config 우선, output policy fallback 규칙으로 해석한다.
 기본 target 을 action별 legacy config 우선으로 읽지 않고,
 `target-registry.json` 의 `default_target` 우선, legacy fallback 순서로 해석한다.
 
-또한 일부 execute 규칙도 action registry 로 옮기기 시작했다.
-현재 `doc confirm` 은 `execute_requires` 로
-`reinforce_codex_output` 선행조건을 읽어 execute 가능 여부를 확인한다.
+또한 일부 action 전제조건과 산출물 규칙도 action registry 로 옮기기 시작했다.
+현재는 실행 중심보다 prompt-first 해석을 우선하며,
+필요한 preview 전제조건과 출력 연결 규칙을 config 에서 읽는 방향으로 정리 중이다.
 
 같은 방식으로 현재 쓰는 preview prefix, history suffix 같은
 artifact naming 규칙도 action registry 로 옮기기 시작했다.
-현재 `doc confirm`, `doc history-save` 는
-preview 파일명과 history 저장 suffix 일부를 config 에서 읽는다.
+현재 `doc confirm-prompt`, `doc apply-prompt` 는
+preview 파일명과 history 저장 관련 suffix 일부를 config 에서 읽는다.
 
 즉 현재 `config` 는 단순 경로 모음이 아니라
 **고정값 + 실행 판단 기준의 최소 rule/config layer** 로 확장되는 방향을 가진다.

@@ -142,14 +142,14 @@
       "scope": "specdrive",
       "kind": "flow",
       "title": "doc-confirm-flow.md",
-      "role": "doc confirm 흐름과 적용 기준을 설명하는 문서"
+      "role": "doc confirm-prompt 흐름과 검토 기준을 설명하는 문서"
     },
     "specdrive-doc-history-save-flow": {
       "path": "docs/specdrive/doc-history-save-flow.md",
       "scope": "specdrive",
       "kind": "flow",
       "title": "doc-history-save-flow.md",
-      "role": "doc history-save 흐름과 history 저장 기준을 설명하는 문서"
+      "role": "doc apply-prompt 흐름과 history 저장 기준을 설명하는 문서"
     },
     "specdrive-session-stage": {
       "path": "docs/specdrive/session-stage.md",

@@ -147,3 +147,4 @@ board 문서는 specdrive 운영 규칙 설명 문서가 아니라,
 
 board는 Spring Boot 기반 layered 게시판 애플리케이션을 실제로 만들면서,  
 specdrive의 문서 기반 AI 협업 흐름이 실제 프로젝트에서도 유효한지 검증하기 위한 첫 번째 실제 프로젝트다.
+
