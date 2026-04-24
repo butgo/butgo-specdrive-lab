@@ -50,6 +50,12 @@ Reply with:
 
 Keep the output concise. Draft the PR title in English unless the repository convention says otherwise. Draft the PR body in Korean when the current project workflow is Korean.
 
+Include a copyable approval sentence in the approval prompt. Use this shape and fill in the recommended base, head, and title:
+
+```text
+승인. base <base-branch>, head <head-branch>, title은 "<pr-title>" 로 PR 생성해줘.
+```
+
 ## Approval Gate
 
 Do not run `gh pr create` until the user explicitly approves the PR title, body, base branch, and head branch.
@@ -63,11 +69,24 @@ After approval:
 1. Run `gh pr create` with the approved base/head/title/body.
 2. Confirm the generated PR URL.
 3. Report the result briefly.
+4. Include a merge guidance note for the user.
+
+Use this shape for the merge guidance:
+
+```text
+머지는 GitHub PR 화면에서 직접 확인 후 진행해줘.
+
+1. PR 페이지를 연다: <pr-url>
+2. 변경 파일과 설명을 확인한다.
+3. 문제가 없으면 GitHub에서 Merge pull request 를 누른다.
+4. 필요하면 merge 후 원격 브랜치를 삭제한다.
+```
 
 ## Boundaries
 
 - Do not commit or push changes; use `$git-commit` first.
 - Do not force push.
 - Do not create duplicate PRs.
+- Do not merge PRs.
 - Do not change documents as part of this skill.
 - Do not infer a risky base branch without asking.

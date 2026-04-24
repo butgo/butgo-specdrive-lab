@@ -80,7 +80,7 @@ board 문서는 specdrive 운영 규칙을 설명하는 문서가 아니다.
 
 반대로 다음은 board 문서의 중심 내용이 아니다.
 
-- specdrive 자체 CLI 설계
+- specdrive 자체 CLI 자동화 설계
 - specdrive의 skill 구조
 - Codex exec 상세 설계
 - specdrive 전용 협업 절차 설계
@@ -102,7 +102,7 @@ specdrive는 다음을 다룬다.
 - history 저장 절차
 - task 분해 절차
 - phase / cycle 상태 관리
-- 명령 실행 흐름
+- skill 실행 흐름
 - AI 협업 규칙
 
 ### 5.2 board는 실제 애플리케이션 내용을 다룬다
@@ -326,7 +326,7 @@ board 문서를 다룰 때의 기본 권장 흐름은 다음과 같다.
 ### 이 문서가 직접 다루지 않는 것
 - 저장소 전체 공통 규칙
 - specdrive 자체 운영 규칙
-- specdrive CLI/skill/Codex 연동 상세 설계
+- specdrive skill/Codex/후속 CLI 연동 상세 설계
 - 다른 프로젝트 전용 규칙
 - 현재 시점의 구체적인 활성 상태 자체
 

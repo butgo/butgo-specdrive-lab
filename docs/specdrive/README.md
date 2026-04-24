@@ -29,7 +29,7 @@ At the current stage, specdrive should be understood as follows.
 
 - A document-based AI collaboration engine
 - An operating system for repeatable work flows
-- A CLI-centered work orchestrator
+- A repo-local Codex skill-centered work orchestrator
 - A tool that reads real project documents and executes collaboration flows
 
 In other words, specdrive is currently closer to an  
@@ -129,7 +129,7 @@ At the current stage, this is better understood more concretely as follows.
 
 One more point matters at the current stage.
 
-The preferred document loop is shifting away from a fully automatic “CLI applies everything” idea.
+The preferred document loop is shifting away from a fully automatic “automation applies everything” idea.
 Instead, specdrive is being shaped around the following rhythm.
 
 1. The developer writes a draft.
@@ -140,8 +140,8 @@ Instead, specdrive is being shaped around the following rhythm.
 6. `apply-prompt` explicitly prepares the meaningful applied state and history note.
 7. Repeat as needed.
 
-This means specdrive currently treats the CLI not only as an execution wrapper,
-but also as a way to standardize prompts and preserve a clean document-history loop.
+This means specdrive currently treats repo-local skills as a way to standardize prompts
+and preserve a clean document-history loop before returning to heavier automation.
 
 ### 5.2 dev Stage
 This is the stage of performing actual development work based on confirmed documents.
@@ -162,43 +162,44 @@ Basic meaning:
 ### 5.3 session Stage
 This is the operating stage for starting and closing sessions.
 
-Core flow examples:
+Current skill flow examples:
 
-- start
-- save
+- `session-start-lite`
+- `session-start`
+- `session-status`
+- `session-save`
 
 Basic meaning:
 
-- Recover the current state and next entry point at session start.
+- Recover the current state and next entry point through session skills.
 - Save session notes and the next entry point at session end.
 
-At the current stage, `session start` is better understood not as an automatic work-start command,
-but as a command that prints a copy prompt so Codex can read the relevant documents, recover the current state,
+At the current stage, `$session-start` is better understood not as an automatic work-start command,
+but as a skill that prints a copy prompt so Codex can read the relevant documents, recover the current state,
 and summarize the focus and next entry point first.
 Actual document edits or follow-up work begin only after the developer explicitly asks for them.
 
-At the current stage, `session save` is better understood not as an automatic save command,
-but as a command that prints a copy prompt asking Codex for a `docs/AI_CONTEXT.md` update draft.
+At the current stage, `$session-save` is better understood not as an automatic save command,
+but as a skill that prints a copy prompt asking Codex for a `docs/AI_CONTEXT.md` update draft.
 The draft is reviewed first, and the real `docs/AI_CONTEXT.md` edit happens only after the developer explicitly asks to save it.
 
-At the current stage, `session status` is better understood as a read-only status check based on `docs/AI_CONTEXT.md`.
+At the current stage, `$session-status` is better understood as a compact read-only status check.
 It does not generate a copy prompt and does not start document edits or save flows by itself.
 
 ### 5.4 git Stage
 This is the stage for generating Git delivery artifacts.
 
-Core flow examples:
+Current skill flow examples:
 
-- branch-name
-- git-message
-- pr-message
+- `git-commit`
+- `github-pr`
 
 Basic meaning:
 
 - Read the current branch and changed files.
-- Generate a new branch-name draft.
-- Generate a Git commit message draft.
-- Generate a PR title/body draft.
+- Prepare a safe commit proposal.
+- Commit and push only after explicit approval.
+- Draft or create a GitHub PR only after explicit approval.
 
 ---
 
@@ -209,11 +210,11 @@ At the current stage, specdrive covers the following.
 - Document-based AI collaboration flow
 - Session start and context recovery
 - Session save and next-entry preservation
-- Branch naming and Git / PR message generation support
+- Git commit and GitHub PR workflow support
 - Document reinforcement / review / apply-history procedures
 - Task decomposition procedures
 - The management direction of phase / cycle / status
-- CLI command structure
+- repo-local Codex skill structure
 - Role separation among prompt / skill / state-management assets
 - Validation of an operating model applicable to real projects
 
@@ -259,7 +260,7 @@ but the long-term assumption is a structure in which they can be separated.
 The current technical direction of specdrive is as follows.
 
 - AI engine: centered on Codex
-- Execution interface: PowerShell CLI
+- Execution interface: repo-local Codex skills
 - Goal: validate the minimum work flow
 - Current repository nature: alpha integrated validation repository
 - Later candidates: possible reimplementation in Go or Python
@@ -282,7 +283,7 @@ At the current stage, assets related to specdrive roughly have the following rel
 
 ### 10.2 `specdrive/scripts/**`
 - specdrive execution scripts
-- command-processing flow
+- workflow-processing flow
 - state / path / output helpers
 
 ### 10.3 `specdrive/skills/**`
@@ -292,10 +293,10 @@ At the current stage, assets related to specdrive roughly have the following rel
 ### 10.4 `specdrive/config/**`
 - document mapping
 - path rules
-- configuration assets connected to commands and state
+- configuration assets connected to skills and state
 
 In other words, documents provide explanation and standards,  
-while `specdrive/scripts`, `specdrive/skills`, and `specdrive/config` connect those standards to executable forms.
+while skills, scripts, and config connect those standards to executable forms as needed.
 
 ---
 
@@ -314,15 +315,15 @@ The current priorities of specdrive are as follows.
 - Make it possible for Codex to understand the project nature consistently
 
 ### Priority 3
-- Validate the minimum CLI flow
+- Validate the minimum repo-local skill flow
 - `doc reinforce / confirm-prompt / apply-prompt`
 - `dev phase / cycle / status / task-split`
-- `session start / save`
-- `git branch-name / git-message / pr-message`
+- `$session-start-lite / $session-start / $session-status / $session-save`
+- `$git-commit / $github-pr`
 
 ### Priority 4
 - Organize follow-up technical documents
-- Detailed design for skill / CLI / Codex integration
+- Detailed design for skill / deferred CLI / Codex integration
 
 ---
 

@@ -172,13 +172,6 @@
       "title": "util-scripts.md",
       "role": "context bundle, tree 출력, 문서 맵 같은 보조 유틸 스크립트 설명 문서"
     },
-    "specdrive-todo-session-automation": {
-      "path": "docs/specdrive/todo/session-automation-todo.md",
-      "scope": "specdrive",
-      "kind": "todo",
-      "title": "session-automation-todo.md",
-      "role": "session 자동 실행과 Codex/IDE 연동 후보를 나중에 검토하기 위한 메모"
-    },
     "specdrive-todo-affected-docs-map": {
       "path": "docs/specdrive/todo/affected-docs-map-todo.md",
       "scope": "specdrive",

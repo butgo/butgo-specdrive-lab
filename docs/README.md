@@ -44,7 +44,7 @@ When looking at `docs/**`, the following perspective should be fixed first.
 
 ### 3.1 specdrive
 specdrive is currently viewed not as a **finished SaaS product**,  
-but as an **engine / operating system / CLI tool**  
+but as an **engine / operating system / repo-local Codex skill-centered tool**  
 that executes AI collaboration based on development specification documents.
 
 ### 3.2 projects
@@ -130,7 +130,7 @@ This area covers specdrive's own tool perspective, such as the following.
 - Session start method
 - Context recovery method
 - Document review and synchronization flow
-- The direction of CLI-centered execution structure
+- The direction of skill-centered execution structure
 - The operating structure as a tool
 
 In other words, `docs/specdrive/**` covers  
@@ -299,7 +299,7 @@ In other words, `docs/**` is currently used to do the following together.
 - Write real project documents
 - Validate the AI collaboration model
 - Validate the document entry structure and state recovery method
-- Prepare CLI testing based on README / AGENTS / AI_CONTEXT
+- Prepare skill workflow testing based on README / AGENTS / AI_CONTEXT
 
 However, the long-term assumption is that  
 specdrive documents and project documents can be separated.
@@ -320,7 +320,7 @@ The current priorities in the docs area are as follows.
 
 ### Priority 3
 - Make these documents stable enough for Codex to understand the project correctly
-- Use them later as entry documents for minimum CLI testing
+- Use them later as entry documents for minimum skill workflow testing
 
 ---
 
