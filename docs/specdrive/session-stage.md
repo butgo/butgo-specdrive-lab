@@ -8,11 +8,11 @@
 목적은 다음과 같다.
 
 - `session` 이 왜 `doc` 과 `dev` 와 분리되어야 하는지 설명한다.
-- `session start`, `session save` 의 역할을 고정한다.
+- `session-start`, `session-save` skill 의 역할을 고정한다.
 - 세션 시작/종료 프롬프트를 정규화해 반복 입력을 줄인다.
 - 매번 긴 문서를 통째로 주입하지 않고 필요한 진입 문서와 확인 지점만 안내해 토큰 사용량을 줄이는 방향을 만든다.
 - `session` 단계가 어디까지 다루고 어디까지 다루지 않는지 경계를 정한다.
-- 단일 진입 CLI에서 `session` 을 어떤 성격의 상위 명령으로 둘지 기준을 만든다.
+- CLI가 필요할 경우 어떤 반복 부분만 보조 도구로 뺄지 판단 기준을 남긴다.
 
 이 문서는 구현 상세 문서가 아니다.  
 현재 기준으로는 **운영 단계로서의 `session` 역할과 최소 명령 구조**를 설명한다.
@@ -57,7 +57,41 @@
 
 ## 4. 현재 기준 핵심 명령
 
-현재 기준으로 `session` 아래에는 다음 명령을 둔다.
+현재 기준으로 `session` 은 먼저 skill 중심으로 검증한다.
+
+우선 검증 대상은 다음 skill 이다.
+
+```text
+session-start
+session-save
+```
+
+repo local skill 설치 위치는 다음과 같다.
+
+```text
+.agents/skills/session-start/SKILL.md
+.agents/skills/session-save/SKILL.md
+```
+
+테스트 중에는 전역 skill 경로에 설치하지 않는다.
+배포/패키징 후보 원본 위치는 다음과 같다.
+
+```text
+specdrive/codex-skills/session-start/SKILL.md
+specdrive/codex-skills/session-save/SKILL.md
+```
+
+Codex 대화에서는 다음처럼 직접 호출해 사용해 보는 방향을 우선한다.
+
+```text
+$session-start
+$session-save
+```
+
+기존 CLI 명령은 당장 삭제 대상이라기보다,
+반복 입력이나 로컬 상태 수집이 실제로 반복된다는 점이 확인될 때 보조 도구로 남길지 판단한다.
+
+현재 존재하는 CLI 후보는 다음과 같다.
 
 ```powershell
 specdrive/specdrive.ps1 session start
@@ -65,14 +99,17 @@ specdrive/specdrive.ps1 session status
 specdrive/specdrive.ps1 session save
 ```
 
-이 명령들은 다음 역할을 가진다.
+이 skill 과 CLI 후보는 다음 역할을 가진다.
 
 ### 4.1 `session start`
 - 현재 상태 복구
 - 읽어야 할 핵심 문서 안내
 - 현재 focus / 다음 진입점 확인 보조
 - Codex에 전달할 최소 세션 복구 프롬프트 정규화
+- 내부 skill 자산인 `specdrive/skills/session/start.md` 의 세션 복구 규칙을 프롬프트 구성에 반영
 - 불필요한 전체 문서 주입을 줄이기 위한 읽기 순서 안내
+- 작업 대상 영역이 정해진 경우 해당 영역의 전용 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내
+- 먼저 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 짧게 정리하게 하고, 개발자 요청 전에는 파일을 직접 수정하지 않도록 경계 유지
 
 ### 4.2 `session save`
 - 현재 세션 변경 요약
@@ -80,16 +117,51 @@ specdrive/specdrive.ps1 session save
 - 필요 시 상태/히스토리 반영 후보 정리
 - 다음 세션에서 다시 사용할 수 있는 진입점 요약 형식 정규화
 - 긴 대화 전체를 넘기지 않고 변경 요약, 변경 영역, 변경 파일 샘플, 판단 후보 중심으로 저장할 수 있게 보조
+- Codex에 붙여넣을 `docs/AI_CONTEXT.md` 반영 초안 요청 프롬프트 출력
+- 초안 검토 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 않도록 경계 유지
 
 ### 4.3 `session status`
 - `docs/AI_CONTEXT.md` 기준 현재 작업 상태를 서술형으로 요약
 - 현재 작업 모드, 현재 focus, 다음 진입점, 보류 사항을 짧게 확인
 - Git 변경 상태는 보조 정보로만 출력
 - Codex copy prompt를 만들지 않고 현재 상태만 빠르게 확인
+- 읽기 전용 상태 확인 명령으로 두고, 문서 수정이나 저장 흐름으로 바로 이어지지 않게 유지
 
 현재 기준으로 `session` 단계는 일회성 preview 파일을 남기지 않는다.  
-즉 `session start`, `session save` 는 콘솔 출력 중심의 운영 보조 명령으로 보고,  
+즉 `session-start`, `session-save` 는 Codex가 직접 따르는 절차 자산으로 보고,  
+CLI가 남더라도 콘솔 출력 중심의 운영 보조 명령으로 본다.  
 영속적으로 남겨야 할 내용은 `docs/AI_CONTEXT.md` 같은 상태 문서나 `docs/history/projects/**` 같은 실제 이력 문서에 반영한다.
+
+현재 `session-start` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. 개발자가 Codex에서 `$session-start` 를 호출한다.
+2. Codex 는 skill 절차에 따라 지정된 문서를 직접 읽고 현재 상태를 복구한다.
+3. Codex 는 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 먼저 짧게 정리한다.
+4. 개발자가 실제 작업을 요청한 뒤에만 문서 수정이나 후속 작업으로 들어간다.
+5. 로컬 Git 상태나 변경 요약이 반복적으로 필요해질 때만 CLI 보조를 검토한다.
+
+즉 현재 `session-start` 는 자동 작업 명령이 아니라  
+**세션 복구와 진입점 확인을 안전하게 시작하는 skill 절차**로 보는 편이 맞다.
+
+현재 `session-save` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. 개발자가 Codex에서 `$session-save` 를 호출한다.
+2. Codex 는 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안한다.
+3. 개발자가 초안을 검토한 뒤 "저장해줘" 같이 명시적으로 요청하면 그때 실제 `docs/AI_CONTEXT.md` 반영을 진행한다.
+4. 로컬 변경 요약 생성, 파일 출력, 클립보드 복사처럼 반복되는 부분만 나중에 CLI 보조 대상으로 검토한다.
+
+즉 현재 `session-save` 는 자동 저장 명령이 아니라  
+**AI_CONTEXT 반영 초안을 안전하게 시작하는 skill 절차**로 보는 편이 맞다.
+
+현재 `session status` 의 의도는 다음처럼 이해하는 편이 맞다.
+
+1. `session status` 가 `docs/AI_CONTEXT.md` 기준 현재 상태를 짧게 요약한다.
+2. 현재 작업 모드, focus, 다음 진입점, 보류 후보를 읽기 전용으로 확인한다.
+3. Git 변경 정보는 보조적으로만 확인한다.
+4. 필요하면 그 다음에 `session start`, `doc`, `session save` 같은 후속 흐름으로 넘어간다.
+
+즉 현재 `session status` 는  
+**복구 확인용 읽기 전용 상태 조회 명령**으로 보는 편이 맞다.
 
 ---
 
@@ -136,11 +208,11 @@ specdrive/specdrive.ps1 session save
 
 현재 단계에서는 다음 흐름이 자연스럽다.
 
-1. `session start`
+1. `$session-start`
 2. 필요 시 `session status`
 3. 필요한 경우 `doc ...`
 4. 필요한 경우 `dev ...`
-5. `session save`
+5. `$session-save`
 
 즉 `session` 은  
 실제 작업의 앞뒤를 감싸는 운영 보조 계층으로 보는 편이 맞다.
@@ -160,12 +232,16 @@ specdrive/specdrive.ps1 session save
 copy prompt 는 다음 원칙을 따른다.
 
 - 세션 복구에 필요한 진입 문서만 먼저 요청한다.
+- 작업 대상 영역이 확인되면 해당 영역의 전용 `AGENTS.md` 를 추가로 읽게 요청한다.
 - `session start` 에서는 현재 브랜치와 Git 변경 요약만 포함한다.
 - `session save` 에서는 변경 파일 전체 목록 대신 변경 요약과 제한된 샘플을 기본으로 포함한다.
 - `session save -Detailed` 를 사용할 때만 상세 변경 파일 목록을 콘솔에 출력한다.
 - 전체 문서 내용을 붙여넣지 않고, Codex가 필요한 파일을 직접 읽도록 지시한다.
 - 후속 검토용 todo 문서는 기본 문맥에 포함하지 않는다.
 - session 명령은 문서 수정, history 저장, Git 메시지 생성을 직접 수행하지 않는다.
+- `session start` copy prompt 는 먼저 현재 상태 요약을 보여주고, 개발자 요청 전에는 파일을 직접 수정하지 말라는 경계를 함께 준다.
+- `session save` copy prompt 는 먼저 반영 초안을 보여주고, 개발자 승인 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 말라는 경계를 함께 준다.
+- `session status` 는 copy prompt를 만들지 않고, 현재 상태를 읽기 전용으로만 보여준다.
 
 `session start` 는 다음 정보를 출력한다.
 
@@ -174,6 +250,7 @@ copy prompt 는 다음 원칙을 따른다.
 - 먼저 읽을 문서 목록
 - 현재 Git 변경 요약
 - 세션 복구용 copy prompt
+- 작업 대상별 후속 확인 문서 안내
 
 `session status` 는 다음 정보를 출력한다.
 
@@ -208,7 +285,16 @@ copy prompt 는 다음 원칙을 따른다.
 
 ## 9. CLI 구조에서의 위치
 
-현재 단일 진입 CLI 기준으로 `session` 은 다음 위치에 둔다.
+현재 `session` 은 CLI보다 skill 직접 사용을 먼저 검증한다.
+
+CLI는 다음 조건이 확인될 때만 보조 도구로 유지하거나 재설계한다.
+
+- 매번 같은 로컬 상태를 수집한다.
+- 매번 같은 Git 변경 요약을 만든다.
+- 매번 같은 prompt 껍데기를 사람이 반복 작성한다.
+- skill 절차는 안정됐지만 입력 준비가 반복적으로 번거롭다.
+
+CLI를 유지한다면 위치 후보는 다음과 같다.
 
 ```powershell
 specdrive/specdrive.ps1 session ...
@@ -218,7 +304,7 @@ specdrive/specdrive.ps1 session ...
 
 - `specdrive/specdrive.ps1` 가 `session` action 을 분기한다.
 - 실제 세부 로직은 후속 `specdrive/scripts/session/*.ps1` 같은 하위 계층으로 위임하는 방향이 자연스럽다.
-- 현재 단계에서는 먼저 문서에서 역할과 명령 구조를 고정한다.
+- 다만 현재 검증 우선순위는 CLI 명령 확장이 아니라 `session-start`, `session-save` skill 절차 안정화다.
 
 ---
 
@@ -230,7 +316,8 @@ specdrive/specdrive.ps1 session ...
 따라서 현재 기준 핵심 정리는 다음과 같다.
 
 - `doc` 와 `dev` 는 핵심 작업 단계로 유지한다.
-- `session` 은 세션 복구와 세션 저장 명령을 정규화하는 운영 단계로 둔다.
-- `session` 은 필요한 진입 문서만 안내해 반복 프롬프트 작성과 토큰 사용량을 줄이는 방향으로 발전시킨다.
+- `session` 은 세션 복구와 세션 저장 절차를 정규화하는 운영 단계로 둔다.
+- 현재는 `session-start`, `session-save` skill 직접 사용을 먼저 검증한다.
+- CLI는 반복이 증명된 로컬 상태 수집이나 prompt 생성 보조만 나중에 맡긴다.
 - Git 전달 단위 생성은 `git` 단계로 분리한다.
 

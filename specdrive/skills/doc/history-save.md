@@ -2,7 +2,7 @@
 
 ## 1. skill 목적
 
-이 skill은 `doc history-save` 작업에서 사용하는  
+이 skill은 `doc apply-prompt` 작업에서 사용하는  
 **기본 history 기록 규칙 자산**이다.
 
 목적은 다음과 같다.
@@ -12,7 +12,7 @@
 - 다음 세션에서 읽을 사람이 맥락을 빠르게 복구할 수 있게 한다.
 
 이 skill은 문서를 다시 보강하거나 확정하지 않는다.  
-history 초안을 만드는 데 집중한다.
+history 초안과 반영 요약을 만드는 데 집중한다.
 
 ---
 
@@ -58,4 +58,4 @@ history 초안을 만드는 데 집중한다.
 ## 6. 최종 정리
 
 `specdrive/skills/doc/history-save.md` 는  
-`doc history-save` 단계에서 사용할 기본 기록 규칙 자산이다.
+`doc apply-prompt` 단계에서 사용할 기본 기록 규칙 자산이다.

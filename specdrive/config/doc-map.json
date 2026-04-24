@@ -142,14 +142,14 @@
       "scope": "specdrive",
       "kind": "flow",
       "title": "doc-confirm-flow.md",
-      "role": "doc confirm 흐름과 적용 기준을 설명하는 문서"
+      "role": "doc confirm-prompt 흐름과 검토 기준을 설명하는 문서"
     },
     "specdrive-doc-history-save-flow": {
       "path": "docs/specdrive/doc-history-save-flow.md",
       "scope": "specdrive",
       "kind": "flow",
       "title": "doc-history-save-flow.md",
-      "role": "doc history-save 흐름과 history 저장 기준을 설명하는 문서"
+      "role": "doc apply-prompt 흐름과 history 저장 기준을 설명하는 문서"
     },
     "specdrive-session-stage": {
       "path": "docs/specdrive/session-stage.md",
@@ -293,12 +293,68 @@
       "target_key": "board-overview"
     },
     "board-requirements": {
-      "path": "docs/projects/board/02-requirements.md",
+      "path": "docs/projects/board/specs/02-requirements.md",
       "scope": "project-board",
       "kind": "project-requirements",
       "title": "02-requirements.md",
       "role": "board 프로젝트의 최소 요구사항과 범위를 정리하는 문서",
       "target_key": "board-requirements"
+    },
+    "board-design-summary": {
+      "path": "docs/projects/board/specs/03-design.md",
+      "scope": "project-board",
+      "kind": "project-design",
+      "title": "03-design.md",
+      "role": "board 프로젝트의 상위 설계 판단을 정리하는 문서",
+      "target_key": "board-design-summary"
+    },
+    "board-application-structure": {
+      "path": "docs/projects/board/specs/04-application-structure.md",
+      "scope": "project-board",
+      "kind": "project-design-structure",
+      "title": "04-application-structure.md",
+      "role": "board 프로젝트의 애플리케이션 구조와 계층 책임을 정리하는 문서",
+      "target_key": "board-application-structure"
+    },
+    "board-domain-model": {
+      "path": "docs/projects/board/specs/05-domain-model.md",
+      "scope": "project-board",
+      "kind": "project-design-domain",
+      "title": "05-domain-model.md",
+      "role": "board 프로젝트의 도메인 모델과 핵심 엔티티 판단을 정리하는 문서",
+      "target_key": "board-domain-model"
+    },
+    "board-api-spec": {
+      "path": "docs/projects/board/specs/06-api-spec.md",
+      "scope": "project-board",
+      "kind": "project-design-api",
+      "title": "06-api-spec.md",
+      "role": "board 프로젝트의 API 명세를 정리하는 문서",
+      "target_key": "board-api-spec"
+    },
+    "board-db-design": {
+      "path": "docs/projects/board/specs/07-db-design.md",
+      "scope": "project-board",
+      "kind": "project-design-db",
+      "title": "07-db-design.md",
+      "role": "board 프로젝트의 DB 설계를 정리하는 문서",
+      "target_key": "board-db-design"
+    },
+    "board-implementation-plan": {
+      "path": "docs/projects/board/impl/01-implementation-plan.md",
+      "scope": "project-board",
+      "kind": "project-implementation-plan",
+      "title": "01-implementation-plan.md",
+      "role": "board 프로젝트의 구현 순서와 작업 단위를 정리하는 문서",
+      "target_key": "board-implementation-plan"
+    },
+    "board-current-status": {
+      "path": "docs/projects/board/status/current-status.md",
+      "scope": "project-board",
+      "kind": "project-status",
+      "title": "current-status.md",
+      "role": "board 프로젝트의 현재 상태와 다음 진입점을 정리하는 문서",
+      "target_key": "board-current-status"
     }
   }
 }

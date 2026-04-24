@@ -2,7 +2,7 @@
 
 ## 1. skill 목적
 
-이 skill은 `doc confirm` 작업에서 사용하는  
+이 skill은 `doc confirm-prompt` 작업에서 사용하는  
 **기본 문서 확정 판단 규칙 자산**이다.
 
 목적은 다음과 같다.
@@ -12,7 +12,7 @@
 - confirm 전에 확인해야 할 최소 체크포인트를 제공한다.
 
 이 skill은 문서를 자동 확정하지 않는다.  
-최종 confirm 은 항상 사람이 수행한다.
+최종 반영 판단은 항상 사람이 수행한다.
 
 ---
 
@@ -51,13 +51,13 @@
 이 skill의 기대 출력은 다음과 같다.
 
 - confirm 체크리스트
-- confirm 가능 / 보류 필요 판단 보조
-- confirm 전 남은 수정 포인트 요약
+- 반영 가능 / 보류 필요 판단 보조
+- confirm-prompt 이후 남은 수정 포인트 요약
 
 ---
 
 ## 6. 최종 정리
 
 `specdrive/skills/doc/confirm.md` 는  
-`doc confirm` 단계에서 사람이 최종 판단을 내릴 수 있게 돕는  
+`doc confirm-prompt` 단계에서 사람이 최종 판단을 내릴 수 있게 돕는  
 기본 confirm 규칙 자산이다.

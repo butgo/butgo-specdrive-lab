@@ -104,9 +104,9 @@ specdrive는 다음을 다룬다.
 
 - 세션 시작
 - 문맥 복구
-- 문서 보강 절차
-- 문서 확정 절차
-- history 저장 절차
+- 문서 보강 프롬프트 정규화 절차
+- 문서 검토/반영 프롬프트 정규화 절차
+- history 저장 기준과 반영 절차
 - task 분해 절차
 - phase / cycle 상태 관리
 - 명령 실행 흐름
@@ -134,20 +134,24 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 세션 운영을 위한 `session`, 전달 단위 생성을 위한 `git` 단계를 별도로 둔다.
 
 ### 6.1 doc 단계
-문서를 구현 가능한 상태로 만드는 단계다.
+문서를 구현 가능한 상태로 만들기 위해 프롬프트와 반영 기준을 정규화하는 단계다.
 
 핵심 흐름:
 
-- reinforce
-- confirm
-- history-save
+- draft-save
+- reinforce-prompt
+- confirm-prompt
+- apply-prompt
+- apply-only-prompt
 
 원칙:
 
 - 문서 초안이 먼저 있어야 한다.
-- AI는 현재 문서를 기준으로 보강한다.
-- confirm 전에는 기준 문서로 간주하지 않는다.
-- history-save는 중요한 판단 흔적을 남기는 절차다.
+- CLI는 대상 문서, 관련 문서, 출력 형식을 정리한 copy prompt 를 우선 제공한다.
+- Codex는 현재 문서를 기준으로 보강안, 검토안, 반영안, history note 초안을 제안한다.
+- 개발자 승인 전에는 Codex 결과를 기준 문서로 간주하지 않는다.
+- 정식 반영은 가능한 한 history 저장까지 함께 남기는 흐름을 기본으로 본다.
+- 현재 `doc` 단계는 `reinforce` 실제 실행 경로를 유지하되, 검토와 반영은 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 중심으로 해석한다.
 
 ### 6.2 dev 단계
 확정된 문서를 실제 개발 작업 단위로 실행하는 단계다.
@@ -172,13 +176,15 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 핵심 흐름 예:
 
 - start
+- status
 - save
 
 원칙:
 
 - `session` 은 세션 복구와 저장을 돕는 메타 운영 단계다.
-- `session start` 는 현재 상태 복구와 진입점 정리를 돕는다.
-- `session save` 는 세션 메모와 다음 진입점 정리를 돕는다.
+- `session start` 는 현재 상태 복구와 진입점 정리를 시작하는 copy prompt 출력을 돕는다.
+- `session status` 는 `docs/AI_CONTEXT.md` 기준 현재 상태를 읽기 전용으로 확인하는 조회 명령이다.
+- `session save` 는 `docs/AI_CONTEXT.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
 - `session` 은 `doc` / `dev` 내부 처리 로직을 대신하지 않는다.
 
 ### 6.4 git 단계
@@ -216,9 +222,20 @@ specdrive 문서와 스크립트를 설계할 때 `doc`, `dev`, `session`, `git`
 현재 specdrive의 우선 구현 범위는 다음과 같다.
 
 ### 문서 단계
-- `doc reinforce`
-- `doc confirm`
-- `doc history-save`
+- 현재 구현 명령:
+  - `doc draft-save`
+  - `doc reinforce-prompt`
+  - `doc reinforce`
+  - `doc confirm-prompt`
+  - `doc apply-prompt`
+  - `doc apply-only-prompt`
+- 현재 권장 해석:
+  - `draft-save`
+  - `reinforce-prompt`
+  - `reinforce`
+  - `confirm-prompt`
+  - `apply-prompt`
+  - `apply-only-prompt`
 
 ### 개발 단계
 - `dev phase set`
@@ -228,6 +245,7 @@ specdrive 문서와 스크립트를 설계할 때 `doc`, `dev`, `session`, `git`
 
 ### 세션 단계
 - `session start`
+- `session status`
 - `session save`
 
 ### Git 단계
@@ -265,6 +283,7 @@ CLI는 다음 역할을 가져야 한다.
 - 사용자가 문서 작업과 개발 작업을 구분할 수 있게 할 것
 - 복잡한 내부 로직을 감추고, 단순한 명령으로 진입하게 할 것
 - 작업 절차를 정규화할 것
+- 작업별 정규화 프롬프트와 반영 절차를 제공할 것
 
 현재 기준 명령 방향:
 
@@ -279,6 +298,8 @@ CLI는 다음 역할을 가져야 한다.
 - 문서 종류보다 작업 액션을 우선한다.
 - 사용자가 Codex CLI를 직접 다루는 부담은 줄인다.
 - specdrive CLI는 Codex 실행을 내부 구현으로 감추는 방향을 우선한다.
+- 현재 `doc` 단계 CLI의 핵심 역할은 문서를 직접 완성하는 것이 아니라, 작업 종류별 정규화 프롬프트와 적용 기준을 제공하는 것이다.
+- 의미 요약, 변경 설명, history note 초안 같은 내용은 Codex가 생성하고, CLI는 그 입력 문맥과 출력 형식을 고정하는 역할을 우선한다.
 
 CLI의 세부 문법은 별도 문서에서 다루고, 이 문서에서는 방향과 원칙만 다룬다.
 
@@ -314,6 +335,8 @@ skill은 반복 작업을 정규화하는 내부 작업 단위로 본다.
 - Codex에게 현재 저장소의 방향을 README/AGENTS/AI_CONTEXT로 먼저 전달한다.
 - Codex는 현재 문서를 기준으로 보강하도록 유도한다.
 - Codex는 재설계자보다 보강자/검토자 역할을 우선한다.
+- Codex는 단순 보강안뿐 아니라 검토 결과, 반영 초안, history note 초안까지 포함한 문서 작업 산출물 생성자로 사용한다.
+- 저장 경로, 파일명 규칙, 읽을 문서 범위, 출력 형식은 CLI와 문서 규칙이 먼저 고정한다.
 
 장기적으로 `codex exec` 자동화를 검토할 수 있지만,  
 현재는 **작업 흐름의 안정화와 CLI 검증**이 먼저다.

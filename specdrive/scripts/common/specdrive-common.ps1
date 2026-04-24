@@ -322,7 +322,8 @@ function Invoke-SpecdriveGitCommand {
         [string[]]$Arguments
     )
 
-    $output = & git -C $RepoRoot @Arguments 2>$null
+    $safeDirectory = $RepoRoot -replace "\\", "/"
+    $output = & git -c "safe.directory=$safeDirectory" -C $RepoRoot @Arguments 2>$null
     if ($LASTEXITCODE -ne 0) {
         return @()
     }
@@ -386,12 +387,16 @@ function Get-SpecdriveGitChangedPaths {
 
 function Get-SpecdriveChangedAreas {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     $areas = @()
     foreach ($path in $ChangedPaths) {
         $normalizedPath = $path -replace "\\", "/"
@@ -411,13 +416,17 @@ function Get-SpecdriveChangedAreas {
 
 function Get-SpecdriveGitChangeOverview {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths,
         [int]$MaxChangedPaths = 10
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     if ($MaxChangedPaths -lt 1) {
         $MaxChangedPaths = 10
     }
@@ -443,12 +452,16 @@ function Get-SpecdriveSessionOutputDirectory {
 
 function Get-SpecdriveChangeSummary {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     $summary = [ordered]@{
         HasOnlyDocs = ($ChangedPaths.Count -gt 0)
         HasSpecdriveScripts = $false
@@ -501,12 +514,16 @@ function Get-SpecdriveChangeSummary {
 
 function Get-SpecdriveCommitMessageDraft {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     $summary = Get-SpecdriveChangeSummary -ChangedPaths $ChangedPaths
     $type = "spec"
     $scope = "specdrive"
@@ -551,12 +568,16 @@ function Get-SpecdriveCommitMessageDraft {
 
 function Get-SpecdrivePrMessageDraft {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     $summary = Get-SpecdriveChangeSummary -ChangedPaths $ChangedPaths
     $type = "spec"
     if ($summary.HasOnlyDocs) {
@@ -592,13 +613,17 @@ function Get-SpecdrivePrMessageDraft {
 
 function Get-SpecdriveBranchNameDraft {
     param(
-        [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [string[]]$ChangedPaths,
         [string]$CurrentBranch
     )
 
-    $ChangedPaths = @($ChangedPaths)
+    if ($null -eq $ChangedPaths) {
+        $ChangedPaths = @()
+    } else {
+        $ChangedPaths = @($ChangedPaths)
+    }
     $summary = Get-SpecdriveChangeSummary -ChangedPaths $ChangedPaths
     $prefix = "spec"
     $topic = "specdrive-cli-output"

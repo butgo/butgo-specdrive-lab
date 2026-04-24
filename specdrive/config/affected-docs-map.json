@@ -256,7 +256,7 @@
           "reason": "board 개요 문서가 board 전용 작업 규칙과 충돌하지 않는지 확인"
         },
         {
-          "path": "docs/projects/board/02-requirements.md",
+          "path": "docs/projects/board/specs/02-requirements.md",
           "action": "review",
           "reason": "board 요구사항 문서가 board 전용 작업 규칙과 충돌하지 않는지 확인"
         }
@@ -275,7 +275,7 @@
       ],
       "check_targets": [
         {
-          "path": "docs/projects/board/02-requirements.md",
+          "path": "docs/projects/board/specs/02-requirements.md",
           "action": "review",
           "reason": "개요 변경이 요구사항 범위에 영향을 주는지 확인"
         },
@@ -287,7 +287,7 @@
       ]
     },
     "board-requirements": {
-      "path": "docs/projects/board/02-requirements.md",
+      "path": "docs/projects/board/specs/02-requirements.md",
       "scope": "project-board",
       "history_recommended": true,
       "note_template": "02-requirements.md 변경에 따른 board 개요 및 후속 개발 기준 점검",
@@ -302,6 +302,72 @@
           "path": "docs/projects/board/01-overview.md",
           "action": "review",
           "reason": "요구사항 변경이 개요의 범위 설명과 충돌하지 않는지 확인"
+        }
+      ]
+    },
+    "board-design-summary": {
+      "path": "docs/projects/board/specs/03-design.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "note_template": "03-design.md 변경에 따른 요구사항, 구조, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/02-requirements.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "설계 변경이 요구사항 범위를 벗어나지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "구현 계획 문서가 현재 설계 판단을 올바르게 이어받는지 확인"
+        }
+      ]
+    },
+    "board-implementation-plan": {
+      "path": "docs/projects/board/impl/01-implementation-plan.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "note_template": "01-implementation-plan.md 변경에 따른 설계/상태 문서 정합성 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/03-design.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "구현 계획이 현재 설계 판단을 벗어나지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/status/current-status.md",
+          "action": "review",
+          "reason": "현재 활성 작업과 다음 진입점 반영이 필요한지 확인"
+        }
+      ]
+    },
+    "board-current-status": {
+      "path": "docs/projects/board/status/current-status.md",
+      "scope": "project-board",
+      "history_recommended": false,
+      "note_template": "current-status.md 변경에 따른 현재 focus 및 다음 진입점 점검",
+      "include_for_bundle": [
+        "AGENTS.md",
+        "docs/AI_CONTEXT.md",
+        "docs/projects/board/AGENTS.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/AI_CONTEXT.md",
+          "action": "review",
+          "reason": "board 상태 변경이 저장소 공통 현재 상태와 충돌하지 않는지 확인"
         }
       ]
     }
