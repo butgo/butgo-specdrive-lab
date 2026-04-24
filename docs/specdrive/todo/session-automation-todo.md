@@ -33,6 +33,14 @@
 현재 기준에서 `session` CLI는 Codex 프롬프트에 문맥을 자동 주입하지 않는다.
 또한 session 출력 파일을 별도로 누적하지 않는다.
 
+추가로 현재 판단은 다음과 같다.
+
+- `session` 과 `git` 단계는 먼저 내부 skill 자산을 사용하도록 정리한다.
+- 여기서 말하는 내부 skill 사용은 `specdrive/skills/session/**`, `specdrive/skills/git/**` 같은 작업 규칙 자산을 CLI 프롬프트 구성에 반영하는 것을 뜻한다.
+- `codex exec`, IDE Extension, SDK 등을 통한 자동 실행은 차기 버전 검토 대상으로 둔다.
+- `git branch-name`, `git git-message`, `git pr-message` 3종은 다시 계획할 예정이므로, 현재 자동화 설계의 기준으로 확정하지 않는다.
+- `git commit`, PR 생성 같은 실제 GitHub/Git 실행 자동화도 차기 버전 범위로 둔다.
+
 ---
 
 ## 3. 검토 후보 1: copy prompt 유지
@@ -98,6 +106,70 @@ specdrive/specdrive.ps1 session start | codex exec -
 
 - copy prompt 출력이 몇 차례 검증된 뒤 후속 후보로 검토한다.
 - 자동 실행을 넣더라도 "상태 복구 요청"까지만 담당하고 문서 수정은 하지 않는 방향이 안전하다.
+
+---
+
+## 4.1 역할 분리와 실행 모드 후보
+
+후속 자동화 검토 시 역할은 다음처럼 분리해서 본다.
+
+- Skill
+  - Codex가 따르는 절차다.
+  - 어떤 문서를 읽고, 어떤 순서로 요약하며, 어디서 사람 확인을 받아야 하는지 정의한다.
+- `specflow.ps1`
+  - 프롬프트를 만들거나 로컬 상태를 수집하는 도구다.
+  - 현재 `specdrive.ps1` 단일 진입점과 이름/역할 관계는 별도 검토한다.
+- VSCode Codex
+  - 사람이 붙여넣은 프롬프트를 실행하는 IDE 연동 실행자다.
+  - 현재 기준에서는 사람이 copy prompt를 붙여넣어 이어서 대화하는 인터페이스로 본다.
+- `codex exec` / SDK
+  - 사람이 붙여넣지 않아도 실행되게 하는 자동화 수단이다.
+  - 자동 실행을 도입하더라도 문서 수정은 별도 승인 흐름으로 분리한다.
+
+세션 저장 자동화 후보 명령 형태는 다음처럼 검토할 수 있다.
+
+```powershell
+.\specflow.ps1 session save --mode prompt
+.\specflow.ps1 session save --mode file
+.\specflow.ps1 session save --mode clipboard
+.\specflow.ps1 session save --mode agent
+```
+
+각 mode의 의미 후보는 다음과 같다.
+
+- `prompt`
+  - 콘솔에 copy prompt를 출력한다.
+  - 현재 기본 방식과 가장 가깝다.
+- `file`
+  - 세션 저장 초안이나 prompt를 파일로 남긴다.
+  - `.speclab/session-output/**` 같은 출력 위치는 별도 검토한다.
+- `clipboard`
+  - 생성된 prompt를 클립보드에 복사한다.
+  - IDE Extension 직접 주입이 없을 때 반복 복사 부담을 줄이는 중간 단계로 볼 수 있다.
+- `agent`
+  - `codex exec` 또는 SDK를 통해 자동 실행한다.
+  - 차기 버전 자동화 후보로 두며, 현재 기본 경로로 확정하지 않는다.
+
+현재 선호하는 검증 순서는 다음과 같다.
+
+1. Skill만 만든다.
+   - `session-start`
+   - `session-save`
+   - repo local 설치 위치:
+     - `.agents/skills/session-start/SKILL.md`
+     - `.agents/skills/session-save/SKILL.md`
+   - 배포/패키징 후보 원본 위치:
+     - `specdrive/codex-skills/session-start/SKILL.md`
+     - `specdrive/codex-skills/session-save/SKILL.md`
+   - 테스트 중에는 전역 `~/.agents/skills/**` 또는 `~/.codex/skills/**` 에 설치하지 않는다.
+2. Codex에서 직접 호출한다.
+   - `$session-start`
+   - `$session-save`
+3. 5~10번 실제 세션에서 사용하면서 절차를 다듬는다.
+4. 정말 반복되는 부분만 `specflow.ps1` 로 뺄지 검토한다.
+
+4단계는 현재 확정이 아니다.  
+Skill 직접 사용만으로 충분한지, CLI로 빼야 할 반복 부분이 실제로 누적되는지 확인한 뒤 판단한다.
 
 ---
 
@@ -169,12 +241,16 @@ Codex SDK를 사용하면 별도 프로그램에서 Codex thread를 만들고 pr
 - `.speclab/session-output/**` 생성
 - Codex IDE Extension 직접 주입
 - Codex SDK 기반 session runner
+- `git commit` 자동 실행
+- GitHub PR 자동 생성
+- 현재 `git` 3종 명령의 최종 구조
 
 현재 확정된 것은 다음뿐이다.
 
 - `session` 명령은 copy prompt를 출력한다.
 - 사람이 필요한 경우 그 prompt를 Codex에 붙여넣는다.
 - 영속 반영은 사람이 검토한 뒤 관련 문서에 직접 반영한다.
+- 자동 실행보다 먼저 `session` / `git` 단계가 내부 skill 자산을 사용하도록 정리한다.
 
 ---
 

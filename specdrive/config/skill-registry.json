@@ -18,6 +18,12 @@
       "stage": "doc",
       "action": "history-save",
       "description": "Generate a history preview that records the document change context and next entry point."
+    },
+    "session-start": {
+      "path": "specdrive/skills/session/start.md",
+      "stage": "session",
+      "action": "start",
+      "description": "Recover the current session state and summarize focus, next entry point, and change boundaries without modifying files."
     }
   }
 }

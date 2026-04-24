@@ -19,7 +19,7 @@
 
 ## 2. 현재 상태 한 줄 요약
 
-- 현재는 board 문서 구조를 `01-overview.md / specs / impl / status` 기준으로 재정리하고, specdrive의 `doc` 단계 흐름과 `session start / status / save` 해석을 함께 안정화하는 작업을 진행 중이다.
+- 현재는 board 문서 구조를 `01-overview.md / specs / impl / status` 기준으로 재정리하고, specdrive의 `doc` 단계 흐름은 유지하되 `session` / `git` 은 skill 중심 절차로 다시 검증하는 작업을 진행 중이다.
 
 현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
 현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
@@ -35,7 +35,8 @@
 - `doc` / `dev` 단계 분리 정리
 - `session` 단계 분리 정리
 - `git` 단계 분리 정리
-- Codex 중심 CLI 흐름 최소 구현 및 preview 검증
+- Codex 중심 skill 절차 검증
+- CLI는 반복이 증명된 작업만 보조 도구로 분리하는 방향 검토
 - key 기반 registry routing 문서/스크립트 정합성 정리
 
 현재는 실제 제품 구현보다  
@@ -171,6 +172,7 @@
 - `specdrive/scripts/session/start.ps1`, `status.ps1`, `save.ps1` 와 관련 문서를 함께 정리해 `session` 3종의 역할을 현재 기준으로 맞춤
 - `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session start / status / save` 해석을 문서 전반에 동기화
 - `butgo-specdrive-lab.code-workspace` 멀티루트 workspace 설정 추가
+- `session start` 가 하드코딩된 복구 규칙 대신 `specdrive/skills/session/start.md` 내부 skill 자산을 읽어 copy prompt 에 반영하도록 정리
 
 ---
 
@@ -207,13 +209,14 @@
 - 현재 artifact naming 규칙 중 일부는 `doc-action-registry.json` 에서 읽고, 스크립트는 이를 소비하는 방향으로 옮기기 시작했다.
 - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 기준으로 주로 `default_target` fallback 용 legacy config 로 남아 있다.
 - 현재 `specdrive/specdrive.ps1` 는 `doc`, `session`, `git` 상위 라우팅을 지원한다.
-- 현재 `session` 단계는 `start / status / save` 를 콘솔 출력 중심으로 실행하며, `status` 는 `docs/AI_CONTEXT.md` 기준의 서술형 현재 상태 조회로 본다.
-- 현재 `session start` 는 관련 문서를 읽고 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 먼저 정리하는 세션 복구용 copy prompt 를 출력하는 명령으로 본다.
-- 현재 `session status` 는 `docs/AI_CONTEXT.md` 기준 현재 상태를 읽기 전용으로 확인하는 조회 명령으로 본다.
-- 현재 `session save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영용 세션 저장 초안 프롬프트를 출력하는 명령으로 본다.
-- 현재 `session save` 로 만든 초안은 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어지는 흐름을 기준으로 본다.
-- 현재 `session` 단계의 권장 해석은 `start = 복구 시작용 copy prompt`, `status = 읽기 전용 상태 조회`, `save = AI_CONTEXT 반영 초안 요청용 copy prompt` 로 구분하는 것이다.
-- 현재 `git` 단계는 `branch-name / git-message / pr-message` 를 콘솔 출력 중심으로 실행하며, 기본 출력은 변경 수, 변경 영역, 변경 파일 샘플로 제한한다.
+- 현재 `session` 단계는 CLI보다 `session-start`, `session-save` skill 직접 사용을 먼저 검증하는 방향으로 전환한다.
+- 현재 `session-start` 는 관련 문서를 읽고 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 먼저 정리하는 Codex 절차로 본다.
+- 현재 `session-save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안하는 Codex 절차로 본다.
+- `session-save` 결과는 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어진다.
+- 기존 `session start / status / save` CLI는 당장 최종 구조로 확정하지 않고, 반복되는 로컬 상태 수집이나 prompt 생성이 확인될 때 보조 도구로 재검토한다.
+- 현재 `git` 단계는 `branch-name / git-message / pr-message` CLI 3종을 최종 구조로 보지 않고, 먼저 Git 전달 단위 생성 절차를 skill 중심으로 다시 계획한다.
+- 현재 `session` 과 `git` 단계는 자동 실행보다 먼저 skill 자산을 직접 사용하도록 정리하는 방향을 우선한다.
+- 현재 `git branch-name / git-message / pr-message` 3종은 다시 계획할 예정이며, `git commit` 과 GitHub PR 자동화는 차기 버전 범위로 둔다.
 - 현재 Git 상태 조회 helper 는 Windows 경로를 Git safe.directory 에 맞는 `/` 경로로 넘기고, 변경 경로가 없거나 Git 상태 조회가 실패한 경우에도 빈 목록으로 처리해야 한다.
 - 현재 `session start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
 - 신규 문서 생성, 문서 역할 변경, 요구사항에서 설계 또는 설계에서 구현 계획으로 넘어가는 전환점은 개발자 확인 후 진행하는 규칙으로 명시했다.
@@ -330,11 +333,14 @@
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
 - `draft-save -> reinforce-prompt -> apply-prompt` 루프를 `01-overview.md`, `specs/02-requirements.md`, `specs/03-design.md` 에 어떻게 반복 적용할지 판단
 - `confirm-prompt` 를 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
-- 새로 정리한 `session start / status / save` 해석을 실제 사용 루프에서 반복 확인
+- `session-start`, `session-save` skill 을 Codex에서 직접 호출해 5~10회 사용하며 절차를 다듬기
+- 테스트 중인 `session-start`, `session-save` 는 전역 설치 없이 repo local `.agents/skills/**` 에 설치한다.
+- 배포/패키징 후보 원본은 `specdrive/codex-skills/session-start/SKILL.md`, `specdrive/codex-skills/session-save/SKILL.md` 로 둔다.
+- CLI가 필요한 반복 부분이 실제로 누적되는지 확인한 뒤에만 `specflow.ps1` 또는 기존 `specdrive.ps1` 보조 흐름 검토
 
 ### 우선순위 3
 - `specdrive/specdrive.ps1` 에 `dev` 단계 상위 라우팅 추가 여부 판단
-- 현재 변경 집합 기준으로 개선한 `git branch-name / git-message / pr-message` 초안이 충분한지 점검
+- `git branch-name / git-message / pr-message` 3종을 skill 중심으로 다시 계획할지 검토
 - `doc reinforce -Execute` 실제 사용감 점검
 - `codex exec` 실제 실행 연결 범위 확대 여부 판단
 - `dev phase / cycle / status / task-split` 흐름은 실제 코딩 시작 시점의 후속 테스트 대상으로 유지
@@ -355,11 +361,11 @@
 - `doc` 단계의 최소 흐름을 정규화 프롬프트 + 명시적 history 저장 중심으로 반복 가능하게 유지하는 것
 - `docs/specdrive` 문서가 실제 registry 기반 라우팅 상태를 정확히 설명하도록 유지하는 것
 - `specdrive/specdrive.ps1` 단일 진입점이 생기더라도 하위 스크립트 책임 경계가 무너지지 않게 하는 것
-- `session` 단계가 `doc` / `dev` 를 침범하지 않고 세션 운영 보조로만 유지되게 하는 것
-- `session start / status / save` 3종의 해석이 스크립트 출력과 문서 설명에서 계속 같은 의미를 유지하게 하는 것
-- `git` 단계가 브랜치/메시지 생성에 집중하고 `session` 과 섞이지 않게 유지하는 것
+- `session` 단계가 `doc` / `dev` 를 침범하지 않고 skill 중심 세션 운영 절차로만 유지되게 하는 것
+- `session-start`, `session-save` 를 Codex에서 직접 호출해 실제 사용성을 먼저 검증하는 것
+- `git` 단계가 브랜치/메시지 생성 절차에 집중하고 `session` 과 섞이지 않게 유지하되, CLI 3종은 재계획 대상으로 두는 것
 - `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `specs/02-requirements.md`, `specs/03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
-- 현재 적용한 최소 rule/config 분리 방식을 `dev`, `session`, `git`, 후속 project 문서 흐름에도 점진 적용 가능한지 확인하는 것
+- 현재 적용한 최소 rule/config 분리 방식을 `dev`, 후속 project 문서 흐름에 점진 적용하되, `session` / `git` 은 먼저 skill 직접 사용으로 절차를 검증하는 것
 - 현재 실행까지 끝낸 `confirm / history-save` 결과와 실제 history 산출물 묶음은 `doc-stage-testing.md` 의 1차 완료 판정 근거로 유지하는 것
 - `dev` 단계는 아직 본격 설계/테스트하지 않고 실제 코딩 작업이 시작될 때 검증하는 것
 
