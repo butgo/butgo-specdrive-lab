@@ -51,18 +51,34 @@ Reply with:
 
 Keep the output concise and separate facts from recommendations.
 
-For the approval prompt, include a copy-ready prompt that lets the user approve add + commit while explicitly excluding push. Use this shape:
+For the approval prompt, include a copy-ready prompt that lets the user approve add + commit while explicitly excluding push.
+Do not use context-dependent wording such as "위 대상" because the prompt may be copied into a fresh turn.
+Use one of these shapes:
 
 ```text
-위 대상 전부 add하고 `<commit message>` 로 commit 해줘. push는 아직 하지 마.
+현재 git status에 표시된 변경 파일 전체를 add하고 `<commit message>` 로 commit 해줘. push는 아직 하지 마.
 ```
 
-For the push prompt template, include copy-ready prompts that can be used after commit succeeds. Use the current branch and final commit hash/message when known. Use this shape:
+When a precise file list is safer, include the file list inside the copy-ready prompt:
+
+```text
+아래 파일 목록만 add하고 `<commit message>` 로 commit 해줘. push는 아직 하지 마.
+<file-list>
+```
+
+For the push prompt template, include two separate titled copy boxes that can be used after commit succeeds.
+Use the current branch and final commit hash/message when known.
+
+Detailed push approval prompt:
 
 ```text
 현재 브랜치 `<branch>` 의 커밋 `<short-hash> <commit message>` 를 원격에 push 해줘.
 push 전에 현재 브랜치와 git status를 확인하고, 문제가 없으면 `git push origin <branch>` 를 실행해줘.
-------------------------------------------------
+```
+
+Simple push approval prompt:
+
+```text
 현재 브랜치 확인하고 clean 상태면 `git push origin <branch>` 실행해줘.
 ```
 
