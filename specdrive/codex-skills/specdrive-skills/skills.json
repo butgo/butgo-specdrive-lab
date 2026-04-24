@@ -1,10 +1,22 @@
 {
   "skills": [
     {
+      "name": "session-start-lite",
+      "command": "$session-start-lite",
+      "description": "VSCode/Codex 첫 시작 시 docs/AI_CONTEXT.md 중심으로 현재 focus와 다음 진입점만 가볍게 복구합니다.",
+      "path": ".agents/skills/session-start-lite/SKILL.md"
+    },
+    {
       "name": "session-start",
       "command": "$session-start",
-      "description": "세션 시작 시 기준 문서를 읽고 현재 focus, 다음 진입점, 변경 주의 범위를 복구합니다.",
+      "description": "가벼운 복구 요약 후 전체 session start를 진행할 복사 프롬프트를 보여줍니다.",
       "path": ".agents/skills/session-start/SKILL.md"
+    },
+    {
+      "name": "session-status",
+      "command": "$session-status",
+      "description": "AI_CONTEXT 최신성, 현재 브랜치, 작업트리 상태를 6줄 내외로 간단히 보여줍니다.",
+      "path": ".agents/skills/session-status/SKILL.md"
     },
     {
       "name": "session-save",

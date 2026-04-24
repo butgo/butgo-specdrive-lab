@@ -2,28 +2,28 @@
 
 ## 1. 문서 목적
 
-이 문서는 현재 specdrive의 CLI 테스트 흐름을  
-**사람이 실제로 실행하고 검증할 수 있도록 설명하는 운영 매뉴얼**이다.
+이 문서는 과거 specdrive의 CLI 테스트 흐름을 기록한  
+**후속 검토용 보류 문서**이다.
 
 목적은 다음과 같다.
 
-- 현재 단계에서 어떤 명령을 어떻게 실행하는지 정리한다.
-- `doc` 단계 명령의 역할과 순서를 분명히 한다.
-- 장기 방향과 현재 실행 방식을 혼동하지 않도록 구분한다.
+- 과거 CLI 검증 흐름을 보존한다.
+- 후속 CLI 재검토 시 확인할 기준을 남긴다.
+- 현재 skill-first 실행 방식과 혼동하지 않도록 구분한다.
 
-이 문서는 CLI 상세 설계 문서가 아니다.  
-현재 있는 스크립트를 기준으로 **지금 어떻게 테스트할 것인가**를 설명한다.
+이 문서는 현재 버전의 실행 매뉴얼이 아니다.  
+현재 버전은 repo-local Codex skill 직접 사용을 기준으로 한다.
 
 ---
 
 ## 2. 현재 CLI 이해 방식
 
-현재 specdrive는 CLI 중심으로 흐름을 검증하는 단계다.
+현재 specdrive는 skill-first 흐름을 검증하는 단계다.
 
-현재는 `specdrive/specdrive.ps1` 단일 진입점을 통해 `doc`, `session`, `git` 최소 흐름을 실행할 수 있다.  
-다만 내부적으로는 여전히 PowerShell 하위 스크립트를 호출하는 얇은 라우터 구조다.
+과거에는 `specdrive/specdrive.ps1` 단일 진입점을 통해 `doc`, `session`, `git` 최소 흐름을 검증했다.  
+이 흐름은 현재 버전의 기준 경로에서 제외하고 후속 후보로 보류한다.
 
-현재 `doc` 단계는 prompt-first 흐름을 기준으로 아래 명령을 사용한다.
+과거 `doc` 단계는 prompt-first 흐름을 기준으로 아래 명령을 사용했다.
 
 - `doc draft-save`
 - `doc reinforce-prompt`
@@ -32,29 +32,23 @@
 - `doc apply-prompt`
 - `doc apply-only-prompt`
 
-즉 현재 CLI의 역할은 문서를 직접 자동 완성하는 실행기보다,  
+즉 과거 CLI의 역할은 문서를 직접 자동 완성하는 실행기보다,  
 **Codex 협업에 필요한 정규화 프롬프트와 절차를 출력하는 도구**에 더 가깝다.
 
 ---
 
 ## 3. 현재 개발 환경 전제
 
-현재 CLI 테스트는 다음 환경을 전제로 한다.
+현재 버전은 별도 CLI 설치 안내를 전제로 하지 않는다.
+
+현재 기준은 다음과 같다.
 
 - OS / 셸: Windows + PowerShell
 - 에디터: VS Code
 - AI 협업 환경: Codex 확장
-- AI 실행 CLI: `codex-cli`
-- 현재 확인 버전: `codex-cli 0.121.0`
+- 실행 인터페이스: repo-local Codex skill
 
-먼저 아래 명령으로 `codex-cli` 가 준비되어 있는지 확인하는 편이 좋다.
-
-```powershell
-codex --version
-```
-
-현재 `codex-exec.ps1` 는 preview 중심 래퍼를 유지하지만,  
-`doc reinforce` 에 한해 `-Execute` 옵션으로 실제 `codex exec` 호출을 좁게 연결한 상태다.
+CLI 자동화와 직접 `codex exec` 연동은 후속 검토 범위다.
 
 ---
 

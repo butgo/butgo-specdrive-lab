@@ -157,7 +157,7 @@ Basic flow:
 6. Meaningful document changes and history are applied deliberately when needed
 
 At the current stage, an important point is that the repository is leaning toward
-an explicit history-first document loop rather than a fully automatic CLI apply flow.
+an explicit history-first document loop rather than a fully automatic apply flow.
 
 - `draft-save`: save the current developer draft into history before reinforcement
 - `reinforce-prompt`: print a normalized prompt that can be copied into Codex
@@ -166,7 +166,7 @@ an explicit history-first document loop rather than a fully automatic CLI apply 
 - `apply-prompt`: print a normalized prompt for deliberate document apply + history save
 - `apply-only-prompt`: print a normalized prompt for document-only apply when history save is intentionally skipped
 
-In other words, the preferred loop is not “run one command and let the CLI decide everything.”
+In other words, the preferred loop is not “run one command and let automation decide everything.”
 It is closer to the following.
 
 1. Write a draft
@@ -196,35 +196,36 @@ Basic flow:
 5. Update and review the status
 
 ### 5.3 Session Stage (`session`)
-This is the operating stage for session recovery and session save.
+This is the operating stage for session recovery, compact status checks, and session save.
 
-Core flow examples:
+Current skill flow examples:
 
-- start
-- save
+- `session-start-lite`
+- `session-start`
+- `session-status`
+- `session-save`
 
 Basic flow:
 
-1. Recover the current state and entry point at session start
+1. Recover the current state and entry point with a light or staged session skill
 2. Run `doc` or `dev` work as needed
 3. Save session notes and the next entry point at session end
 4. Hand off to `git` stage when delivery messages are needed
 
 ### 5.4 Git Stage (`git`)
-This is the stage for generating delivery-oriented Git artifacts.
+This is the stage for preparing delivery-oriented Git artifacts and PR handoff.
 
-Core flow examples:
+Current skill flow examples:
 
-- branch-name
-- git-message
-- pr-message
+- `git-commit`
+- `github-pr`
 
 Basic flow:
 
 1. Read the current branch and changed files
-2. Generate a new branch-name draft when needed
-3. Generate a Git commit message draft
-4. Generate a PR title/body draft
+2. Prepare a safe commit proposal when needed
+3. Commit and push only after explicit approval
+4. Draft or create a GitHub PR only after explicit approval
 
 In other words, specdrive separates  
 the **flow of refining documents**  
@@ -252,8 +253,8 @@ It includes the following:
 - Document review and synchronization methods
 - Structural inspection methods
 - AI collaboration operating rules
-- CLI command structure
-- Git branch / commit / PR message generation support
+- Repo-local Codex skill structure
+- Git commit / PR workflow support
 - history / phase / cycle management methods
 
 In other words, specdrive covers **how collaboration should be executed**.
@@ -302,14 +303,14 @@ specdrive is a tool for the following:
 - Execute AI collaboration based on development specification documents.
 - Separate the document stage from the actual development stage.
 - Keep session recovery/save and Git/PR message generation as a separate operating stage.
-- Standardize repeatable work procedures as CLI commands.
+- Standardize repeatable work procedures as repo-local Codex skills.
 - Use collaboration with Codex as the primary initial reference.
 
 At the moment, specdrive is closer to the following than to a SaaS product:
 
 - An internal engine
 - A work operating system
-- A CLI orchestrator
+- A repo-local skill workflow
 - A bundle of AI collaboration execution rules
 
 An important point is that specdrive should not be viewed as a tool for merely producing many preview files.
@@ -334,8 +335,8 @@ specdrive is currently guided by the following direction:
 - Validate the core workflow before focusing on SaaS form.
 - Separate the development-document stage from the actual development stage.
 - Organize the flow around Codex for now.
-- Validate the minimum workflow first with a PowerShell-based CLI.
-- Later, consider promoting the implementation to Go or Python if needed.
+- Validate the minimum workflow first with repo-local Codex skills.
+- Keep PowerShell CLI work as a later technical option, not as the current execution center.
 - Do not prioritize multi-AI engine support at this stage.
 
 ---
@@ -360,13 +361,14 @@ The current first-priority items are as follows.
 - `dev status`
 
 ### Session Stage
-- `session start`
-- `session save`
+- `$session-start-lite`
+- `$session-start`
+- `$session-status`
+- `$session-save`
 
 ### Git Stage
-- `git branch-name`
-- `git git-message`
-- `git pr-message`
+- `$git-commit`
+- `$github-pr`
 
 At this stage, stabilizing the **document-based AI collaboration flow itself**  
 is more important than web UI, multi-tenancy, or organization/user management.
@@ -379,25 +381,14 @@ The current minimum validation environment for this repository is based on the f
 
 - Editor: VS Code
 - AI collaboration tool: Codex extension
-- AI execution CLI: `codex-cli`
-- Default shell / execution interface: PowerShell
+- Execution interface: repo-local Codex skills under `.agents/skills/**`
+- Shell: PowerShell for local Git and file checks when needed
 
 In other words, the current stage assumes  
-**VS Code + Codex extension + codex-cli + PowerShell**  
+**VS Code + Codex extension + repo-local Codex skills**  
 as the default development environment.
 
-To actually test flows such as `doc reinforce`, `doc confirm-prompt`, and `doc apply-prompt`,  
-it is recommended to have `codex-cli` installed locally.
-
-Example:
-
-```powershell
-codex --version
-```
-
-The actual `codex exec` runtime integration is still a follow-up scope,  
-but having `codex-cli` available locally is useful for validating the preview flow now  
-and the real Codex connection later.
+Direct `codex exec` integration and broader CLI automation are deferred follow-up topics.
 
 ---
 
@@ -409,7 +400,7 @@ butgo-specdrive handles the following flows:
 - Recovery of the current state
 - Session start and entry-point organization
 - Session save and next-entry preservation
-- Branch-name generation support
+- Branch / commit / PR workflow support
 - AI input context assembly
 - Document review and reinforcement
 - Synchronization after document changes
@@ -447,7 +438,7 @@ The current scope includes the following:
 - Task decomposition flow
 - phase / cycle state management
 - Separation of project documents and shared standards
-- Validation of the CLI command structure
+- Validation of the repo-local Codex skill workflow
 - Verification of the operating model through a real validation project
 
 ---
@@ -458,7 +449,7 @@ This repository is not only for specdrive itself.
 
 At the moment, it is a workspace for validating the following together:
 
-- specdrive’s own documents and command structure
+- specdrive’s own documents and skill workflow
 - The structure of shared standard documents
 - The structure of real project document workspaces
 - Whether AI collaboration is effective in real development projects
@@ -540,7 +531,7 @@ In other words, the current direction is as follows:
 
 - Write real application specification documents under projects.
 - Let projects reference shared development standards when needed.
-- Let specdrive support collaboration flows such as session start, context assembly, review, synchronization, and task decomposition based on those documents.
+- Let specdrive support collaboration flows such as session recovery, context assembly, review, synchronization, and task decomposition based on those documents.
 
 As the first real application example,  
 the current direction is to validate the structure with a board-style project.
@@ -555,7 +546,7 @@ but in the long term the goal is a structure where specdrive and individual proj
 
 ## 18. Future Direction
 
-For now, the focus is on validating the core / CLI operating system first.
+For now, the focus is on validating the core skill-first operating model first.
 
 After that, the following can be reviewed step by step:
 
