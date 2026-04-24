@@ -173,6 +173,23 @@ Keep title structure, terminology, scope boundaries, and reference documents con
 
 Within the overall flow, board also follows the `doc` stage and the `dev` stage.
 
+At the current stage, the board document set is organized around the following structure.
+
+- `01-overview.md`
+- `specs/**`
+- `impl/**`
+- `status/**`
+
+The intent is to keep the current-standard documents separated by role.
+
+- `01-overview.md`: project entry and overview
+- `specs/**`: requirements and design documents
+- `impl/**`: implementation planning documents
+- `status/**`: current state and next entry point documents
+
+History documents are not managed under `docs/projects/board/**`.
+They are kept under `docs/history/**` according to the repository-wide history policy.
+
 ### 9.1 doc Stage
 This is the stage of making board documents implementation-ready.
 
@@ -262,7 +279,8 @@ When starting board work, the usual reading order is as follows.
 6. `docs/projects/board/README.md`
 7. `docs/projects/board/index.md`
 8. Related `docs/projects/standards/**` documents when needed
-9. The actual target requirements / design / implementation plan documents
+9. `docs/projects/board/01-overview.md`
+10. Related `docs/projects/board/specs/**`, `docs/projects/board/impl/**`, `docs/projects/board/status/**` documents
 
 ---
 

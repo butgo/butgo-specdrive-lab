@@ -100,8 +100,9 @@ skill key 는
 예:
 
 - `doc-reinforce`
-- `doc-confirm`
-- `doc-history-save`
+- `doc-confirm-prompt`
+- `doc-apply-prompt`
+- `doc-apply-only-prompt`
 
 skill registry 에는 다음 정보가 들어간다.
 
@@ -176,10 +177,15 @@ legacy action별 target config 는 호환 fallback 으로만 남긴다.
       "stage": "doc",
       "action": "reinforce"
     },
-    "doc-confirm": {
+    "doc-confirm-prompt": {
       "path": "specdrive/skills/doc/confirm.md",
       "stage": "doc",
-      "action": "confirm"
+      "action": "confirm-prompt"
+    },
+    "doc-apply-prompt": {
+      "path": "specdrive/skills/doc/history-save.md",
+      "stage": "doc",
+      "action": "apply-prompt"
     }
   }
 }
@@ -223,9 +229,14 @@ legacy action별 target config 는 호환 fallback 으로만 남긴다.
       "output_mode": "review_patch",
       "human_review_required": true
     },
-    "confirm": {
-      "skill_key": "doc-confirm",
+    "confirm-prompt": {
+      "skill_key": "doc-confirm-prompt",
       "output_mode": "review_patch",
+      "human_review_required": true
+    },
+    "apply-prompt": {
+      "skill_key": "doc-apply-prompt",
+      "output_mode": "history_entry",
       "human_review_required": true
     }
   }
@@ -314,7 +325,7 @@ specdrive/specdrive.ps1 doc reinforce -Target board-overview
 1. 이 문서로 키 구조를 먼저 확정
 2. `target / skill / context-set` registry 초안 추가
 3. `reinforce.ps1` 만 먼저 키 기반 해석 구조로 전환
-4. 이후 `confirm.ps1`, `history-save.ps1` 확장
+4. 이후 `confirm-prompt.ps1`, `apply-prompt.ps1`, `apply-only-prompt.ps1` 확장
 5. 마지막에 선택형 입력 도입 여부 판단
 
 `session`, `git` 단계는 이와 별도로 설계하는 편이 좋다.  

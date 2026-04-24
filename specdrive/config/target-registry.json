@@ -13,13 +13,77 @@
       ]
     },
     "board-requirements": {
-      "document_path": "docs/projects/board/02-requirements.md",
+      "document_path": "docs/projects/board/specs/02-requirements.md",
       "document_kind": "project-requirements",
       "project": "board",
       "context_set_key": "board-doc-base",
       "notes": [
         "Use this target after board-overview is stabilized.",
         "Keep the scope on minimum board requirements and avoid drifting into detailed design."
+      ]
+    },
+    "board-design-summary": {
+      "document_path": "docs/projects/board/specs/03-design.md",
+      "document_kind": "project-design",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for the board design summary document.",
+        "Keep the scope on current structure decisions and avoid drifting into implementation planning."
+      ]
+    },
+    "board-application-structure": {
+      "document_path": "docs/projects/board/specs/04-application-structure.md",
+      "document_kind": "project-design-structure",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for package, layer, and application structure decisions."
+      ]
+    },
+    "board-domain-model": {
+      "document_path": "docs/projects/board/specs/05-domain-model.md",
+      "document_kind": "project-design-domain",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for core domain model and entity decisions."
+      ]
+    },
+    "board-api-spec": {
+      "document_path": "docs/projects/board/specs/06-api-spec.md",
+      "document_kind": "project-design-api",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for API endpoint, request, and response specifications."
+      ]
+    },
+    "board-db-design": {
+      "document_path": "docs/projects/board/specs/07-db-design.md",
+      "document_kind": "project-design-db",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for DB table, column, and persistence design decisions."
+      ]
+    },
+    "board-implementation-plan": {
+      "document_path": "docs/projects/board/impl/01-implementation-plan.md",
+      "document_kind": "project-implementation-plan",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for implementation sequencing, task split, and verification planning."
+      ]
+    },
+    "board-current-status": {
+      "document_path": "docs/projects/board/status/current-status.md",
+      "document_kind": "project-status",
+      "project": "board",
+      "context_set_key": "board-doc-base",
+      "notes": [
+        "Use this target for current board status, focus, and next entry point updates."
       ]
     }
   }

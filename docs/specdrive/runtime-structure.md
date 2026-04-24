@@ -53,7 +53,7 @@ specdrive/
 
 ### 3.1 `specdrive/scripts/doc/`
 - 문서 단계 명령 실행 흐름
-- 예: `doc reinforce`, `doc confirm`, `doc history-save`
+- 예: `doc reinforce`, `doc confirm-prompt`, `doc apply-prompt`
 - 문서를 읽고, skill 또는 Codex 실행과 연결하고, 결과 반영 흐름을 조합
 
 ### 3.2 `specdrive/scripts/dev/`
@@ -152,7 +152,7 @@ specdrive/
 - action 별 판단 기준은 `doc-action-registry.json` 같은 action registry 로 모은다.
 - 스크립트는 가능한 한 config 에서 해석된 결과를 소비한다.
 
-예를 들어 현재 `doc confirm`, `doc history-save` 는
+예를 들어 현재 `doc confirm-prompt`, `doc apply-prompt` 는
 preview 탐색 위치를 스크립트 내부 하드코딩 대신
 action config 우선, output policy fallback 규칙으로 해석한다.
 
@@ -160,14 +160,14 @@ action config 우선, output policy fallback 규칙으로 해석한다.
 기본 target 을 action별 legacy config 우선으로 읽지 않고,
 `target-registry.json` 의 `default_target` 우선, legacy fallback 순서로 해석한다.
 
-또한 일부 execute 규칙도 action registry 로 옮기기 시작했다.
-현재 `doc confirm` 은 `execute_requires` 로
-`reinforce_codex_output` 선행조건을 읽어 execute 가능 여부를 확인한다.
+또한 일부 action 전제조건과 산출물 규칙도 action registry 로 옮기기 시작했다.
+현재는 실행 중심보다 prompt-first 해석을 우선하며,
+필요한 preview 전제조건과 출력 연결 규칙을 config 에서 읽는 방향으로 정리 중이다.
 
 같은 방식으로 현재 쓰는 preview prefix, history suffix 같은
 artifact naming 규칙도 action registry 로 옮기기 시작했다.
-현재 `doc confirm`, `doc history-save` 는
-preview 파일명과 history 저장 suffix 일부를 config 에서 읽는다.
+현재 `doc confirm-prompt`, `doc apply-prompt` 는
+preview 파일명과 history 저장 관련 suffix 일부를 config 에서 읽는다.
 
 즉 현재 `config` 는 단순 경로 모음이 아니라
 **고정값 + 실행 판단 기준의 최소 rule/config layer** 로 확장되는 방향을 가진다.
@@ -189,7 +189,25 @@ preview 파일명과 history 저장 suffix 일부를 config 에서 읽는다.
 
 ## 6. CLI / Codex / skill 연결 기준
 
-현재 기준 연결 흐름은 아래처럼 이해한다.
+현재 기준 연결 흐름은 두 갈래로 이해한다.
+
+### 6.1 skill 중심 흐름
+
+`session` 과 `git` 처럼 절차가 아직 검증 중인 영역은 먼저 skill 중심으로 사용한다.
+
+1. 개발자는 Codex에서 필요한 skill을 직접 호출한다.
+2. Codex는 repo local `.agents/skills/**` 에 설치된 skill 절차를 따른다.
+3. Codex는 필요한 기준 문서를 직접 읽는다.
+4. Codex는 먼저 요약, 초안, 확인 지점을 제안한다.
+5. 개발자 확인 전에는 파일 수정이나 자동 실행으로 넘어가지 않는다.
+
+즉 현재 `session` / `git` 의 우선순위는 CLI 확장이 아니라
+skill 절차를 5~10회 실제 사용하며 다듬는 것이다.
+테스트 중인 skill은 전역 `~/.agents/skills/**` 또는 `~/.codex/skills/**` 에 설치하지 않는다.
+
+### 6.2 CLI 보조 흐름
+
+반복이 증명된 뒤에는 아래처럼 CLI 보조 흐름을 둘 수 있다.
 
 1. 사용자는 CLI 명령을 입력한다.
 2. `specdrive/scripts/**` 가 현재 단계와 명령 목적에 맞는 흐름을 선택한다.
@@ -200,9 +218,9 @@ preview 파일명과 history 저장 suffix 일부를 config 에서 읽는다.
 
 즉 현재 방향은:
 
-- CLI = 진입점
+- skills = Codex가 따르는 절차와 반복 작업 규칙 자산
+- CLI = 반복이 증명된 로컬 상태 수집과 prompt 생성 보조 도구
 - scripts = 흐름 오케스트레이션
-- skills = 반복 작업 규칙 자산
 - config = 연결 정보
 - exec = 외부 실행기 연결
 

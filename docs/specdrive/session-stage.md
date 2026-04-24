@@ -8,11 +8,10 @@
 목적은 다음과 같다.
 
 - `session` 이 왜 `doc` 과 `dev` 와 분리되어야 하는지 설명한다.
-- `session start`, `session save` 의 역할을 고정한다.
+- `session-start`, `session-save` skill 의 역할을 고정한다.
 - 세션 시작/종료 프롬프트를 정규화해 반복 입력을 줄인다.
 - 매번 긴 문서를 통째로 주입하지 않고 필요한 진입 문서와 확인 지점만 안내해 토큰 사용량을 줄이는 방향을 만든다.
 - `session` 단계가 어디까지 다루고 어디까지 다루지 않는지 경계를 정한다.
-- 단일 진입 CLI에서 `session` 을 어떤 성격의 상위 명령으로 둘지 기준을 만든다.
 
 이 문서는 구현 상세 문서가 아니다.  
 현재 기준으로는 **운영 단계로서의 `session` 역할과 최소 명령 구조**를 설명한다.
@@ -57,39 +56,116 @@
 
 ## 4. 현재 기준 핵심 명령
 
-현재 기준으로 `session` 아래에는 다음 명령을 둔다.
+현재 기준으로 `session` 은 먼저 skill 중심으로 검증한다.
 
-```powershell
-specdrive/specdrive.ps1 session start
-specdrive/specdrive.ps1 session status
-specdrive/specdrive.ps1 session save
+우선 검증 대상은 다음 skill 이다.
+
+```text
+session-start-lite
+session-start
+session-status
+session-save
 ```
 
-이 명령들은 다음 역할을 가진다.
+repo local skill 설치 위치는 다음과 같다.
 
-### 4.1 `session start`
-- 현재 상태 복구
-- 읽어야 할 핵심 문서 안내
-- 현재 focus / 다음 진입점 확인 보조
-- Codex에 전달할 최소 세션 복구 프롬프트 정규화
-- 불필요한 전체 문서 주입을 줄이기 위한 읽기 순서 안내
+```text
+.agents/skills/session-start-lite/SKILL.md
+.agents/skills/session-start/SKILL.md
+.agents/skills/session-status/SKILL.md
+.agents/skills/session-save/SKILL.md
+```
 
-### 4.2 `session save`
+테스트 중에는 전역 skill 경로에 설치하지 않는다.
+배포/패키징 후보 원본 위치는 다음과 같다.
+
+```text
+specdrive/codex-skills/session-start-lite/SKILL.md
+specdrive/codex-skills/session-start/SKILL.md
+specdrive/codex-skills/session-status/SKILL.md
+specdrive/codex-skills/session-save/SKILL.md
+```
+
+Codex 대화에서는 다음처럼 직접 호출해 사용해 보는 방향을 우선한다.
+
+```text
+$session-start-lite
+$session-start
+$session-status
+$session-save
+```
+
+현재 버전에서 `session` 단계는 CLI가 아니라 repo-local Codex skill 직접 사용을 기준으로 검증한다.
+
+이 skill 들은 다음 역할을 가진다.
+
+### 4.1 `session-start-lite`
+- VSCode 또는 Codex 첫 시작 직후 사용하는 경량 복구 skill
+- `docs/AI_CONTEXT.md` 중심으로 현재 focus / 다음 진입점 / 변경 주의 범위만 짧게 복구
+- `README.md`, 루트 `AGENTS.md`, `docs/specdrive/AGENTS.md`, `docs/specdrive/session-stage.md` 같은 전체 복구 문서는 기본으로 읽지 않음
+- 전체 문맥 복구가 필요하면 이후 `session-start` 로 넘어감
+
+### 4.2 `session-start`
+- 전체 문서를 즉시 읽는 대신 먼저 경량 복구를 수행
+- 현재 focus / 다음 진입점 / 주의해야 할 변경 범위를 짧게 정리
+- 전체 `$session-start` 복구를 위한 copy prompt 를 출력
+- 사용자가 해당 프롬프트를 복사해 다음 단계로 진행할 때만 `README.md`, 루트 `AGENTS.md`, `docs/AI_CONTEXT.md`, `docs/specdrive/AGENTS.md`, `docs/specdrive/session-stage.md` 를 읽도록 안내
+- 작업 대상 영역이 정해진 경우 해당 영역의 전용 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내
+- 개발자 요청 전에는 파일을 직접 수정하지 않도록 경계 유지
+
+### 4.3 `session-save`
 - 현재 세션 변경 요약
 - 다음 세션용 메모 초안 생성
 - 필요 시 상태/히스토리 반영 후보 정리
 - 다음 세션에서 다시 사용할 수 있는 진입점 요약 형식 정규화
 - 긴 대화 전체를 넘기지 않고 변경 요약, 변경 영역, 변경 파일 샘플, 판단 후보 중심으로 저장할 수 있게 보조
+- Codex에 붙여넣을 `docs/AI_CONTEXT.md` 반영 초안 요청 프롬프트 출력
+- 초안 검토 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 않도록 경계 유지
 
-### 4.3 `session status`
-- `docs/AI_CONTEXT.md` 기준 현재 작업 상태를 서술형으로 요약
-- 현재 작업 모드, 현재 focus, 다음 진입점, 보류 사항을 짧게 확인
-- Git 변경 상태는 보조 정보로만 출력
-- Codex copy prompt를 만들지 않고 현재 상태만 빠르게 확인
+### 4.4 `session-status`
+- `docs/AI_CONTEXT.md` 의 마지막 갱신 기준과 한 줄 상태를 확인
+- 현재 브랜치와 Git 작업트리 변경 수/주요 영역을 함께 확인
+- 현재 focus 와 다음 진입점은 각각 한 줄 정도로만 표시
+- 전체 AI_CONTEXT 내용을 길게 보여주지 않음
+- Codex copy prompt를 만들지 않고 6줄 내외의 읽기 전용 스냅샷만 출력
+- 문서 수정이나 저장 흐름으로 바로 이어지지 않게 유지
 
 현재 기준으로 `session` 단계는 일회성 preview 파일을 남기지 않는다.  
-즉 `session start`, `session save` 는 콘솔 출력 중심의 운영 보조 명령으로 보고,  
+즉 `session-start-lite`, `session-start`, `session-status`, `session-save` 는 Codex가 직접 따르는 절차 자산으로 보고,  
+현재 버전에서는 CLI 흐름을 기준 경로로 사용하지 않는다.  
 영속적으로 남겨야 할 내용은 `docs/AI_CONTEXT.md` 같은 상태 문서나 `docs/history/projects/**` 같은 실제 이력 문서에 반영한다.
+
+현재 `session-start` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. 개발자가 Codex에서 `$session-start-lite` 를 호출해 최소 복구를 먼저 수행한다.
+2. 더 깊은 복구가 필요하면 `$session-start` 를 호출한다.
+3. Codex 는 전체 문서를 즉시 읽기보다 현재 focus, 다음 진입점, 주의해야 할 변경 범위를 짧게 정리하고 full recovery copy prompt 를 보여준다.
+4. 개발자가 그 프롬프트를 복사해 다음 단계로 진행할 때만 전체 복구 문서를 읽는다.
+5. 개발자가 실제 작업을 요청한 뒤에만 문서 수정이나 후속 작업으로 들어간다.
+6. 로컬 Git 상태나 변경 요약은 필요한 경우 skill 내부의 읽기 전용 확인으로만 다룬다.
+
+즉 현재 `session-start` 는 자동 작업 명령이 아니라  
+**세션 복구와 진입점 확인을 단계적으로 시작하는 skill 절차**로 보는 편이 맞다.
+
+현재 `session-save` 의 의도는 다음 순서로 이해하는 편이 맞다.
+
+1. 개발자가 Codex에서 `$session-save` 를 호출한다.
+2. Codex 는 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안한다.
+3. 개발자가 초안을 검토한 뒤 "저장해줘" 같이 명시적으로 요청하면 그때 실제 `docs/AI_CONTEXT.md` 반영을 진행한다.
+4. 로컬 변경 요약 생성은 필요한 경우 skill 내부의 읽기 전용 확인으로만 다룬다.
+
+즉 현재 `session-save` 는 자동 저장 명령이 아니라  
+**AI_CONTEXT 반영 초안을 안전하게 시작하는 skill 절차**로 보는 편이 맞다.
+
+현재 `session-status` 의 의도는 다음처럼 이해하는 편이 맞다.
+
+1. `session-status` 가 `docs/AI_CONTEXT.md` 의 갱신 상태와 한 줄 상태를 확인한다.
+2. 현재 브랜치와 Git 작업트리 상태를 함께 확인한다.
+3. focus 와 다음 진입점은 각각 한 줄 정도로만 본다.
+4. 필요하면 그 다음에 `session-start`, `doc`, `session-save` 같은 후속 흐름으로 넘어간다.
+
+즉 현재 `session-status` 는  
+**AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 확인하는 읽기 전용 스냅샷**으로 보는 편이 맞다.
 
 ---
 
@@ -126,8 +202,8 @@ specdrive/specdrive.ps1 session save
 중요한 점은 다음과 같다.
 
 - `session` 은 `doc` 과 `dev` 의 내부 로직을 대체하지 않는다.
-- `session start` 가 문서 확정을 대신하지 않는다.
-- `session save` 가 history-save 를 대체하지 않는다.
+- `$session-start` 가 문서 확정을 대신하지 않는다.
+- `$session-save` 가 history-save 를 대체하지 않는다.
 - Git 전달 단위 생성은 `git` 단계로 분리한다.
 
 ---
@@ -136,11 +212,12 @@ specdrive/specdrive.ps1 session save
 
 현재 단계에서는 다음 흐름이 자연스럽다.
 
-1. `session start`
-2. 필요 시 `session status`
-3. 필요한 경우 `doc ...`
-4. 필요한 경우 `dev ...`
-5. `session save`
+1. `$session-start-lite`
+2. 필요 시 `$session-start`
+3. 필요 시 `$session-status`
+4. 필요한 경우 `doc ...`
+5. 필요한 경우 `dev ...`
+6. `$session-save`
 
 즉 `session` 은  
 실제 작업의 앞뒤를 감싸는 운영 보조 계층으로 보는 편이 맞다.
@@ -149,80 +226,45 @@ specdrive/specdrive.ps1 session save
 
 ## 8. 출력 형식 최소 원칙
 
-현재 `session` 명령은 Codex 프롬프트에 자동으로 문맥을 주입하지 않는다.
-또한 모든 기준 문서를 한 번에 읽게 만드는 명령도 아니다.
+현재 `session` skill 은 모든 기준 문서를 한 번에 읽게 만들지 않는다.
+또한 파일 수정이나 history 저장을 자동으로 수행하지 않는다.
 
-따라서 현재 출력은 다음 두 층으로 구성한다.
-
-- 사람이 현재 상태를 빠르게 확인할 수 있는 콘솔 요약
-- Codex 프롬프트에 그대로 붙여넣을 수 있는 최소 copy prompt 블록
-
-copy prompt 는 다음 원칙을 따른다.
+출력은 다음 원칙을 따른다.
 
 - 세션 복구에 필요한 진입 문서만 먼저 요청한다.
-- `session start` 에서는 현재 브랜치와 Git 변경 요약만 포함한다.
-- `session save` 에서는 변경 파일 전체 목록 대신 변경 요약과 제한된 샘플을 기본으로 포함한다.
-- `session save -Detailed` 를 사용할 때만 상세 변경 파일 목록을 콘솔에 출력한다.
+- 작업 대상 영역이 확인되면 해당 영역의 전용 `AGENTS.md` 를 추가로 읽게 요청한다.
 - 전체 문서 내용을 붙여넣지 않고, Codex가 필요한 파일을 직접 읽도록 지시한다.
-- 후속 검토용 todo 문서는 기본 문맥에 포함하지 않는다.
-- session 명령은 문서 수정, history 저장, Git 메시지 생성을 직접 수행하지 않는다.
+- session skill 은 문서 수정, history 저장, Git 메시지 생성을 직접 수행하지 않는다.
+- `$session-start` copy prompt 는 먼저 현재 상태 요약을 보여주고, 개발자 요청 전에는 파일을 직접 수정하지 말라는 경계를 함께 준다.
+- `$session-save` copy prompt 는 먼저 반영 초안을 보여주고, 개발자 승인 전에는 `docs/AI_CONTEXT.md` 를 직접 수정하지 말라는 경계를 함께 준다.
+- `session-status` 는 copy prompt를 만들지 않고, AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여준다.
 
-`session start` 는 다음 정보를 출력한다.
+`$session-start` 는 다음 정보를 출력한다.
 
-- repo root
+- 현재 focus / 다음 진입점 / 변경 주의 범위
+- full recovery 로 넘어가기 위한 copy prompt
+
+`$session-status` 는 다음 정보를 출력한다.
+
+- AI_CONTEXT 마지막 갱신 기준과 최신성 메모
 - 현재 브랜치
-- 먼저 읽을 문서 목록
-- 현재 Git 변경 요약
-- 세션 복구용 copy prompt
+- Git 작업트리 변경 수와 주요 변경 영역
+- 현재 focus 한 줄
+- 다음 진입점 한 줄
+- 주의 메모 한 줄
 
-`session status` 는 다음 정보를 출력한다.
+`$session-save` 는 다음 정보를 출력한다.
 
-- 현재 상태 한 줄 요약
-- 현재 작업 모드
-- 현재 focus
-- 다음 진입점 후보
-- 보류 후보
-- 현재 브랜치와 Git 변경 요약
+- 세션 종료 요약
+- `docs/AI_CONTEXT.md` 반영 초안
+- 개발자 승인 전에는 파일을 수정하지 않는다는 경계
 
-`session status` 는 파일 변경 상태를 자세히 보는 명령이 아니다.  
-파일 변경 목록은 필요한 경우에만 `-Detailed` 로 보조 확인한다.
-
-`session save` 는 다음 정보를 출력한다.
-
-- 현재 브랜치
-- 현재 Git 변경 요약
-- 변경 영역 요약
-- 변경 파일 샘플
-- 세션 저장 요약 초안을 요청하는 copy prompt
-
-`session start` 의 copy prompt 에는 상세 변경 파일 목록을 기본으로 넣지 않는다.  
-세션 시작 시점에는 깨끗한 상태인지, 변경이 있는지, 주요 변경 영역이 어디인지 확인하는 것으로 충분하다.
-
-`session save` 도 변경 파일이 수십 개 이상이 될 수 있으므로 기본 copy prompt 에 전체 목록을 넣지 않는다.  
-기본 출력은 변경 수, 변경 영역, 일부 샘플만 포함하고, 전체 목록은 필요할 때 `-Detailed` 로 확인한다.
-
-현재 기준에서 `session` 명령은 파일을 직접 생성하거나 수정하지 않는다.  
+현재 기준에서 `session` skill 은 파일을 직접 생성하거나 수정하지 않는다.  
 영속적으로 남겨야 할 내용은 사람이 검토한 뒤 `docs/AI_CONTEXT.md`, 관련 상태 문서, 또는 필요한 history 문서에 반영한다.
 
 ---
 
-## 9. CLI 구조에서의 위치
-
-현재 단일 진입 CLI 기준으로 `session` 은 다음 위치에 둔다.
-
-```powershell
-specdrive/specdrive.ps1 session ...
-```
-
-이때 `specdrive/specdrive.ps1` 는 상위 라우터 역할만 가져야 한다.
-
-- `specdrive/specdrive.ps1` 가 `session` action 을 분기한다.
-- 실제 세부 로직은 후속 `specdrive/scripts/session/*.ps1` 같은 하위 계층으로 위임하는 방향이 자연스럽다.
-- 현재 단계에서는 먼저 문서에서 역할과 명령 구조를 고정한다.
-
----
-
-## 10. 최종 정리
+## 9. 최종 정리
 
 현재 specdrive에서 `session` 은  
 `doc` / `dev` 와 다른 성격의 메타 운영 단계다.
@@ -230,7 +272,8 @@ specdrive/specdrive.ps1 session ...
 따라서 현재 기준 핵심 정리는 다음과 같다.
 
 - `doc` 와 `dev` 는 핵심 작업 단계로 유지한다.
-- `session` 은 세션 복구와 세션 저장 명령을 정규화하는 운영 단계로 둔다.
-- `session` 은 필요한 진입 문서만 안내해 반복 프롬프트 작성과 토큰 사용량을 줄이는 방향으로 발전시킨다.
+- `session` 은 세션 복구와 세션 저장 절차를 정규화하는 운영 단계로 둔다.
+- 현재는 `session-start-lite`, `session-start`, `session-status`, `session-save` skill 직접 사용을 먼저 검증한다.
+- CLI는 현재 버전의 session 기준 흐름에서 제외한다.
 - Git 전달 단위 생성은 `git` 단계로 분리한다.
 
