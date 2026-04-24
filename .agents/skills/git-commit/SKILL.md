@@ -47,8 +47,24 @@ Reply with:
 6. commit message candidates
 7. proposed files for `git add`
 8. approval prompt
+9. push prompt template
 
 Keep the output concise and separate facts from recommendations.
+
+For the approval prompt, include a copy-ready prompt that lets the user approve add + commit while explicitly excluding push. Use this shape:
+
+```text
+위 대상 전부 add하고 `<commit message>` 로 commit 해줘. push는 아직 하지 마.
+```
+
+For the push prompt template, include copy-ready prompts that can be used after commit succeeds. Use the current branch and final commit hash/message when known. Use this shape:
+
+```text
+현재 브랜치 `<branch>` 의 커밋 `<short-hash> <commit message>` 를 원격에 push 해줘.
+push 전에 현재 브랜치와 git status를 확인하고, 문제가 없으면 `git push origin <branch>` 를 실행해줘.
+------------------------------------------------
+현재 브랜치 확인하고 clean 상태면 `git push origin <branch>` 실행해줘.
+```
 
 ## Approval Gates
 
@@ -70,8 +86,9 @@ After approval:
 2. Run `git status --short` again.
 3. Run `git commit` with the approved message.
 4. Run `git status --short` again.
-5. Ask before `git push` unless the user already approved push explicitly.
-6. After push, report the result briefly.
+5. If push was not approved, do not push. Report the commit result and include the copy-ready push prompt.
+6. Ask before `git push` unless the user already approved push explicitly.
+7. After push, report the result briefly.
 
 ## Boundaries
 
