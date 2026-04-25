@@ -31,9 +31,27 @@
       "path": ".agents/skills/specdrive-skills/SKILL.md"
     },
     {
+      "name": "doc-work",
+      "command": "$doc-work",
+      "description": "대상 문서 1개를 기준으로 draft 또는 reinforce 프롬프트를 준비하거나 대상 목록을 보여줍니다.",
+      "path": ".agents/skills/doc-work/SKILL.md"
+    },
+    {
+      "name": "doc-work-ref",
+      "command": "$doc-work-ref",
+      "description": "대상 문서와 affected-docs-map.json의 참조 문서만 함께 읽고 정합성을 점검합니다.",
+      "path": ".agents/skills/doc-work-ref/SKILL.md"
+    },
+    {
+      "name": "doc-work-bundle",
+      "command": "$doc-work-bundle",
+      "description": "대상 문서와 연관 문서 묶음을 함께 읽고 문서 간 상호 정합성을 검토합니다.",
+      "path": ".agents/skills/doc-work-bundle/SKILL.md"
+    },
+    {
       "name": "git-commit",
       "command": "$git-commit",
-      "description": "현재 변경을 검토하고 커밋 분리 여부와 커밋 메시지를 제안한 뒤, 승인 후 add/commit/push를 진행합니다.",
+      "description": "git add ., 정책 기반 commit, 단순 push 흐름을 진행합니다.",
       "path": ".agents/skills/git-commit/SKILL.md"
     },
     {
