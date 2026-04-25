@@ -324,7 +324,9 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
+- `docs/board-spec-structure` 브랜치에서 board 개발 문서 구조 점검 작업을 이어가기
 - `docs/projects/board/01-overview.md` 의 문서 연결과 역할 설명이 새 구조와 맞는지 점검
+- `docs/projects/board/01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단
 - `docs/projects/board/specs/03-design.md` 초안이 `specs/02-requirements.md` 와 standards 기준에 맞는지 검토
 - `specs/03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
 - `docs/projects/board/index.md` 의 문서 목록과 역할 설명이 실제 파일 상태와 맞는지 확인
@@ -389,7 +391,7 @@
 
 ## 14. 마지막 갱신 기준
 
-- 마지막 갱신 일시: 2026-04-24
+- 마지막 갱신 일시: 2026-04-25
 - 마지막으로 반영한 주요 변경:
   - 루트 README / 루트 AGENTS / specdrive 전용 AGENTS / board 전용 AGENTS 재정리
   - specdrive를 엔진 / 운영체계 / skill 중심 도구로 재정의
@@ -414,8 +416,15 @@
 - standards 1차 문서 세트와 후속 2차 문서 후보 상태 반영
 - `doc` 단계 기본 target, preview 탐색 규칙, execute 조건, artifact naming 일부를 config 중심으로 이동
 - `session-start-lite`, `session-start`, `session-status`, `session-save` 를 각각 경량 복구 / 전체 복구 prompt / 6줄 상태 스냅샷 / AI_CONTEXT 반영 초안 요청용 skill 로 해석하는 현재 기준을 반영
+- `doc-work`, `doc-work-ref`, `doc-work-bundle` repo-local skill 을 추가하고, 사용본은 `.agents/skills/**`, 배포 후보 원본은 `specdrive/codex-skills/**` 아래에 두는 기준을 반영
+- `$doc-work` 를 단일 target 문서 작업 진입점으로 정리하고, 현재 지원 action 을 `draft`, `reinforce`, `revise` 로 둔 기준을 반영
+- `$doc-work <target> revise` 는 초기 Codex 보강 이후 개발자 수정/검토 흐름으로 두며, 실행 시 Preview Prompt 만 출력하고 preview 이후 follow-up / document-only / document-plus-history completion prompt 를 분리 출력하는 기준을 반영
+- `revise` 의 `_dev-revised.note.md` 에는 `Developer Revision Request` 와 `Summary` 를 함께 남기는 기준을 반영
+- 모든 doc-work history 파일명은 `yyyy-MM-dd_HHmmss_` prefix 를 사용하는 기준을 반영
 - `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session` 단계 설명을 현재 기준으로 동기화
 - `docs/projects/board/01-overview.md` 기준으로 과거 실행형 반영/history 산출물을 `docs/history/projects/**` 아래 이력으로 보존
+- `docs/projects/board/01-overview.md` 는 auth와 board의 독립 배포를 즉시 확정이 아니라 장기 고려 방향으로 조정했고, logging/auth/board 같은 재사용 후보 영역의 경계를 overview 수준에서 명시
+- `docs/history/projects/board/01-overview/2026-04-25_204400_01-overview_dev-revised.md` 와 `.note.md` 로 해당 revision history 를 저장
 - 현재 기준 반영 흐름은 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 중심으로 재정리
 - `session-status` 를 AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여주는 skill 로 추가
 - Git safe.directory 소유자 차이와 변경 경로 null 처리로 세션 복구 명령이 실패하지 않도록 `specdrive/scripts/common/specdrive-common.ps1` 에 경로 정규화, 빈 변경 목록 처리, `ChangedPaths` null 허용 보정
@@ -449,6 +458,15 @@
   - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
   - 현재는 board 문서 구조를 `specs / impl / status` 기준으로 다시 정리하고, 관련 진입 문서와 참조 경로를 맞추는 작업을 진행했다.
+- `doc-work`, `doc-work-ref`, `doc-work-bundle` repo-local skill 을 만들고 `.agents/skills/**` 및 `specdrive/codex-skills/**` 양쪽에 반영했다.
+- `$doc-work board-overview` 흐름은 `draft / reinforce / revise` 중심으로 정리했다.
+- `draft`, `reinforce` 는 기존 history snapshot 이 있으면 중단하고, `revise` 는 여러 `_dev-revised.md` history snapshot 을 허용하는 흐름으로 정리했다.
+- `revise` 는 preview-first 흐름으로 정리했고, `$doc-work board-overview revise` 실행 시에는 Preview Prompt 만 출력한다.
+- `revise` Preview Prompt 실행 이후에는 `Preview Follow-up Prompt`, `Completion Prompt A: Document Only`, `Completion Prompt B: Document Plus History` 를 분리된 복사 영역으로 출력한다.
+- `revise` note 에는 `Developer Revision Request` 섹션과 `Summary` 를 함께 남기도록 정리했다.
+- `docs/projects/board/01-overview.md` 에서 auth와 board의 독립 배포를 즉시 확정이 아니라 장기 고려 방향으로 조정하고, logging/auth/board 같은 재사용 후보 영역의 경계를 overview 수준에서 명시했다.
+- 같은 revised 결과를 `docs/history/projects/board/01-overview/2026-04-25_204400_01-overview_dev-revised.md` 와 `.note.md` 에 저장했다.
+- 다음 board 문서 작업은 `01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단하는 것이 자연스럽다.
 - repo-local Codex skill 을 중심으로 `session-start`, `session-save`, `specdrive-skills`, `git-commit`, `github-pr` 를 만들고 1차 테스트했다.
 - 테스트 중에는 전역 skill 설치를 사용하지 않고 `.agents/skills/**` 를 기준으로 둔다.
 - 배포/패키징 후보 원본은 `specdrive/codex-skills/**` 로 둔다.
@@ -457,10 +475,13 @@
 - 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `confirm-prompt`, `apply-prompt` 중심의 수동 보강 루프를 먼저 정리하고, 실제 저장 자동화 범위는 후속 판단 대상으로 남겨 두었다.
 - 현재 `doc` 단계 문서는 execute-first 보다 prompt-first 해석을 우선하도록 재정리 중이다.
 - 현재 구현 명령과 문서 해석 모두 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 기준으로 정리한 상태다.
-  - 현재 `$session-save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 제안하는 skill 로 해석하는 편이 맞다.
-  - 이후 세션에서는 `$session-start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
-  - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
-  - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
+- 현재 `$session-save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 제안하는 skill 로 해석하는 편이 맞다.
+- 이후 세션에서는 `$session-start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
+- `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
+- `main` pull/merge/push 후 로컬 `main` 과 `origin/main` 은 같은 지점으로 정리했다.
+- 다음 board 개발 문서 작업용 브랜치는 `docs/board-spec-structure` 로 잡았고, 생성 직후 작업 트리는 clean 상태다.
+- 다음 작업은 `docs/projects/board/01-overview.md`, `docs/projects/board/index.md`, `docs/projects/board/specs/03-design.md` 의 연결과 역할 정합성 점검이다.
+- `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
 
 ---
 
