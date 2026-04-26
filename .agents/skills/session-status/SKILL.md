@@ -1,11 +1,17 @@
 ---
 name: session-status
-description: Show a compact specdrive session status in about six lines by checking docs/AI_CONTEXT.md freshness plus current branch and Git workspace state.
+description: Show a compact specdrive session status in about six lines. Prefer $session status; $session-status remains a compatibility command.
 ---
 
 # Session Status
 
 Use this skill to show a compact status snapshot for the current specdrive session.
+
+Preferred argument-based invocation:
+
+```text
+$session status
+```
 
 ## Read First
 

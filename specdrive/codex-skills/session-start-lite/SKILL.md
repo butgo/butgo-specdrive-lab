@@ -1,11 +1,17 @@
 ---
 name: session-start-lite
-description: Quickly recover the current specdrive focus and next entry point from docs/AI_CONTEXT.md with minimal document reads. Use when VSCode or Codex has just started and the full $session-start flow feels heavy.
+description: Quickly recover the current specdrive focus and next entry point from docs/AI_CONTEXT.md with minimal document reads. Prefer $session start-lite; $session-start-lite remains a compatibility command.
 ---
 
 # Session Start Lite
 
 Use this skill for a lightweight session re-entry before running the full session recovery flow.
+
+Preferred argument-based invocation:
+
+```text
+$session start-lite
+```
 
 ## Read First
 

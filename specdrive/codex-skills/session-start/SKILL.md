@@ -1,11 +1,17 @@
 ---
 name: session-start
-description: Prepare a staged specdrive session recovery prompt. Use when the user invokes $session-start and wants a safe next-step prompt instead of immediately loading the full recovery context.
+description: Prepare a staged specdrive session recovery prompt. Prefer $session start; $session-start remains a compatibility command.
 ---
 
 # Session Start
 
 Use this skill to start session recovery in two steps.
+
+Preferred argument-based invocation:
+
+```text
+$session start
+```
 
 This skill should avoid loading the full recovery document set immediately. It first performs a light recovery, then prints a copy prompt that the user can paste back when they want the full recovery pass.
 

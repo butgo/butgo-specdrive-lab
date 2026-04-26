@@ -1,11 +1,17 @@
 ---
 name: session-save
-description: Draft a safe session-save summary for specdrive. Use when the user invokes $session-save or asks Codex to prepare docs/AI_CONTEXT.md update candidates, next entry points, and unresolved items without directly modifying files.
+description: Draft a safe session-save summary for specdrive. Prefer $session save; $session-save remains a compatibility command.
 ---
 
 # Session Save
 
 Use this skill to prepare a session closing summary and `docs/AI_CONTEXT.md` update candidate.
+
+Preferred argument-based invocation:
+
+```text
+$session save
+```
 
 ## Read First
 

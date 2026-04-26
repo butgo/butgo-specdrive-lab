@@ -1,27 +1,33 @@
 {
   "skills": [
     {
+      "name": "session",
+      "command": "$session",
+      "description": "session action을 인자로 받아 start-lite/start/status/save로 라우팅합니다.",
+      "path": ".agents/skills/session/SKILL.md"
+    },
+    {
       "name": "session-start-lite",
       "command": "$session-start-lite",
-      "description": "VSCode/Codex 첫 시작 시 docs/AI_CONTEXT.md 중심으로 현재 focus와 다음 진입점만 가볍게 복구합니다.",
+      "description": "호환 명령입니다. 새 호출은 `$session start-lite`를 우선 사용합니다.",
       "path": ".agents/skills/session-start-lite/SKILL.md"
     },
     {
       "name": "session-start",
       "command": "$session-start",
-      "description": "가벼운 복구 요약 후 전체 session start를 진행할 복사 프롬프트를 보여줍니다.",
+      "description": "호환 명령입니다. 새 호출은 `$session start`를 우선 사용합니다.",
       "path": ".agents/skills/session-start/SKILL.md"
     },
     {
       "name": "session-status",
       "command": "$session-status",
-      "description": "AI_CONTEXT 최신성, 현재 브랜치, 작업트리 상태를 6줄 내외로 간단히 보여줍니다.",
+      "description": "호환 명령입니다. 새 호출은 `$session status`를 우선 사용합니다.",
       "path": ".agents/skills/session-status/SKILL.md"
     },
     {
       "name": "session-save",
       "command": "$session-save",
-      "description": "세션 종료 요약과 docs/AI_CONTEXT.md 반영 초안을 준비합니다.",
+      "description": "호환 명령입니다. 새 호출은 `$session save`를 우선 사용합니다.",
       "path": ".agents/skills/session-save/SKILL.md"
     },
     {
@@ -39,25 +45,31 @@
     {
       "name": "doc-work-ref",
       "command": "$doc-work-ref",
-      "description": "대상 문서와 affected-docs-map.json의 참조 문서만 함께 읽고 정합성을 점검합니다.",
+      "description": "대상 문서와 reference_docs만 읽고 reference/revise ref 작업 프롬프트를 준비합니다.",
       "path": ".agents/skills/doc-work-ref/SKILL.md"
     },
     {
       "name": "doc-work-bundle",
       "command": "$doc-work-bundle",
-      "description": "대상 문서와 연관 문서 묶음을 함께 읽고 문서 간 상호 정합성을 검토합니다.",
+      "description": "대상 문서와 include_for_bundle을 읽고 reference/revise bundle 작업 프롬프트를 준비합니다.",
       "path": ".agents/skills/doc-work-bundle/SKILL.md"
+    },
+    {
+      "name": "git",
+      "command": "$git",
+      "description": "git action을 인자로 받아 commit/pr로 라우팅합니다.",
+      "path": ".agents/skills/git/SKILL.md"
     },
     {
       "name": "git-commit",
       "command": "$git-commit",
-      "description": "git add ., 정책 기반 commit, 단순 push 흐름을 진행합니다.",
+      "description": "호환 명령입니다. 새 호출은 `$git commit`을 우선 사용합니다.",
       "path": ".agents/skills/git-commit/SKILL.md"
     },
     {
       "name": "github-pr",
       "command": "$github-pr",
-      "description": "GitHub 원격/브랜치/PR 상태를 확인하고 PR 제목과 본문을 제안한 뒤, 승인 후 PR을 생성합니다.",
+      "description": "호환 명령입니다. 새 호출은 `$git pr`을 우선 사용합니다.",
       "path": ".agents/skills/github-pr/SKILL.md"
     }
   ]

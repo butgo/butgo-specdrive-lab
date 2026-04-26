@@ -324,6 +324,7 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
+- `$session status` 또는 호환 명령 `$session-status` 로 현재 상태를 확인한 뒤, `$specdrive-skills` 에서 `$session`, `$git` 라우터 스킬 인식 여부를 확인
 - `docs/board-spec-structure` 브랜치에서 board 개발 문서 구조 점검 작업을 이어가기
 - `docs/projects/board/01-overview.md` 의 문서 연결과 역할 설명이 새 구조와 맞는지 점검
 - `docs/projects/board/01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단
@@ -363,8 +364,8 @@
 - `doc` 단계의 최소 흐름을 정규화 프롬프트 + 명시적 history 저장 중심으로 반복 가능하게 유지하는 것
 - `docs/specdrive` 문서가 실제 registry 기반 라우팅 상태를 정확히 설명하도록 유지하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 skill 중심 세션 운영 절차로만 유지되게 하는 것
-- `session-start-lite`, `session-start`, `session-status`, `session-save` 를 Codex에서 직접 호출해 실제 사용성을 먼저 검증하는 것
-- `git` 단계가 브랜치/메시지/PR 전달 절차에 집중하고 `session` 과 섞이지 않게 유지하되, 먼저 `git-commit`, `github-pr` skill 로 실제 사용성을 검증하는 것
+- `$session start-lite`, `$session start`, `$session status`, `$session save` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
+- `git` 단계가 브랜치/메시지/PR 전달 절차에 집중하고 `session` 과 섞이지 않게 유지하되, `$git commit`, `$git pr` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
 - CLI는 현재 버전 기준 흐름에서 제외하고 후속 후보로만 보류하는 것
 - `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `specs/02-requirements.md`, `specs/03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
 - 현재 적용한 최소 rule/config 분리 방식을 `dev`, 후속 project 문서 흐름에 점진 적용하되, `session` / `git` 은 먼저 skill 직접 사용으로 절차를 검증하는 것
@@ -391,7 +392,7 @@
 
 ## 14. 마지막 갱신 기준
 
-- 마지막 갱신 일시: 2026-04-25
+- 마지막 갱신 일시: 2026-04-26
 - 마지막으로 반영한 주요 변경:
   - 루트 README / 루트 AGENTS / specdrive 전용 AGENTS / board 전용 AGENTS 재정리
   - specdrive를 엔진 / 운영체계 / skill 중심 도구로 재정의
@@ -482,6 +483,16 @@
 - 다음 board 개발 문서 작업용 브랜치는 `docs/board-spec-structure` 로 잡았고, 생성 직후 작업 트리는 clean 상태다.
 - 다음 작업은 `docs/projects/board/01-overview.md`, `docs/projects/board/index.md`, `docs/projects/board/specs/03-design.md` 의 연결과 역할 정합성 점검이다.
 - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
+- `docs/projects/board/specs/02-requirements.md` 에 대해 `$doc-work board-requirements draft` 와 `reinforce` 흐름을 실행했다.
+- `docs/history/projects/board/02-requirements/2026-04-26_172523_02-requirements_dev-draft.md` 및 note를 저장했다.
+- `docs/history/projects/board/02-requirements/2026-04-26_173140_02-requirements_codex-reinforced.md` 및 note를 저장했다.
+- `specdrive/config/affected-docs-map.json` 에 `reference_docs` 를 추가해 Doc Work Ref는 상위 기준 문서만, Doc Work Bundle은 `include_for_bundle` 중심 상호 영향 문서 묶음을 읽도록 분리했다.
+- `$doc-work-ref` 는 `reference / revise` action과 `ref` history prefix 규칙으로 정리했다.
+- `$doc-work-bundle` 은 `reference / revise` action과 `bundle` history prefix 규칙으로 정리했다.
+- ref/bundle 작업에서 여러 문서가 수정되면 같은 timestamp를 공유하되 문서별 snapshot/note를 각각 남기는 규칙을 추가했다.
+- session/git도 인자형 호출을 지원하도록 `$session start-lite|start|status|save`, `$git commit|pr` 라우터 스킬을 추가했다.
+- 기존 `$session-start-*`, `$session-save`, `$git-commit`, `$github-pr` 는 호환 명령으로 유지한다.
+- Git commit/push는 아직 미수행이며, 새 `$session`, `$git` 스킬은 재로드 후 정식 인식 확인이 필요하다.
 
 ---
 
