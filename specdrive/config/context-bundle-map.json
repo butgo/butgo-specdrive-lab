@@ -4,11 +4,11 @@
   "description": "컨텍스트 번들 생성을 위한 문서 묶음 설정이다.",
   "bundles": {
     "default": {
-      "description": "기본 세션 복구용 문서 묶음이다.",
+      "description": "기본 세션 복구용 compact 문서 묶음이다.",
       "name": "context-bundle",
       "documents": [
         "README.md",
-        "AGENTS.md",
+        "AGENTS.compact.md",
         "docs/AI_CONTEXT.md"
       ]
     },
@@ -50,6 +50,15 @@
         "docs/projects/board/README.ko.md"
       ]
     },
+    "agents-compact": {
+      "description": "저장소 안의 AGENTS compact 문서를 묶는다.",
+      "name": "agents-compact",
+      "documents": [
+        "AGENTS.compact.md",
+        "docs/specdrive/AGENTS.compact.md",
+        "docs/projects/board/AGENTS.compact.md"
+      ]
+    },
     "agents-all": {
       "description": "저장소 안의 모든 AGENTS.md 문서를 묶는다.",
       "name": "agents-all",
@@ -59,18 +68,39 @@
         "docs/projects/board/AGENTS.md"
       ]
     },
+    "repo-skills": {
+      "description": "현재 repo-local Codex skill 사용본만 묶는다.",
+      "name": "repo-skills",
+      "directories": [
+        ".agents/skills"
+      ]
+    },
+    "codex-skills": {
+      "description": "배포/패키징 후보 Codex skill 원본만 묶는다.",
+      "name": "codex-skills",
+      "directories": [
+        "specdrive/codex-skills"
+      ]
+    },
+    "legacy-skills": {
+      "description": "기존 specdrive skill 문서만 묶는다.",
+      "name": "legacy-skills",
+      "directories": [
+        "specdrive/skills"
+      ]
+    },
     "codex-base-review": {
-      "description": "Codex 기본 문맥 검토용으로 핵심 README, AGENTS, AI_CONTEXT 문서를 묶는다.",
+      "description": "Codex 기본 문맥 검토용으로 핵심 README, AGENTS compact, AI_CONTEXT 문서를 묶는다.",
       "name": "codex-base-review",
       "documents": [
         "README.md",
-        "AGENTS.md",
+        "AGENTS.compact.md",
         "docs/AI_CONTEXT.md",
         "docs/specdrive/README.md",
-        "docs/specdrive/AGENTS.md",
+        "docs/specdrive/AGENTS.compact.md",
         "docs/projects/README.md",
         "docs/projects/board/README.md",
-        "docs/projects/board/AGENTS.md"
+        "docs/projects/board/AGENTS.compact.md"
       ]
     },
     "standards-all": {
@@ -88,22 +118,22 @@
       ]
     },
     "onboarding-all": {
-      "description": "ChatGPT 업로드용으로 모든 README.md, README.ko.md, AGENTS.md 문서를 함께 묶는다.",
+      "description": "ChatGPT 업로드용으로 README 문서와 AGENTS compact 문서를 함께 묶는다.",
       "name": "onboarding-all",
       "documents": [
         "README.md",
         "README.ko.md",
-        "AGENTS.md",
+        "AGENTS.compact.md",
         "docs/README.md",
         "docs/README.ko.md",
         "docs/specdrive/README.md",
         "docs/specdrive/README.ko.md",
-        "docs/specdrive/AGENTS.md",
+        "docs/specdrive/AGENTS.compact.md",
         "docs/projects/README.md",
         "docs/projects/README.ko.md",
         "docs/projects/board/README.md",
         "docs/projects/board/README.ko.md",
-        "docs/projects/board/AGENTS.md"
+        "docs/projects/board/AGENTS.compact.md"
       ]
     }
   }

@@ -5,6 +5,9 @@ param(
     [switch]$IncludeDefault,
     [switch]$IncludeReadmeKo,
     [switch]$IncludeAgents,
+    [switch]$IncludeRepoSkills,
+    [switch]$IncludeCodexSkills,
+    [switch]$IncludeLegacySkills,
     [switch]$DryRun
 )
 
@@ -17,7 +20,7 @@ $outputDirectory = ".speclab/context-bundle-output"
 
 $defaultDocuments = @(
     "README.md",
-    "AGENTS.md",
+    "AGENTS.compact.md",
     "docs/AI_CONTEXT.md"
 )
 
@@ -46,7 +49,11 @@ function Select-ContextBundleKey {
         "readme-ko-all",
         "readme-en-all",
         "readme-all",
+        "agents-compact",
         "agents-all",
+        "repo-skills",
+        "codex-skills",
+        "legacy-skills",
         "onboarding-all",
         "codex-base-review",
         "standards-all"
@@ -113,9 +120,32 @@ function Get-ContextBundleFilesByName {
     })
 }
 
+function Get-ContextBundleFilesByDirectory {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$RepoRoot,
+        [Parameter(Mandatory = $true)]
+        [string]$RelativeDirectory
+    )
+
+    $directoryPath = Join-SpecdriveRepoPath -RepoRoot $RepoRoot -RelativePath $RelativeDirectory
+    if (-not (Test-Path -LiteralPath $directoryPath)) {
+        return @()
+    }
+
+    $rootLength = $RepoRoot.TrimEnd("\").Length
+    $items = Get-ChildItem -LiteralPath $directoryPath -Recurse -Force -File |
+        Where-Object { $_.Name -ne ".gitkeep" } |
+        Sort-Object FullName
+
+    return @($items | ForEach-Object {
+        $_.FullName.Substring($rootLength).TrimStart("\") -replace "\\", "/"
+    })
+}
+
 $selectedDocuments = @()
 $bundleConfig = $null
-$hasSelectionOption = -not [string]::IsNullOrWhiteSpace($BundleKey) -or $Documents.Count -gt 0 -or $IncludeDefault -or $IncludeReadmeKo -or $IncludeAgents
+$hasSelectionOption = -not [string]::IsNullOrWhiteSpace($BundleKey) -or $Documents.Count -gt 0 -or $IncludeDefault -or $IncludeReadmeKo -or $IncludeAgents -or $IncludeRepoSkills -or $IncludeCodexSkills -or $IncludeLegacySkills
 if (-not $hasSelectionOption) {
     $contextBundleConfig = Get-ContextBundleConfig -RepoRoot $repoRoot
     $BundleKey = Select-ContextBundleKey -Config $contextBundleConfig
@@ -145,9 +175,15 @@ if (-not [string]::IsNullOrWhiteSpace($BundleKey)) {
             $selectedDocuments += Get-ContextBundleFilesByName -RepoRoot $repoRoot -FileName $fileName
         }
     }
+
+    foreach ($directory in @($bundleConfig.directories)) {
+        if (-not [string]::IsNullOrWhiteSpace($directory)) {
+            $selectedDocuments += Get-ContextBundleFilesByDirectory -RepoRoot $repoRoot -RelativeDirectory $directory
+        }
+    }
 }
 
-$hasExplicitSelection = $Documents.Count -gt 0 -or $IncludeReadmeKo -or $IncludeAgents -or -not [string]::IsNullOrWhiteSpace($BundleKey)
+$hasExplicitSelection = $Documents.Count -gt 0 -or $IncludeReadmeKo -or $IncludeAgents -or $IncludeRepoSkills -or $IncludeCodexSkills -or $IncludeLegacySkills -or -not [string]::IsNullOrWhiteSpace($BundleKey)
 if ($IncludeDefault -or -not $hasExplicitSelection) {
     $selectedDocuments += $defaultDocuments
 }
@@ -158,6 +194,30 @@ if ($IncludeReadmeKo) {
 
 if ($IncludeAgents) {
     $selectedDocuments += Get-ContextBundleFilesByName -RepoRoot $repoRoot -FileName "AGENTS.md"
+}
+
+if ($IncludeRepoSkills) {
+    if ($Name -eq "context-bundle") {
+        $Name = "repo-skills"
+    }
+
+    $selectedDocuments += Get-ContextBundleFilesByDirectory -RepoRoot $repoRoot -RelativeDirectory ".agents/skills"
+}
+
+if ($IncludeCodexSkills) {
+    if ($Name -eq "context-bundle") {
+        $Name = "codex-skills"
+    }
+
+    $selectedDocuments += Get-ContextBundleFilesByDirectory -RepoRoot $repoRoot -RelativeDirectory "specdrive/codex-skills"
+}
+
+if ($IncludeLegacySkills) {
+    if ($Name -eq "context-bundle") {
+        $Name = "legacy-skills"
+    }
+
+    $selectedDocuments += Get-ContextBundleFilesByDirectory -RepoRoot $repoRoot -RelativeDirectory "specdrive/skills"
 }
 
 $normalizedDocuments = @()

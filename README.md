@@ -13,6 +13,10 @@
 > At the moment, it operates both the specdrive core and validation projects together,  
 > while aiming for a structure where the specdrive core and individual projects can be separated in the long term.
 
+> **Current Operating Model: Skill-First + Wizard-Oriented**  
+> The current baseline is **repo-local Codex skill-first**.  
+> Repeated flows should be shaped into a **wizard-style guided workflow** only after the skill flow has become stable.
+
 If you are reading this for the first time:
 1. `AGENTS.md`
 2. `docs/AI_CONTEXT.md`
@@ -200,10 +204,10 @@ This is the operating stage for session recovery, compact status checks, and ses
 
 Current skill flow examples:
 
-- `session-start-lite`
-- `session-start`
-- `session-status`
-- `session-save`
+- `$session start-lite`
+- `$session start`
+- `$session status`
+- `$session save`
 
 Basic flow:
 
@@ -335,8 +339,10 @@ specdrive is currently guided by the following direction:
 - Validate the core workflow before focusing on SaaS form.
 - Separate the development-document stage from the actual development stage.
 - Organize the flow around Codex for now.
-- Validate the minimum workflow first with repo-local Codex skills.
+- **Validate the minimum workflow first with repo-local Codex skills.**
+- **Use a wizard-style guided workflow as the UX direction for repeated, stabilized flows.**
 - Keep PowerShell CLI work as a later technical option, not as the current execution center.
+- The previous single-entry PowerShell CLI router has been removed from the current baseline.
 - Do not prioritize multi-AI engine support at this stage.
 
 ---
@@ -361,10 +367,10 @@ The current first-priority items are as follows.
 - `dev status`
 
 ### Session Stage
-- `$session-start-lite`
-- `$session-start`
-- `$session-status`
-- `$session-save`
+- `$session start-lite`
+- `$session start`
+- `$session status`
+- `$session save`
 
 ### Git Stage
 - `$git-commit`
@@ -389,6 +395,7 @@ In other words, the current stage assumes
 as the default development environment.
 
 Direct `codex exec` integration and broader CLI automation are deferred follow-up topics.
+The current baseline does not include a single-entry `specdrive` CLI.
 
 ---
 
@@ -546,10 +553,13 @@ but in the long term the goal is a structure where specdrive and individual proj
 
 ## 18. Future Direction
 
-For now, the focus is on validating the core skill-first operating model first.
+For now, the focus is on validating the **core skill-first operating model** first.
+The preferred product direction after repeated validation is **wizard-style guidance**:
+each workflow should expose the next action, required context, human confirmation point, and expected output without requiring users to remember raw command details.
 
 After that, the following can be reviewed step by step:
 
+- Wizard-style UX for stable `doc`, `session`, and `git` flows
 - Structural cleanup and folder reorganization
 - Reimplementation in Go or Python
 - Stronger Git integration

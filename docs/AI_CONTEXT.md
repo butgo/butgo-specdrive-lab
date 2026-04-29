@@ -91,24 +91,25 @@
 3. `docs/AI_CONTEXT.md`
 4. `docs/specdrive/AGENTS.md`
 5. `docs/specdrive/runtime-structure.md`
-6. `docs/specdrive/doc-stage-testing.md`
-7. `docs/specdrive/session-stage.md`
-8. `docs/specdrive/git-stage.md`
+6. `docs/specdrive/skill-wizard-manual.md`
+7. `docs/specdrive/doc-stage-testing.md`
+8. `docs/specdrive/session-stage.md`
+9. `docs/specdrive/git-stage.md`
 
 필요 시 다음 문서를 후속 참조한다.
 
-9. `docs/projects/board/AGENTS.md`
-10. `docs/specdrive/doc-reinforce-flow.md`
-11. `docs/specdrive/doc-confirm-flow.md`
-12. `docs/specdrive/doc-history-save-flow.md`
-13. `docs/README.md`
-14. `docs/specdrive/README.md`
-15. `docs/projects/README.md`
-16. `docs/projects/standards/index.md`
-17. `docs/projects/board/index.md`
-18. `docs/projects/board/01-overview.md`
-19. `docs/projects/board/specs/02-requirements.md`
-20. `docs/projects/board/specs/03-design.md`
+10. `docs/projects/board/AGENTS.md`
+11. `docs/specdrive/doc-reinforce-flow.md`
+12. `docs/specdrive/doc-confirm-flow.md`
+13. `docs/specdrive/doc-history-save-flow.md`
+14. `docs/README.md`
+15. `docs/specdrive/README.md`
+16. `docs/projects/README.md`
+17. `docs/projects/standards/index.md`
+18. `docs/projects/board/index.md`
+19. `docs/projects/board/01-overview.md`
+20. `docs/projects/board/specs/02-requirements.md`
+21. `docs/projects/board/specs/03-design.md`
 
 ---
 
@@ -138,7 +139,7 @@
 - `doc-action-registry.json` 에 execute 허용 여부와 일부 execute 선행조건을 올리는 최소 실행 규칙 분리 시작
 - `doc-action-registry.json` 에 preview prefix / history suffix 일부를 올리는 최소 artifact naming 규칙 분리 시작
 - `docs/specdrive/**` 주요 문서를 현재 registry 기준과 legacy fallback 상태에 맞춰 동기화
-- 과거 `specdrive/specdrive.ps1` 단일 진입점 및 최소 라우팅 검증 결과는 후속 후보로 보류
+- 과거 단일 진입점 CLI 라우터와 명령 예시는 현재 기준에서 제거
 - `specdrive/scripts/session/*.ps1` 최소 preview 스크립트 추가
 - 과거 `git` 최소 라우팅 검증 결과는 후속 후보로 보류
 - `specdrive/scripts/git/*.ps1` 최소 preview 스크립트 추가
@@ -165,8 +166,8 @@
 - `specdrive/scripts/session/start.ps1`, `status.ps1`, `save.ps1` 와 관련 문서를 함께 정리해 `session` 3종의 역할을 현재 기준으로 맞춤
 - `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 session skill 해석을 문서 전반에 동기화
 - `butgo-specdrive-lab.code-workspace` 멀티루트 workspace 설정 추가
-- `session-start` 가 경량 복구 후 full recovery copy prompt 를 보여주는 흐름으로 정리
-- `session-start`, `session-save`, `specdrive-skills`, `git-commit`, `github-pr` repo-local Codex skill 을 `.agents/skills/**` 아래에 작성하고 1차 테스트
+- `$session start` 가 경량 복구 후 full recovery copy prompt 를 보여주는 흐름으로 정리
+- `$session`, `specdrive-skills`, `git-commit`, `github-pr` repo-local Codex skill 을 `.agents/skills/**` 아래에 작성하고 1차 테스트
 - 배포/패키징 후보 원본을 `specdrive/codex-skills/**` 아래에 두는 방향으로 정리
 - `git-commit` skill 에 commit 후 push 요청 프롬프트를 복사해 사용할 수 있도록 추가
 - repo-local Codex skill 흐름 관련 변경을 `feat(specdrive): add repo-local codex skills workflow`, `docs(skill): add push prompt to git commit skill` 커밋으로 저장하고 원격 브랜치에 push
@@ -190,7 +191,7 @@
 - 문서 단계 핵심 흐름은 현재 기준 `draft-save / reinforce-prompt / reinforce / confirm-prompt / apply-prompt / apply-only-prompt` 로 정리한다.
 - 현재 `doc` 단계는 execute-first 보다 prompt-first 해석을 우선하고, 정식 반영은 가능한 한 `apply-prompt` 중심으로 본다.
 - 개발 단계 핵심 흐름은 `task-split / phase / cycle / status` 다.
-- 세션 단계 핵심 흐름은 `session-start-lite / session-start / session-status / session-save` 다.
+- 세션 단계 핵심 흐름은 `$session start-lite / start / status / save` 다.
 - Git 단계 핵심 흐름은 `git-commit / github-pr` skill 검증이다.
 - 현재 AI 엔진 기준은 Codex다.
 - 현재 실행 인터페이스 기준은 repo-local Codex skill 직접 사용이다.
@@ -205,12 +206,12 @@
 - 현재 action 실행 조건 중 일부는 `doc-action-registry.json` 에서 읽고, 스크립트는 이를 검사하는 방향으로 옮기기 시작했다.
 - 현재 artifact naming 규칙 중 일부는 `doc-action-registry.json` 에서 읽고, 스크립트는 이를 소비하는 방향으로 옮기기 시작했다.
 - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 기준으로 주로 `default_target` fallback 용 legacy config 로 남아 있다.
-- 현재 버전에서는 `specdrive/specdrive.ps1` 기반 CLI 흐름을 기준 경로에서 제외한다.
-- 현재 `session` 단계는 `session-start-lite`, `session-start`, `session-status`, `session-save` skill 직접 사용을 기준으로 검증한다.
-- 현재 `session-start` 는 경량 복구 후 전체 복구용 copy prompt 를 보여주는 Codex 절차로 본다.
-- 현재 `session-status` 는 AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여주는 Codex 절차로 본다.
-- 현재 `session-save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안하는 Codex 절차로 본다.
-- `session-save` 결과는 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어진다.
+- 현재 버전에서는 단일 진입점 CLI 라우터를 기준 경로에서 제외하고 파일도 제거했다.
+- 현재 `session` 단계는 `$session` 라우터와 `start-lite/start/status/save` action 직접 사용을 기준으로 검증한다.
+- 현재 `$session start` 는 경량 복구 후 전체 복구용 copy prompt 를 보여주는 Codex 절차로 본다.
+- 현재 `$session status` 는 AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여주는 Codex 절차로 본다.
+- 현재 `$session save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안하는 Codex 절차로 본다.
+- `$session save` 결과는 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어진다.
 - 기존 `session start / status / save` CLI는 현재 버전 기준 흐름에서 제외한다.
 - 현재 `git` 단계는 기존 CLI 3종이 아니라 `git-commit`, `github-pr` skill 중심으로 검증한다.
 - 현재 `session` 과 `git` 단계는 자동 실행보다 먼저 skill 자산을 직접 사용하도록 정리하는 방향을 우선한다.
@@ -221,7 +222,7 @@
 - 현재 `$github-pr` 은 GitHub PR 생성 전 점검과 PR 제목/본문 초안을 돕는 skill 로 두되, 실제 PR 자동화는 GitHub CLI `gh` 설치 후 검증한다.
 - 현재 `git branch-name / git-message / pr-message` 3종은 현재 버전 범위에서 제외한다.
 - 현재 Git 상태 조회 helper 는 Windows 경로를 Git safe.directory 에 맞는 `/` 경로로 넘기고, 변경 경로가 없거나 Git 상태 조회가 실패한 경우에도 빈 목록으로 처리해야 한다.
-- 현재 `session-start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
+- 현재 `$session start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
 - 신규 문서 생성, 문서 역할 변경, 요구사항에서 설계 또는 설계에서 구현 계획으로 넘어가는 전환점은 개발자 확인 후 진행하는 규칙으로 명시했다.
 - 현재 util 스크립트는 상위 CLI 라우팅에 연결하지 않고 직접 실행하며, 출력은 `.speclab/**` 아래 재생성 가능한 산출물로 둔다.
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
@@ -287,7 +288,7 @@
 - 현재 `01-overview.md` 기준 `doc` 단계는 registry 기반 key routing, preview 기반 최소 검증, `doc reinforce` 의 좁은 실제 Codex 연결, `confirm-prompt/apply-prompt` 중심 반영 경로까지 1차 완료 판정한 상태다.
 - 과거 실행형 반영/history 저장으로 남은 산출물은 `docs/history/projects/**` 아래 이력으로 유지하되, 현재 명령 체계는 prompt-first 기준으로 재정리한 상태다.
 - 현재 `draft-save`, `reinforce-prompt` 가 추가되면서 `doc` 단계는 자동 실행 중심보다 정규화 프롬프트 + 명시적 history 저장 루프로 정리되는 중이다.
-- 현재 `$session-save` 는 `.speclab/**` 저장보다 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 운영 보조 skill 로 해석한다.
+- 현재 `$session save` 는 `.speclab/**` 저장보다 `docs/AI_CONTEXT.md` 반영 초안을 출력하는 운영 보조 action 으로 해석한다.
 
 ### 9.3 projects
 - projects는 “예제 문서 모음”이 아니라 “실제 애플리케이션 개발 스펙 문서 작업공간”으로 정리된 상태다.
@@ -324,7 +325,10 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
+- `$session status` 로 현재 상태를 확인한 뒤, `$specdrive-skills` 에서 `$session`, `$git` 라우터 스킬 인식 여부를 확인
+- `docs/board-spec-structure` 브랜치에서 board 개발 문서 구조 점검 작업을 이어가기
 - `docs/projects/board/01-overview.md` 의 문서 연결과 역할 설명이 새 구조와 맞는지 점검
+- `docs/projects/board/01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단
 - `docs/projects/board/specs/03-design.md` 초안이 `specs/02-requirements.md` 와 standards 기준에 맞는지 검토
 - `specs/03-design.md` 에서 현재 확정 설계와 후속 보류 사항이 섞이지 않았는지 확인
 - `docs/projects/board/index.md` 의 문서 목록과 역할 설명이 실제 파일 상태와 맞는지 확인
@@ -334,9 +338,9 @@
 - `docs/AI_CONTEXT.md` 와 `docs/specdrive/**` 상태 문서의 최신성 유지
 - `draft-save -> reinforce-prompt -> apply-prompt` 루프를 `01-overview.md`, `specs/02-requirements.md`, `specs/03-design.md` 에 어떻게 반복 적용할지 판단
 - `confirm-prompt` 를 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
-- `session-start`, `session-save` skill 을 Codex에서 직접 호출해 5~10회 사용하며 절차를 다듬기
-- 테스트 중인 `session-start`, `session-save` 는 전역 설치 없이 repo local `.agents/skills/**` 에 설치한다.
-- 배포/패키징 후보 원본은 `specdrive/codex-skills/session-start/SKILL.md`, `specdrive/codex-skills/session-save/SKILL.md` 로 둔다.
+- `$session start`, `$session save` action 을 Codex에서 직접 호출해 5~10회 사용하며 절차를 다듬기
+- 테스트 중인 `$session` 은 전역 설치 없이 repo local `.agents/skills/**` 에 설치한다.
+- 배포/패키징 후보 원본은 `specdrive/codex-skills/session/SKILL.md` 와 `specdrive/codex-skills/session/actions/**` 로 둔다.
 - `$specdrive-skills`, `$git-commit`, `$github-pr` 도 repo-local skill 로 5~10회 사용하며 절차와 출력 형식을 다듬기
 
 ### 우선순위 3
@@ -361,8 +365,8 @@
 - `doc` 단계의 최소 흐름을 정규화 프롬프트 + 명시적 history 저장 중심으로 반복 가능하게 유지하는 것
 - `docs/specdrive` 문서가 실제 registry 기반 라우팅 상태를 정확히 설명하도록 유지하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 skill 중심 세션 운영 절차로만 유지되게 하는 것
-- `session-start-lite`, `session-start`, `session-status`, `session-save` 를 Codex에서 직접 호출해 실제 사용성을 먼저 검증하는 것
-- `git` 단계가 브랜치/메시지/PR 전달 절차에 집중하고 `session` 과 섞이지 않게 유지하되, 먼저 `git-commit`, `github-pr` skill 로 실제 사용성을 검증하는 것
+- `$session start-lite`, `$session start`, `$session status`, `$session save` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
+- `git` 단계가 브랜치/메시지/PR 전달 절차에 집중하고 `session` 과 섞이지 않게 유지하되, `$git commit`, `$git pr` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
 - CLI는 현재 버전 기준 흐름에서 제외하고 후속 후보로만 보류하는 것
 - `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `specs/02-requirements.md`, `specs/03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
 - 현재 적용한 최소 rule/config 분리 방식을 `dev`, 후속 project 문서 흐름에 점진 적용하되, `session` / `git` 은 먼저 skill 직접 사용으로 절차를 검증하는 것
@@ -389,7 +393,7 @@
 
 ## 14. 마지막 갱신 기준
 
-- 마지막 갱신 일시: 2026-04-24
+- 마지막 갱신 일시: 2026-04-26
 - 마지막으로 반영한 주요 변경:
   - 루트 README / 루트 AGENTS / specdrive 전용 AGENTS / board 전용 AGENTS 재정리
   - specdrive를 엔진 / 운영체계 / skill 중심 도구로 재정의
@@ -413,11 +417,18 @@
 - README / AGENTS / AI_CONTEXT를 먼저 정비한 뒤 skill 테스트를 진행하는 방향 반영
 - standards 1차 문서 세트와 후속 2차 문서 후보 상태 반영
 - `doc` 단계 기본 target, preview 탐색 규칙, execute 조건, artifact naming 일부를 config 중심으로 이동
-- `session-start-lite`, `session-start`, `session-status`, `session-save` 를 각각 경량 복구 / 전체 복구 prompt / 6줄 상태 스냅샷 / AI_CONTEXT 반영 초안 요청용 skill 로 해석하는 현재 기준을 반영
+- `$session start-lite`, `$session start`, `$session status`, `$session save` 를 각각 경량 복구 / 전체 복구 prompt / 6줄 상태 스냅샷 / AI_CONTEXT 반영 초안 요청용 action 으로 해석하는 현재 기준을 반영
+- `doc-work`, `doc-work-ref`, `doc-work-bundle` repo-local skill 을 추가하고, 사용본은 `.agents/skills/**`, 배포 후보 원본은 `specdrive/codex-skills/**` 아래에 두는 기준을 반영
+- `$doc-work` 를 단일 target 문서 작업 진입점으로 정리하고, 현재 지원 action 을 `draft`, `reinforce`, `revise` 로 둔 기준을 반영
+- `$doc-work <target> revise` 는 초기 Codex 보강 이후 개발자 수정/검토 흐름으로 두며, 실행 시 Preview Prompt 만 출력하고 preview 이후 follow-up / document-only / document-plus-history completion prompt 를 분리 출력하는 기준을 반영
+- `revise` 의 `_dev-revised.note.md` 에는 `Developer Revision Request` 와 `Summary` 를 함께 남기는 기준을 반영
+- 모든 doc-work history 파일명은 `yyyy-MM-dd_HHmmss_` prefix 를 사용하는 기준을 반영
 - `docs/specdrive/index.md`, `docs/specdrive/AGENTS.md` 까지 포함해 `session` 단계 설명을 현재 기준으로 동기화
 - `docs/projects/board/01-overview.md` 기준으로 과거 실행형 반영/history 산출물을 `docs/history/projects/**` 아래 이력으로 보존
+- `docs/projects/board/01-overview.md` 는 auth와 board의 독립 배포를 즉시 확정이 아니라 장기 고려 방향으로 조정했고, logging/auth/board 같은 재사용 후보 영역의 경계를 overview 수준에서 명시
+- `docs/history/projects/board/01-overview/2026-04-25_204400_01-overview_dev-revised.md` 와 `.note.md` 로 해당 revision history 를 저장
 - 현재 기준 반영 흐름은 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 중심으로 재정리
-- `session-status` 를 AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여주는 skill 로 추가
+- `$session status` 를 AI_CONTEXT 상태와 현재 작업트리 상태를 6줄 내외로 보여주는 action 으로 추가
 - Git safe.directory 소유자 차이와 변경 경로 null 처리로 세션 복구 명령이 실패하지 않도록 `specdrive/scripts/common/specdrive-common.ps1` 에 경로 정규화, 빈 변경 목록 처리, `ChangedPaths` null 허용 보정
 - `docs/specdrive/doc-stage-testing.md` 에 `01-overview.md` 기준 `doc` 단계 1차 완료 판정 문구 반영
 - ChatGPT 업로드 편의를 위해 `context-bundle-map.json` 기반 bundle key 선택 방식과 번호 선택 메뉴를 추가
@@ -438,10 +449,10 @@
   - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 `default_target` fallback 용 legacy config 로 남아 있다.
   - `specdrive/scripts/exec/codex-exec.ps1` 는 `-TargetKey board-overview` 로 registry 기반 preview 테스트가 가능하고, `doc reinforce -Execute` 에서 실제 Codex 호출도 좁게 수행할 수 있다.
   - 과거 CLI 실행 환경 확인 결과는 현재 기준 경로에서 제외하고, 후속 CLI 자동화 검토 시에만 재확인한다.
-  - `specdrive/specdrive.ps1` 기반 흐름은 현재 버전 기준 경로에서 제외하고 후속 후보로 보류한다.
+  - 단일 진입점 CLI 라우터 기반 흐름은 현재 버전 기준 경로에서 제외하고 파일도 제거했다.
   - `session` 단계는 `doc` / `dev` 와 다른 메타 운영 단계로 두고 `start`, `status`, `save` 를 담당하는 방향이 현재 기준에 맞다.
   - `git` 단계는 브랜치명, commit message, PR 메시지 생성을 담당하는 방향이 현재 기준에 맞다.
-  - 과거 `specdrive/specdrive.ps1` 최소 라우팅 검증 결과는 보존하되 현재 세션 기본 진입점으로 쓰지 않는다.
+  - 과거 최소 라우팅 검증 결과는 문서 이력으로만 보존하고 현재 세션 기본 진입점으로 쓰지 않는다.
   - `context-bundle.ps1` 는 그냥 실행하면 bundle key 번호 선택 메뉴를 보여주고, 비대화식 실행은 `-BundleKey` 로 유지한다.
   - 실제 Codex 실행 시에는 non-zero exit code 가 나와도 `output-last-message` 파일에 본문이 남을 수 있으므로 preview 파일과 output 파일을 함께 확인하는 편이 안전하다.
   - session/git 복구 안정화와 `01-overview.md` 기준 `doc` 단계 1차 완료 판정은 `spec(specdrive): stabilize session recovery status` 커밋으로 저장했다.
@@ -449,7 +460,16 @@
   - 마지막 세션을 저장하지 못한 뒤 복구한 현재 기준에서는 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 먼저 읽고, 이후 `docs/specdrive/session-stage.md` 와 실제 session/git 명령 출력으로 현재 상태를 다시 확인했다.
   - `docs/specdrive/doc-stage-testing.md` 기준으로 `01-overview.md` 의 `doc` 단계 1차 테스트는 완료 판정했으며, 다음은 `session` 운영 흐름 정리 또는 다음 board 문서에 같은 흐름을 반복 적용할지 판단하는 것이다.
   - 현재는 board 문서 구조를 `specs / impl / status` 기준으로 다시 정리하고, 관련 진입 문서와 참조 경로를 맞추는 작업을 진행했다.
-- repo-local Codex skill 을 중심으로 `session-start`, `session-save`, `specdrive-skills`, `git-commit`, `github-pr` 를 만들고 1차 테스트했다.
+- `doc-work`, `doc-work-ref`, `doc-work-bundle` repo-local skill 을 만들고 `.agents/skills/**` 및 `specdrive/codex-skills/**` 양쪽에 반영했다.
+- `$doc-work board-overview` 흐름은 `draft / reinforce / revise` 중심으로 정리했다.
+- `draft`, `reinforce` 는 기존 history snapshot 이 있으면 중단하고, `revise` 는 여러 `_dev-revised.md` history snapshot 을 허용하는 흐름으로 정리했다.
+- `revise` 는 preview-first 흐름으로 정리했고, `$doc-work board-overview revise` 실행 시에는 Preview Prompt 만 출력한다.
+- `revise` Preview Prompt 실행 이후에는 `Preview Follow-up Prompt`, `Completion Prompt A: Document Only`, `Completion Prompt B: Document Plus History` 를 분리된 복사 영역으로 출력한다.
+- `revise` note 에는 `Developer Revision Request` 섹션과 `Summary` 를 함께 남기도록 정리했다.
+- `docs/projects/board/01-overview.md` 에서 auth와 board의 독립 배포를 즉시 확정이 아니라 장기 고려 방향으로 조정하고, logging/auth/board 같은 재사용 후보 영역의 경계를 overview 수준에서 명시했다.
+- 같은 revised 결과를 `docs/history/projects/board/01-overview/2026-04-25_204400_01-overview_dev-revised.md` 와 `.note.md` 에 저장했다.
+- 다음 board 문서 작업은 `01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단하는 것이 자연스럽다.
+- repo-local Codex skill 을 중심으로 `$session`, `specdrive-skills`, `git-commit`, `github-pr` 를 만들고 1차 테스트했다.
 - 테스트 중에는 전역 skill 설치를 사용하지 않고 `.agents/skills/**` 를 기준으로 둔다.
 - 배포/패키징 후보 원본은 `specdrive/codex-skills/**` 로 둔다.
 - `github-pr` 실제 PR 생성 검증은 아직 GitHub CLI `gh` 미설치로 보류 중이며, Codex GitHub plugin 은 현재 필수로 보지 않는다.
@@ -457,10 +477,23 @@
 - 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `confirm-prompt`, `apply-prompt` 중심의 수동 보강 루프를 먼저 정리하고, 실제 저장 자동화 범위는 후속 판단 대상으로 남겨 두었다.
 - 현재 `doc` 단계 문서는 execute-first 보다 prompt-first 해석을 우선하도록 재정리 중이다.
 - 현재 구현 명령과 문서 해석 모두 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 기준으로 정리한 상태다.
-  - 현재 `$session-save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 제안하는 skill 로 해석하는 편이 맞다.
-  - 이후 세션에서는 `$session-start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
-  - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
-  - `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
+- 현재 `$session save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 제안하는 action 으로 해석하는 편이 맞다.
+- 이후 세션에서는 `$session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
+- `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
+- `main` pull/merge/push 후 로컬 `main` 과 `origin/main` 은 같은 지점으로 정리했다.
+- 다음 board 개발 문서 작업용 브랜치는 `docs/board-spec-structure` 로 잡았고, 생성 직후 작업 트리는 clean 상태다.
+- 다음 작업은 `docs/projects/board/01-overview.md`, `docs/projects/board/index.md`, `docs/projects/board/specs/03-design.md` 의 연결과 역할 정합성 점검이다.
+- `dev` 단계는 board 문서 세트가 더 쌓이고 실제 프로그램 작업에 들어갈 시점에 시작한다.
+- `docs/projects/board/specs/02-requirements.md` 에 대해 `$doc-work board-requirements draft` 와 `reinforce` 흐름을 실행했다.
+- `docs/history/projects/board/02-requirements/2026-04-26_172523_02-requirements_dev-draft.md` 및 note를 저장했다.
+- `docs/history/projects/board/02-requirements/2026-04-26_173140_02-requirements_codex-reinforced.md` 및 note를 저장했다.
+- `specdrive/config/affected-docs-map.json` 에 `reference_docs` 를 추가해 Doc Work Ref는 상위 기준 문서만, Doc Work Bundle은 `include_for_bundle` 중심 상호 영향 문서 묶음을 읽도록 분리했다.
+- `$doc-work-ref` 는 `reference / revise` action과 `ref` history prefix 규칙으로 정리했다.
+- `$doc-work-bundle` 은 `reference / revise` action과 `bundle` history prefix 규칙으로 정리했다.
+- ref/bundle 작업에서 여러 문서가 수정되면 같은 timestamp를 공유하되 문서별 snapshot/note를 각각 남기는 규칙을 추가했다.
+- session/git도 인자형 호출을 지원하도록 `$session start-lite|start|status|save`, `$git commit|pr` 라우터 스킬을 추가했다.
+- 기존 `$session-start-*`, `$session-save` 호환 스킬은 노출을 줄이기 위해 `$session` 내부 action 문서로 통합했다.
+- Git commit/push는 아직 미수행이며, 새 `$session`, `$git` 스킬은 재로드 후 정식 인식 확인이 필요하다.
 
 ---
 

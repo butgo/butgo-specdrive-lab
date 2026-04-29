@@ -35,6 +35,7 @@
       "path": "AGENTS.md",
       "scope": "root",
       "history_recommended": true,
+      "reference_docs": [],
       "note_template": "루트 AGENTS.md 변경에 따른 전체 작업 규칙 및 하위 AGENTS 정합성 점검",
       "include_for_bundle": [
         "docs/AI_CONTEXT.md",
@@ -63,6 +64,9 @@
       "path": "docs/AI_CONTEXT.md",
       "scope": "root",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md"
+      ],
       "note_template": "AI_CONTEXT.md 변경에 따른 현재 상태 및 다음 진입점 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -85,6 +89,9 @@
       "path": "docs/specdrive/AGENTS.md",
       "scope": "specdrive",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md"
+      ],
       "note_template": "docs/specdrive/AGENTS.md 변경에 따른 specdrive 문서 및 실행 자산 경계 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -98,17 +105,21 @@
           "reason": "실행 자산 구조 설명이 specdrive 전용 규칙과 일치하는지 확인"
         },
         {
-          "path": "docs/specdrive/cli-manual.md",
+          "path": "docs/specdrive/skill-wizard-manual.md",
           "action": "review",
-          "reason": "CLI 운영 매뉴얼이 specdrive 전용 작업 규칙을 벗어나지 않는지 확인"
+          "reason": "skill-first 및 wizard 운영 매뉴얼이 specdrive 전용 작업 규칙을 벗어나지 않는지 확인"
         }
       ]
     },
-    "specdrive-cli-manual": {
-      "path": "docs/specdrive/cli-manual.md",
+    "specdrive-skill-wizard-manual": {
+      "path": "docs/specdrive/skill-wizard-manual.md",
       "scope": "specdrive",
       "history_recommended": true,
-      "note_template": "cli-manual.md 변경에 따른 CLI 단계 문서 및 util 문서 점검",
+      "reference_docs": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md"
+      ],
+      "note_template": "skill-wizard-manual.md 변경에 따른 skill/wizard 흐름 및 관련 단계 문서 점검",
       "include_for_bundle": [
         "AGENTS.md",
         "docs/AI_CONTEXT.md",
@@ -118,17 +129,17 @@
         {
           "path": "docs/specdrive/session-stage.md",
           "action": "review",
-          "reason": "session 명령 설명과 session 단계 기준이 일치하는지 확인"
+          "reason": "session action 설명과 session 단계 기준이 일치하는지 확인"
         },
         {
           "path": "docs/specdrive/git-stage.md",
           "action": "review",
-          "reason": "git 명령 설명과 git 단계 기준이 일치하는지 확인"
+          "reason": "git action 설명과 git 단계 기준이 일치하는지 확인"
         },
         {
           "path": "docs/specdrive/util-scripts.md",
           "action": "review",
-          "reason": "util 상세 설명이 CLI 매뉴얼의 요약과 일치하는지 확인"
+          "reason": "util 상세 설명이 skill-first 및 wizard 운영 기준과 충돌하지 않는지 확인"
         }
       ]
     },
@@ -136,6 +147,10 @@
       "path": "docs/specdrive/session-stage.md",
       "scope": "specdrive",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md"
+      ],
       "note_template": "session-stage.md 변경에 따른 session CLI 및 AI_CONTEXT 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -164,6 +179,11 @@
       "path": "docs/specdrive/git-stage.md",
       "scope": "specdrive",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md",
+        "docs/projects/standards/git-policy.md"
+      ],
       "note_template": "git-stage.md 변경에 따른 git CLI 및 git-policy 정합성 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -192,6 +212,10 @@
       "path": "docs/specdrive/util-scripts.md",
       "scope": "specdrive",
       "history_recommended": false,
+      "reference_docs": [
+        "AGENTS.md",
+        "docs/specdrive/AGENTS.md"
+      ],
       "note_template": "util-scripts.md 변경에 따른 util 스크립트 및 출력 위치 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -220,6 +244,10 @@
       "path": "docs/projects/standards/git-policy.md",
       "scope": "projects-common",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md",
+        "docs/projects/standards/index.md"
+      ],
       "note_template": "git-policy.md 변경에 따른 git 단계 및 메시지 생성 스크립트 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -243,6 +271,9 @@
       "path": "docs/projects/board/AGENTS.md",
       "scope": "project-board",
       "history_recommended": true,
+      "reference_docs": [
+        "AGENTS.md"
+      ],
       "note_template": "board AGENTS.md 변경에 따른 board 문서 작업 규칙 점검",
       "include_for_bundle": [
         "AGENTS.md",
@@ -266,23 +297,37 @@
       "path": "docs/projects/board/01-overview.md",
       "scope": "project-board",
       "history_recommended": true,
-      "note_template": "01-overview.md 변경에 따른 board 요구사항 및 현재 상태 점검",
-      "include_for_bundle": [
+      "reference_docs": [
         "AGENTS.md",
-        "docs/AI_CONTEXT.md",
-        "docs/projects/board/AGENTS.md",
-        "docs/projects/board/README.md"
+        "docs/projects/board/AGENTS.md"
+      ],
+      "note_template": "01-overview.md 변경에 따른 요구사항, 설계, 구현 계획, 현재 상태 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/impl/01-implementation-plan.md",
+        "docs/projects/board/status/current-status.md"
       ],
       "check_targets": [
         {
           "path": "docs/projects/board/specs/02-requirements.md",
           "action": "review",
-          "reason": "개요 변경이 요구사항 범위에 영향을 주는지 확인"
+          "reason": "개요의 범위와 목적이 요구사항 범위와 충돌하지 않는지 확인"
         },
         {
-          "path": "docs/AI_CONTEXT.md",
+          "path": "docs/projects/board/specs/03-design.md",
           "action": "review",
-          "reason": "현재 작업 상태나 다음 진입점에 반영이 필요한지 확인"
+          "reason": "개요에서 정의한 방향이 설계 문서에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "개요의 개발 범위가 구현 계획과 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/status/current-status.md",
+          "action": "review",
+          "reason": "현재 상태와 다음 작업 진입점이 개요의 범위와 맞는지 확인"
         }
       ]
     },
@@ -290,31 +335,64 @@
       "path": "docs/projects/board/specs/02-requirements.md",
       "scope": "project-board",
       "history_recommended": true,
-      "note_template": "02-requirements.md 변경에 따른 board 개요 및 후속 개발 기준 점검",
-      "include_for_bundle": [
-        "AGENTS.md",
-        "docs/AI_CONTEXT.md",
+      "reference_docs": [
         "docs/projects/board/AGENTS.md",
         "docs/projects/board/01-overview.md"
+      ],
+      "note_template": "02-requirements.md 변경에 따른 개요, 설계, API, DB, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
       ],
       "check_targets": [
         {
           "path": "docs/projects/board/01-overview.md",
           "action": "review",
           "reason": "요구사항 변경이 개요의 범위 설명과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "요구사항이 설계 판단에 올바르게 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "기능 요구사항이 API 명세에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "데이터 요구사항이 DB 설계에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "요구사항 변경이 구현 순서와 작업 범위에 반영되어야 하는지 확인"
         }
       ]
     },
-    "board-design-summary": {
+    "board-design": {
       "path": "docs/projects/board/specs/03-design.md",
       "scope": "project-board",
       "history_recommended": true,
-      "note_template": "03-design.md 변경에 따른 요구사항, 구조, 구현 계획 정합성 점검",
-      "include_for_bundle": [
-        "AGENTS.md",
-        "docs/AI_CONTEXT.md",
+      "reference_docs": [
         "docs/projects/board/AGENTS.md",
+        "docs/projects/board/01-overview.md",
         "docs/projects/board/specs/02-requirements.md"
+      ],
+      "note_template": "03-design.md 변경에 따른 요구사항, 애플리케이션 구조, 도메인, API, DB, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
       ],
       "check_targets": [
         {
@@ -323,9 +401,225 @@
           "reason": "설계 변경이 요구사항 범위를 벗어나지 않는지 확인"
         },
         {
+          "path": "docs/projects/board/specs/04-application-structure.md",
+          "action": "review",
+          "reason": "설계 판단이 애플리케이션 구조에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/05-domain-model.md",
+          "action": "review",
+          "reason": "설계 변경이 도메인 모델과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "설계 변경이 API 명세에 반영되어야 하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "설계 변경이 DB 구조에 영향을 주는지 확인"
+        },
+        {
           "path": "docs/projects/board/impl/01-implementation-plan.md",
           "action": "review",
-          "reason": "구현 계획 문서가 현재 설계 판단을 올바르게 이어받는지 확인"
+          "reason": "구현 계획이 현재 설계 판단을 올바르게 따르는지 확인"
+        }
+      ]
+    },
+    "board-application-structure": {
+      "path": "docs/projects/board/specs/04-application-structure.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "reference_docs": [
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/03-design.md"
+      ],
+      "note_template": "04-application-structure.md 변경에 따른 설계, 도메인, API, DB, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "애플리케이션 구조가 설계 문서의 방향과 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/05-domain-model.md",
+          "action": "review",
+          "reason": "패키지/레이어 구조가 도메인 모델 경계와 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "컨트롤러/API 구조가 애플리케이션 구조와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "영속성 구조가 DB 설계와 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "구현 순서가 애플리케이션 구조 기준을 따르는지 확인"
+        }
+      ]
+    },
+    "board-domain-model": {
+      "path": "docs/projects/board/specs/05-domain-model.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "reference_docs": [
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md"
+      ],
+      "note_template": "05-domain-model.md 변경에 따른 요구사항, 설계, API, DB 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "도메인 모델이 요구사항의 핵심 개념을 빠뜨리지 않았는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "도메인 모델이 설계 방향과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/04-application-structure.md",
+          "action": "review",
+          "reason": "도메인 모델의 위치와 의존 방향이 애플리케이션 구조와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "API 요청/응답 모델이 도메인 개념과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "도메인 모델과 테이블/컬럼 설계가 과도하게 어긋나지 않는지 확인"
+        }
+      ]
+    },
+    "board-api-spec": {
+      "path": "docs/projects/board/specs/06-api-spec.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "reference_docs": [
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md"
+      ],
+      "note_template": "06-api-spec.md 변경에 따른 요구사항, 설계, 도메인, DB, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "API가 요구사항의 기능 범위를 빠뜨리지 않았는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "API 설계가 전체 설계 방향과 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/04-application-structure.md",
+          "action": "review",
+          "reason": "API 계층과 애플리케이션 구조가 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/05-domain-model.md",
+          "action": "review",
+          "reason": "API 요청/응답이 도메인 모델과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "API에서 요구하는 조회/저장 데이터가 DB 설계에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "API 구현 작업이 구현 계획에 반영되어 있는지 확인"
+        }
+      ]
+    },
+    "board-db-design": {
+      "path": "docs/projects/board/specs/07-db-design.md",
+      "scope": "project-board",
+      "history_recommended": true,
+      "reference_docs": [
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md"
+      ],
+      "note_template": "07-db-design.md 변경에 따른 요구사항, 설계, 도메인, API, 구현 계획 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
+      ],
+      "check_targets": [
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "DB 설계가 데이터 요구사항을 충족하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "DB 설계가 전체 설계 판단과 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/04-application-structure.md",
+          "action": "review",
+          "reason": "영속성 계층 구조가 애플리케이션 구조와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/05-domain-model.md",
+          "action": "review",
+          "reason": "테이블 구조와 도메인 모델의 핵심 개념이 대응되는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "API에서 필요한 데이터 조회/저장 조건이 DB 설계와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "DB 구현 작업 순서가 구현 계획에 반영되어 있는지 확인"
         }
       ]
     },
@@ -333,23 +627,67 @@
       "path": "docs/projects/board/impl/01-implementation-plan.md",
       "scope": "project-board",
       "history_recommended": true,
-      "note_template": "01-implementation-plan.md 변경에 따른 설계/상태 문서 정합성 점검",
-      "include_for_bundle": [
-        "AGENTS.md",
-        "docs/AI_CONTEXT.md",
+      "reference_docs": [
         "docs/projects/board/AGENTS.md",
-        "docs/projects/board/specs/03-design.md"
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md"
+      ],
+      "note_template": "01-implementation-plan.md 변경에 따른 전체 스펙 문서와 현재 상태 정합성 점검",
+      "include_for_bundle": [
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/status/current-status.md"
       ],
       "check_targets": [
         {
+          "path": "docs/projects/board/01-overview.md",
+          "action": "review",
+          "reason": "구현 계획이 프로젝트 개요의 범위와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "구현 계획이 요구사항 우선순위와 일치하는지 확인"
+        },
+        {
           "path": "docs/projects/board/specs/03-design.md",
           "action": "review",
-          "reason": "구현 계획이 현재 설계 판단을 벗어나지 않는지 확인"
+          "reason": "구현 계획이 설계 방향을 벗어나지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/04-application-structure.md",
+          "action": "review",
+          "reason": "구현 계획이 애플리케이션 구조 기준을 따르는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/05-domain-model.md",
+          "action": "review",
+          "reason": "구현 계획이 도메인 모델 구현 순서를 반영하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/06-api-spec.md",
+          "action": "review",
+          "reason": "API 구현 작업이 구현 계획에 반영되어 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/07-db-design.md",
+          "action": "review",
+          "reason": "DB 구현 작업이 구현 계획에 반영되어 있는지 확인"
         },
         {
           "path": "docs/projects/board/status/current-status.md",
           "action": "review",
-          "reason": "현재 활성 작업과 다음 진입점 반영이 필요한지 확인"
+          "reason": "현재 활성 작업과 다음 진입점이 구현 계획과 일치하는지 확인"
         }
       ]
     },
@@ -357,17 +695,38 @@
       "path": "docs/projects/board/status/current-status.md",
       "scope": "project-board",
       "history_recommended": false,
-      "note_template": "current-status.md 변경에 따른 현재 focus 및 다음 진입점 점검",
+      "reference_docs": [
+        "docs/projects/board/AGENTS.md",
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/impl/01-implementation-plan.md"
+      ],
+      "note_template": "current-status.md 변경에 따른 현재 작업 위치와 다음 진입점 점검",
       "include_for_bundle": [
-        "AGENTS.md",
-        "docs/AI_CONTEXT.md",
-        "docs/projects/board/AGENTS.md"
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/impl/01-implementation-plan.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md"
       ],
       "check_targets": [
         {
-          "path": "docs/AI_CONTEXT.md",
+          "path": "docs/projects/board/01-overview.md",
           "action": "review",
-          "reason": "board 상태 변경이 저장소 공통 현재 상태와 충돌하지 않는지 확인"
+          "reason": "현재 상태가 프로젝트 개요의 범위와 충돌하지 않는지 확인"
+        },
+        {
+          "path": "docs/projects/board/impl/01-implementation-plan.md",
+          "action": "review",
+          "reason": "현재 작업 단계가 구현 계획의 순서와 일치하는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/02-requirements.md",
+          "action": "review",
+          "reason": "현재 진행 중인 작업이 요구사항 범위 안에 있는지 확인"
+        },
+        {
+          "path": "docs/projects/board/specs/03-design.md",
+          "action": "review",
+          "reason": "현재 작업 방향이 설계 기준을 벗어나지 않는지 확인"
         }
       ]
     }

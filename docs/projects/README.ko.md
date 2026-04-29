@@ -57,7 +57,7 @@ specdrive는 다음을 다룬다.
 - 세션 시작과 문맥 복구
 - 문서 보강 / 확정 / 히스토리 저장 절차
 - task 분해와 상태 관리 흐름
-- CLI 명령 구조
+- repo-local skill-first 흐름과 향후 wizard 방식 안내 후보
 - 협업 운영 규칙
 
 즉, specdrive는  
@@ -188,7 +188,7 @@ projects 문서는 다음을 다룬다.
 
 projects 문서는 다음을 직접 다루지 않는다.
 
-- specdrive 자체 CLI 설계
+- specdrive 자체 skill / 자동화 / 후속 CLI 설계
 - specdrive의 skill 구조
 - Codex exec 상세 설계
 - 저장소 전체 공통 운영 규칙
@@ -249,7 +249,7 @@ projects 작업을 시작할 때는 보통 아래 순서로 읽는다.
 
 ### 우선순위 3
 - board 하위 요구사항 / 설계 / 구현 계획 문서 최소 세트 정리
-- CLI 테스트에 사용할 실제 문서 기반 준비
+- repo-local skill 및 문서 흐름 검증에 사용할 실제 문서 기반 준비
 
 ---
 

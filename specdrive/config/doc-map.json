@@ -102,12 +102,12 @@
       "title": "runtime-structure.md",
       "role": "specdrive 실행 자산 구조와 책임 경계를 설명하는 문서"
     },
-    "specdrive-cli-manual": {
-      "path": "docs/specdrive/cli-manual.md",
+    "specdrive-skill-wizard-manual": {
+      "path": "docs/specdrive/skill-wizard-manual.md",
       "scope": "specdrive",
       "kind": "manual",
-      "title": "cli-manual.md",
-      "role": "현재 PowerShell CLI 실행 방법과 검증 흐름을 설명하는 운영 매뉴얼"
+      "title": "skill-wizard-manual.md",
+      "role": "repo-local skill-first 흐름과 향후 wizard 안내 흐름을 설명하는 운영 매뉴얼"
     },
     "specdrive-cli-key-routing": {
       "path": "docs/specdrive/cli-key-routing.md",
@@ -115,13 +115,6 @@
       "kind": "design",
       "title": "cli-key-routing.md",
       "role": "target, skill, context-set key 기반 CLI 라우팅 구조 문서"
-    },
-    "specdrive-cli-single-entry": {
-      "path": "docs/specdrive/cli-single-entry.md",
-      "scope": "specdrive",
-      "kind": "design",
-      "title": "cli-single-entry.md",
-      "role": "specdrive.ps1 단일 진입점의 책임과 경계를 설명하는 문서"
     },
     "specdrive-doc-stage-testing": {
       "path": "docs/specdrive/doc-stage-testing.md",
@@ -178,6 +171,13 @@
       "kind": "todo",
       "title": "affected-docs-map-todo.md",
       "role": "affected-docs-map 정식화와 후속 연결을 검토하기 위한 메모"
+    },
+    "specdrive-doc-work-bundle-map": {
+      "path": "specdrive/config/doc-work-bundle-map.json",
+      "scope": "specdrive",
+      "kind": "config",
+      "title": "doc-work-bundle-map.json",
+      "role": "Doc Work Bundle 스킬에서 사용하는 board 문서 상호 정합성 묶음 설정"
     },
     "projects-readme": {
       "path": "docs/projects/README.md",
@@ -293,13 +293,13 @@
       "role": "board 프로젝트의 최소 요구사항과 범위를 정리하는 문서",
       "target_key": "board-requirements"
     },
-    "board-design-summary": {
+    "board-design": {
       "path": "docs/projects/board/specs/03-design.md",
       "scope": "project-board",
       "kind": "project-design",
       "title": "03-design.md",
       "role": "board 프로젝트의 상위 설계 판단을 정리하는 문서",
-      "target_key": "board-design-summary"
+      "target_key": "board-design"
     },
     "board-application-structure": {
       "path": "docs/projects/board/specs/04-application-structure.md",

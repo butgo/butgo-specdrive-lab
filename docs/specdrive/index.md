@@ -130,7 +130,22 @@ specdrive 실행 자산 구조의 책임을 설명하는 문서다.
 
 ---
 
-### 4.6 `docs/specdrive/doc-stage-testing.md`
+### 4.6 `docs/specdrive/skill-wizard-manual.md`
+repo-local skill-first 흐름과 향후 wizard 방식 안내 흐름을 설명하는 운영 매뉴얼이다.
+
+다음 내용을 다룬다.
+
+- 현재 사용하는 repo-local Codex skill 기준
+- skill-first 작업 원칙
+- wizard 방식으로 승격할 반복 흐름의 조건
+- `$session`, `$doc-work`, `$doc-work-ref`, `$doc-work-bundle`, `$git` 흐름의 역할
+
+이 문서는  
+**현재 skill-first / wizard 지향 실행 기준 매뉴얼**로 읽는다.
+
+---
+
+### 4.7 `docs/specdrive/doc-stage-testing.md`
 현재 `doc` 단계 테스트 상태를 빠르게 복구하는 문서다.
 
 다음 내용을 다룬다.
@@ -146,13 +161,13 @@ specdrive 실행 자산 구조의 책임을 설명하는 문서다.
 
 ---
 
-### 4.7 `docs/specdrive/session-stage.md`
+### 4.8 `docs/specdrive/session-stage.md`
 `session` 단계를 세션 복구/상태 확인/세션 저장 중심 운영 단계로 정리하는 문서다.
 
 다음 내용을 다룬다.
 
 - 왜 `session` 이 `doc`, `dev` 와 분리되어야 하는지
-- `session-start-lite`, `session-start`, `session-status`, `session-save` skill 의 역할
+- `$session start-lite`, `$session start`, `$session status`, `$session save` action 의 역할
 - `session` 단계의 출력 형식과 책임 경계
 
 이 문서는  
@@ -160,7 +175,7 @@ specdrive 실행 자산 구조의 책임을 설명하는 문서다.
 
 ---
 
-### 4.8 `docs/specdrive/git-stage.md`
+### 4.9 `docs/specdrive/git-stage.md`
 `git` 단계를 commit message, push, PR 생성 중심 전달 단계로 정리하는 문서다.
 
 다음 내용을 다룬다.
@@ -271,12 +286,13 @@ specdrive 실행 자산 구조의 책임을 설명하는 문서다.
 4. `docs/specdrive/README.md`
 5. `docs/specdrive/AGENTS.md`
 6. `docs/specdrive/runtime-structure.md`
-7. `docs/specdrive/doc-stage-testing.md`
-8. `docs/specdrive/session-stage.md`
-9. `docs/specdrive/git-stage.md`
-10. `.agents/skills/**`
-11. `specdrive/codex-skills/**`
-12. 관련 skill 문서
+7. `docs/specdrive/skill-wizard-manual.md`
+8. `docs/specdrive/doc-stage-testing.md`
+9. `docs/specdrive/session-stage.md`
+10. `docs/specdrive/git-stage.md`
+11. `.agents/skills/**`
+12. `specdrive/codex-skills/**`
+13. 관련 skill 문서
 
 ---
 

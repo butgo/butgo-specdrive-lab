@@ -29,7 +29,8 @@ At the current stage, specdrive should be understood as follows.
 
 - A document-based AI collaboration engine
 - An operating system for repeatable work flows
-- A repo-local Codex skill-centered work orchestrator
+- A **repo-local Codex skill-first** work orchestrator
+- A future **wizard-style guided workflow** layer for repeated, stabilized flows
 - A tool that reads real project documents and executes collaboration flows
 
 In other words, specdrive is currently closer to an  
@@ -44,6 +45,12 @@ At the current stage, one more distinction matters.
 
 In other words, specdrive is not primarily about storing previews.  
 Its core is **executing document-based AI collaboration flows and settling the results into real documents and document history**.
+
+At the current stage, this means the operating order is explicit:
+
+1. Validate the workflow with repo-local skills first.
+2. Stabilize the repeated action shape and human confirmation points.
+3. Only then promote the stable flow into a wizard-style guided experience.
 
 ---
 
@@ -164,26 +171,26 @@ This is the operating stage for starting and closing sessions.
 
 Current skill flow examples:
 
-- `session-start-lite`
-- `session-start`
-- `session-status`
-- `session-save`
+- `$session start-lite`
+- `$session start`
+- `$session status`
+- `$session save`
 
 Basic meaning:
 
 - Recover the current state and next entry point through session skills.
 - Save session notes and the next entry point at session end.
 
-At the current stage, `$session-start` is better understood not as an automatic work-start command,
-but as a skill that prints a copy prompt so Codex can read the relevant documents, recover the current state,
+At the current stage, `$session start` is better understood not as an automatic work-start command,
+but as an action that prints a copy prompt so Codex can read the relevant documents, recover the current state,
 and summarize the focus and next entry point first.
 Actual document edits or follow-up work begin only after the developer explicitly asks for them.
 
-At the current stage, `$session-save` is better understood not as an automatic save command,
-but as a skill that prints a copy prompt asking Codex for a `docs/AI_CONTEXT.md` update draft.
+At the current stage, `$session save` is better understood not as an automatic save command,
+but as an action that prints a copy prompt asking Codex for a `docs/AI_CONTEXT.md` update draft.
 The draft is reviewed first, and the real `docs/AI_CONTEXT.md` edit happens only after the developer explicitly asks to save it.
 
-At the current stage, `$session-status` is better understood as a compact read-only status check.
+At the current stage, `$session status` is better understood as a compact read-only status check.
 It does not generate a copy prompt and does not start document edits or save flows by itself.
 
 ### 5.4 git Stage
@@ -318,7 +325,7 @@ The current priorities of specdrive are as follows.
 - Validate the minimum repo-local skill flow
 - `doc reinforce / confirm-prompt / apply-prompt`
 - `dev phase / cycle / status / task-split`
-- `$session-start-lite / $session-start / $session-status / $session-save`
+- `$session start-lite / $session start / $session status / $session save`
 - `$git-commit / $github-pr`
 
 ### Priority 4

@@ -13,7 +13,7 @@ CLI는 현재 기준 문서의 기본 진입점이나 권장 흐름으로 두지
 
 현재 버전에서는 다음을 기본 작업 흐름에서 제외한다.
 
-- `specdrive/specdrive.ps1` 단일 진입점 확장
+- 후속 CLI 진입점 도입 여부 재검토
 - `session start / status / save` CLI 흐름
 - `git branch-name / git-message / pr-message` CLI 흐름
 - CLI 기반 copy prompt 생성 자동화
@@ -37,10 +37,10 @@ CLI는 다음 조건이 충분히 반복 확인된 뒤 다시 검토한다.
 
 현재 기준에서는 다음 흐름을 우선한다.
 
-- `$session-start-lite`
-- `$session-start`
-- `$session-status`
-- `$session-save`
+- `$session start-lite`
+- `$session start`
+- `$session status`
+- `$session save`
 - `$git-commit`
 - `$github-pr`
 

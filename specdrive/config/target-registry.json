@@ -22,13 +22,13 @@
         "Keep the scope on minimum board requirements and avoid drifting into detailed design."
       ]
     },
-    "board-design-summary": {
+    "board-design": {
       "document_path": "docs/projects/board/specs/03-design.md",
       "document_kind": "project-design",
       "project": "board",
       "context_set_key": "board-doc-base",
       "notes": [
-        "Use this target for the board design summary document.",
+        "Use this target for the board design document.",
         "Keep the scope on current structure decisions and avoid drifting into implementation planning."
       ]
     },

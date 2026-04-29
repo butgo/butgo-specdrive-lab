@@ -78,7 +78,99 @@
 
 ---
 
-## 6. 최종 정리
+## 6. history 파일 패턴
+
+현재 `doc` 단계에서 문서 작업 이력을 남길 때는 모든 history 파일명 앞에
+timestamp prefix 를 붙이고, 그 뒤에 아래 suffix 패턴을 사용한다.
+
+timestamp prefix 형식은 다음과 같다.
+
+```text
+yyyy-MM-dd_HHmmss_
+```
+
+예:
+
+```text
+2026-03-17_131703_
+```
+
+따라서 실제 파일명은 아래와 같은 형태가 된다.
+
+```text
+2026-03-17_131703_<document-base>_dev-draft.md
+```
+
+| 파일 패턴 | 의미 |
+| --- | --- |
+| `_dev-draft.md` | 개발자 초안 |
+| `_dev-draft.note.md` | 개발자 초안 노트 |
+| `_codex-reinforced.md` | Codex 초기 보강 |
+| `_codex-reinforced.note.md` | Codex 초기 보강 노트 |
+| `_dev-revised.md` | Codex 초기 보강 후 개발자 수정 |
+| `_dev-revised.note.md` | Codex 초기 보강 후 개발자 수정 노트 |
+
+`_dev-revised` 계열 파일은 한 문서에 여러 개 존재할 수 있다.
+따라서 timestamp prefix 를 반드시 사용해 여러 수정 이력이 서로 덮어쓰이지 않게 한다.
+
+개발자 초안 note 파일은 아래 형식을 우선 사용한다.
+
+```markdown
+# Note
+
+- Document: <DOCUMENT-LABEL>
+- Title: <target file name>
+- Stage: dev-draft
+- Saved At: <yyyy-MM-dd HH:mm:ss>
+
+## Summary
+
+개발자 초안 작성
+```
+
+Codex 초기 보강 note 파일은 아래 형식을 우선 사용한다.
+
+```markdown
+# Note
+
+- Document: <DOCUMENT-LABEL>
+- Title: <target file name>
+- Stage: codex-reinforced
+- Saved At: <yyyy-MM-dd HH:mm:ss>
+
+## Summary
+
+- <summary line 1>
+- <summary line 2>
+```
+
+`_codex-reinforced.note.md` 의 Summary 는 10줄 이내로 작성한다.
+이 note 는 diff 전체가 아니라 Codex 초기 보강에서 실제로 정리한 핵심 내용을 요약한다.
+
+Codex 초기 보강으로 원본 문서를 업데이트하기 전에는 해당 대상 문서의
+`_dev-draft.md` history snapshot 이 이미 있는지 먼저 확인한다.
+
+대상 문서의 `_dev-draft.md` snapshot 이 없다면, 원본 업데이트 전에 현재 원본 문서를
+변경 없이 `_dev-draft.md` 로 먼저 저장하고 `_dev-draft.note.md` 도 함께 생성한다.
+그 다음 Codex 보강 결과를 원본 문서와 `_codex-reinforced.md` history snapshot 에 반영한다.
+
+단, 같은 대상 문서에 대해 이미 해당 stage 의 history snapshot 이 존재하면 같은 stage 를 다시 진행하지 않는다.
+
+- `draft` 작업은 `_dev-draft.md` 가 이미 있으면 존재 사실을 알리고 중단한다.
+- `reinforce` 작업은 `_codex-reinforced.md` 가 이미 있으면 존재 사실을 알리고 중단한다.
+- `revise` 작업은 `_dev-revised.md` 가 이미 있어도 중단하지 않는다. 개발자 수정은 여러 번 존재할 수 있다.
+
+이 확인은 파일명 기준으로 수행하며, 사용자가 명시적으로 요청하지 않는 한 기존 `docs/history/**` 파일 본문은 열람하지 않는다.
+
+이 패턴은 다음 구분을 선명하게 남기기 위한 기준이다.
+
+- 개발자가 처음 작성한 초안
+- Codex가 처음 보강한 결과
+- Codex 보강 이후 개발자가 다시 조정한 결과
+
+---
+
+## 7. 최종 정리
 
 현재 `doc apply-prompt` 흐름의 첫 테스트 문서는  
 `docs/projects/board/01-overview.md` 다.

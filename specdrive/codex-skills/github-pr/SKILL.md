@@ -1,11 +1,17 @@
 ---
 name: github-pr
-description: Prepare a GitHub pull request by checking the remote repository, current branch, status, base branch, pushed commits, GitHub CLI authentication, existing PRs, recent commits, and diff; then draft a PR title and body, and only after explicit user approval run gh pr create. Use when the user invokes $github-pr or asks Codex to prepare or create a GitHub PR.
+description: Prepare a GitHub pull request safely. Prefer $git pr; $github-pr remains a compatibility command.
 ---
 
 # GitHub PR
 
 Use this skill to prepare and optionally create a GitHub pull request safely.
+
+Preferred argument-based invocation:
+
+```text
+$git pr
+```
 
 ## Read First
 

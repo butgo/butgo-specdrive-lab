@@ -255,6 +255,18 @@ AI는 보조 수단이며, 다음을 해서는 안 된다.
 - 참조 문서 명시
 - 현재 단계와 후속 단계를 구분
 
+### 10.6 Markdown 코드블록 중첩을 피한다
+Markdown 문서, preview, copy prompt 를 작성할 때는 fenced code block 중첩으로 화면이 깨지지 않게 한다.
+
+기준은 다음과 같다.
+
+- 문서 preview 전체를 감쌀 때는 triple backtick 대신 `~~~markdown` 을 우선 사용한다.
+- preview 내부의 짧은 예시는 가능한 한 inline code 또는 들여쓰기 코드블록으로 표현한다.
+- preview 내부에 JSON, text, shell 예시처럼 fenced code block 이 필요하면, 바깥 preview fence 와 다른 문자를 사용한다.
+- copy-ready prompt 안에 전체 문서 preview 를 다시 넣지 않는다.
+- note template 처럼 prompt 내부에 Markdown 예시가 필요하면 `~~~markdown` 을 사용해 바깥 triple backtick 과 충돌하지 않게 한다.
+- 하나의 응답 안에서 preview, approval prompt, completion prompt 는 가능한 한 별도 블록으로 분리한다.
+
 ---
 
 ## 11. 문서 분리 원칙
@@ -344,10 +356,10 @@ AI 협업 품질과 유지보수성이 모두 떨어진다.
 
 핵심 흐름 예:
 
-- session-start-lite
-- session-start
-- session-status
-- session-save
+- session start-lite
+- session start
+- session status
+- session save
 
 기본 순서 예:
 
@@ -360,7 +372,7 @@ AI 협업 품질과 유지보수성이 모두 떨어진다.
 
 - `session` 은 메타 운영 단계다.
 - `session` 은 문서 확정이나 개발 실행 자체를 대신하지 않는다.
-- `session-save` 는 `doc history-save` 를 대체하지 않는다.
+- `session save` 는 `doc history-save` 를 대체하지 않는다.
 
 ### 13.4 git 단계
 Git commit과 GitHub PR 같은 전달 단위 초안을 만드는 단계다.

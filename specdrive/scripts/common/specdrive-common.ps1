@@ -594,7 +594,7 @@ function Get-SpecdrivePrMessageDraft {
         $description += "- session/git CLI 기본 출력을 변경 파일 전체 목록에서 변경 수, 변경 영역, 샘플 중심으로 정리"
     }
     if ($summary.HasSpecdriveDocs) {
-        $description += "- session-stage, git-stage, cli-manual에 토큰 사용량 절감용 출력 원칙 반영"
+        $description += "- session-stage, git-stage, skill-wizard-manual에 토큰 사용량 절감용 출력 원칙 반영"
     }
     if ($summary.HasBoardDocs -or $summary.HasProjectHistory) {
         $description += "- 프로젝트 문서 또는 history 변경 포함 시 전달 메시지 생성에서 변경 범위 참고 유지"
