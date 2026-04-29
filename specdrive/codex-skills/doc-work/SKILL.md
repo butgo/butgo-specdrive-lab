@@ -32,8 +32,8 @@ If the user provided a target and action, read only the resolved target document
 
 Do not read `specdrive/config/affected-docs-map.json` for this skill unless the user explicitly asks for reference or bundle checking.
 
-Before generating an action prompt, check existing history filenames for the target under its project history directory.
-For project documents, use `docs/history/projects/<project>/<document-base>/` where `<document-base>` is the target document filename without `.md`.
+Before generating an action prompt, check existing history filenames for the target under its doc-work history directory.
+For project documents, use `docs/history/projects/<project>/<document-base>/work/` where `<document-base>` is the target document filename without `.md`.
 
 - For `draft`, if any file matching `*_dev-draft.md` exists for the target document base, report that a developer draft history already exists and stop.
 - For `reinforce`, if any file matching `*_codex-reinforced.md` exists for the target document base, report that a Codex reinforced history already exists and stop.
@@ -46,7 +46,7 @@ For target selection, reply with:
 
 1. available target keys
 2. document paths
-3. copy-ready examples such as `$doc-work board-design-summary`
+3. copy-ready examples such as `$doc-work board-design`
 
 For target-only selection, reply with:
 
@@ -54,20 +54,55 @@ For target-only selection, reply with:
 2. current document role
 3. action choices
 4. stage status for `draft`, `reinforce`, and `revise`
-5. copy-ready examples such as `$doc-work board-overview draft`, `$doc-work board-overview reinforce`, and `$doc-work board-overview revise`
+5. a short guide line such as `아래 프롬프트를 사용해주세요.`
+6. copy-ready examples such as `$doc-work board-overview draft`, `$doc-work board-overview reinforce`, and `$doc-work board-overview revise`
 
-For `draft`, output a copy-ready prompt that asks Codex to copy the current target document into history as a developer draft.
-The draft prompt must:
+For `draft`, do not output a long execution prompt.
+Draft is a lightweight history-copy operation, so handle the preflight directly in the current response:
+
+- check whether a `_dev-draft.md` history snapshot already exists for the target
+- read the target document directly
+- propose the target document path, history snapshot path, and history note path
+- ask one explicit approval question
+- provide only a short copy-ready approval prompt
+
+The draft preflight must:
 
 - stop if a `_dev-draft.md` history snapshot already exists for the target
 - read the target document directly
 - treat the current document as a developer draft
-- copy the current target document content as-is into a history snapshot
-- create a simple note file with the fixed note shape below
 - use `_dev-draft.md` and `_dev-draft.note.md` as the draft history suffix pattern
 - prefix every proposed history filename with `yyyy-MM-dd_HHmmss_`, for example `2026-03-17_131703_`
 - avoid editing files until the developer explicitly approves
-- keep history saving separate from session-save
+- keep history saving separate from `$session save`
+
+After the developer approves a draft snapshot, treat the completion as a simple copy operation.
+Do not summarize, compare, or reinterpret the document.
+Recheck the target snapshot and note paths, copy the current target document as-is, write the note, then verify the snapshot exists.
+
+The draft preflight output should be compact and include only:
+
+1. target document path to read
+2. history snapshot path
+3. history note path
+4. explicit approval question
+5. copy-ready approval prompt
+
+The copy-ready approval prompt for draft should be short.
+Prefer this shape when the paths were just shown in the same response:
+
+```text
+승인. 위 경로로 draft snapshot과 note를 저장해줘.
+```
+
+Use the longer shape only when the prompt must be portable across conversations:
+
+```text
+현재 `<target-document>` 내용을 그대로 복사해
+`<history-snapshot-path>`에 draft snapshot을 저장하고,
+note를 `<history-note-path>`에 저장해줘.
+수정 전 최종 대상 파일 2개를 다시 확인하고 진행해줘.
+```
 
 Draft note shape:
 
@@ -84,51 +119,25 @@ Draft note shape:
 개발자 초안 작성
 ~~~
 
-For `reinforce`, output a copy-ready prompt that asks Codex to reinforce the target document, update the original target document, and save the reinforced result into history.
-The reinforce prompt must:
+For `reinforce`, output a compact copy-ready prompt that asks Codex to reinforce the target document, show a preview first, and wait for approval before editing files.
+Keep the generated reinforce prompt short to reduce token usage.
+The reinforce prompt must include only:
 
-- stop if a `_codex-reinforced.md` history snapshot already exists for the target
-- read the target document directly
-- respect the current document role and scope
-- avoid reference or bundle documents unless the user asks for them
-- separate current decisions from deferred ideas
-- before updating the original target document, check whether a `_dev-draft.md` history snapshot already exists for the target
-- if no `_dev-draft.md` snapshot exists, first copy the current target document content as-is into `_dev-draft.md` and create `_dev-draft.note.md`
-- use `_codex-reinforced.md` and `_codex-reinforced.note.md` when proposing Codex reinforcement history files
-- prefix every proposed history filename with `yyyy-MM-dd_HHmmss_`, for example `2026-03-17_131703_`
-- update the original target document with the reinforced content only after developer approval
-- copy the reinforced final content into the `_codex-reinforced.md` history snapshot
-- create `_codex-reinforced.note.md` with a summary within 10 lines
-- ask before editing files, creating documents, or changing document roles
+1. target metadata
+2. task: read the target directly and reinforce it within the current role/scope
+3. guards: no reference/bundle docs, no history body inspection, no role/stage change, no file edit before approval
+4. history checks: stop if `_codex-reinforced.md` exists; note whether `_dev-draft.md` exists
+5. expected output: preview, target path, proposed reinforced snapshot/note paths, short summary, approval prompt
 
-The reinforce prompt should ask for this output before execution:
+Do not include the full note template in the generated reinforce prompt.
+Instead, say the note must use the standard `codex-reinforced` note shape with Document, Title, Stage, Saved At, and Summary within 10 lines.
+The generated reinforce prompt should not repeat every detailed rule if the same meaning is already covered by the compact guards.
 
-1. reinforced document preview
-2. target document path to update
-3. history snapshot path
-4. history note path
-5. summary note body within 10 lines
-6. explicit approval question
-7. copy-ready approval prompt
-8. whether a missing dev-draft snapshot will be created first
+The reinforced preview may be concise when the document is large: show changed structure and important sections, then ask the developer to approve the full rewritten content only when needed.
 
-Codex reinforced note shape:
-
-~~~markdown
-# Note
-
-- Document: <DOCUMENT-LABEL>
-- Title: <target file name>
-- Stage: codex-reinforced
-- Saved At: <yyyy-MM-dd HH:mm:ss>
-
-## Summary
-
-- <summary line 1>
-- <summary line 2>
-~~~
-
-The summary should be 10 lines or fewer.
+After the developer approves a reinforced preview, do not regenerate or re-explain the document.
+Apply the latest approved preview content, write the same content to the reinforced history snapshot, write the note, then verify target/snapshot hashes match.
+Do not read reference documents, bundle documents, or existing history file bodies during this completion step.
 
 When outputting a copy-ready prompt, do not nest triple-backtick code fences inside it.
 Use `~~~markdown` for embedded note templates so the copy area stays in one block.
@@ -136,10 +145,10 @@ Use `~~~markdown` for embedded note templates so the copy area stays in one bloc
 The copy-ready approval prompt for reinforce should use this shape:
 
 ```text
-위 reinforced document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
-같은 내용을 `docs/history/projects/board/01-overview/<timestamp>01-overview_codex-reinforced.md`에 저장한 뒤,
-note를 `docs/history/projects/board/01-overview/<timestamp>01-overview_codex-reinforced.note.md`에 저장해줘.
-단, 대상 문서의 `_dev-draft.md` history snapshot이 아직 없으면 원본 업데이트 전에 현재 원본을 먼저 `_dev-draft.md`와 `_dev-draft.note.md`로 저장해줘.
+승인된 reinforced document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
+같은 내용을 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_codex-reinforced.md`에 저장한 뒤,
+note를 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_codex-reinforced.note.md`에 저장해줘.
+대상 문서의 `_dev-draft.md` history snapshot은 이미 있으므로 새로 만들지 않아도 돼.
 수정 전 최종 대상 파일 3개를 다시 확인하고 진행해줘.
 ```
 
@@ -167,7 +176,7 @@ The revise prompt must:
 The revise copy-ready prompt should start with this common header:
 
 ```text
-$doc-work <target-key> revise 기준으로 진행해줘.
+Doc-work <target-key> revise 실행 기준으로 진행해줘.
 
 ## Target
 
@@ -270,7 +279,7 @@ The preview follow-up prompt for revise should use this shape:
 The document-only completion prompt for revise should use this shape:
 
 ```text
-위 revised document preview를 기준으로 `docs/projects/board/01-overview.md`만 업데이트해줘.
+승인된 revised document preview를 기준으로 `docs/projects/board/01-overview.md`만 업데이트해줘.
 이번 수정은 history snapshot을 생성하지 않는다.
 수정 전 최종 대상 파일 1개를 다시 확인하고 진행해줘.
 ```
@@ -278,27 +287,25 @@ The document-only completion prompt for revise should use this shape:
 The document-plus-history completion prompt for revise should use this shape:
 
 ```text
-위 revised document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
-같은 내용을 `docs/history/projects/board/01-overview/<timestamp>01-overview_dev-revised.md`에 저장한 뒤,
-Developer Revision Request와 Summary를 포함한 note를 `docs/history/projects/board/01-overview/<timestamp>01-overview_dev-revised.note.md`에 저장해줘.
+승인된 revised document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
+같은 내용을 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_dev-revised.md`에 저장한 뒤,
+Developer Revision Request와 Summary를 포함한 note를 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_dev-revised.note.md`에 저장해줘.
 수정 전 최종 대상 파일 3개를 다시 확인하고 진행해줘.
 ```
 
 When outputting revise completion prompts, keep history filename details and apply rules inside the completion prompts, not inside the initial preview prompt.
 
-Use this output shape for action prompts:
+For `reinforce` and `revise`, output only one copy-ready fenced code block containing the prompt.
+Do not add separate target/document/action metadata outside the prompt.
+Before the fenced block, add only one short guide line: `아래 프롬프트를 사용해주세요.`
+Do not add explanatory prose after the fenced block.
+Generated copy-ready execution prompts must not start with `$doc-work`.
+Use a plain execution header such as `Doc-work <target-key> <action> 실행 기준으로 진행해줘.` instead.
+Reserve `$doc-work ...` only for user-facing command examples, not for prompts that should be pasted back for execution.
 
-```text
-target: <target-key>
-document: <document-path>
-action: <draft|reinforce|revise>
-
-아래 프롬프트를 사용해주세요.
-
-<copy-ready prompt>
-```
-
-Keep the output concise.
+When an executed prompt reaches a stop point and another developer action is expected, provide the next action as a copy-ready fenced prompt.
+This includes approval prompts for saving draft history, applying reinforced content, and completing revised content.
+When the work is fully complete or there is no useful follow-up action, finish with a concise result summary and do not include a copy-ready prompt.
 
 ## Stop Points
 

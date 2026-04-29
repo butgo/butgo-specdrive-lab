@@ -175,18 +175,18 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 
 핵심 흐름 예:
 
-- session-start-lite
-- session-start
-- session-status
-- session-save
+- session start-lite
+- session start
+- session status
+- session save
 
 원칙:
 
 - `session` 은 세션 복구와 저장을 돕는 메타 운영 단계다.
-- `session-start-lite` 는 최소 문맥으로 현재 focus 와 다음 진입점을 빠르게 복구한다.
-- `session-start` 는 실행 범위를 조정하고 다음 단계용 copy prompt 출력을 돕는다.
-- `session-status` 는 `docs/AI_CONTEXT.md` 상태와 현재 Git 상태를 짧게 확인한다.
-- `session-save` 는 `docs/AI_CONTEXT.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
+- `$session start-lite` 는 최소 문맥으로 현재 focus 와 다음 진입점을 빠르게 복구한다.
+- `$session start` 는 실행 범위를 조정하고 다음 단계용 copy prompt 출력을 돕는다.
+- `$session status` 는 `docs/AI_CONTEXT.md` 상태와 현재 Git 상태를 짧게 확인한다.
+- `$session save` 는 `docs/AI_CONTEXT.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
 - `session` 은 `doc` / `dev` 내부 처리 로직을 대신하지 않는다.
 
 ### 6.4 git 단계
@@ -244,10 +244,10 @@ specdrive 문서와 스크립트를 설계할 때 `doc`, `dev`, `session`, `git`
 - `dev task-split`
 
 ### 세션 단계
-- `$session-start-lite`
-- `$session-start`
-- `$session-status`
-- `$session-save`
+- `$session start-lite`
+- `$session start`
+- `$session status`
+- `$session save`
 
 ### Git 단계
 - `$git-commit`
@@ -287,10 +287,11 @@ skill은 다음 역할을 가져야 한다.
 
 현재 기준 skill 방향:
 
-- `.agents/skills/session-start-lite`
-- `.agents/skills/session-start`
-- `.agents/skills/session-status`
-- `.agents/skills/session-save`
+- `.agents/skills/session`
+- `.agents/skills/session/actions/start-lite.md`
+- `.agents/skills/session/actions/start.md`
+- `.agents/skills/session/actions/status.md`
+- `.agents/skills/session/actions/save.md`
 - `.agents/skills/git-commit`
 - `.agents/skills/github-pr`
 

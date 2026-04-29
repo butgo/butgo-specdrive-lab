@@ -9,7 +9,9 @@
 그 내용을 그대로 실행 설정으로 사용하지 않는다.
 
 현재 구조에 맞춘 초기 draft 설정은 `specdrive/config/affected-docs-map.json` 에 있다.
-다만 아직 어떤 스크립트도 이 설정을 기본 동작으로 읽지 않는다.
+다만 `$doc-work-bundle` 의 board 문서 상호 정합성 묶음은
+`specdrive/config/doc-work-bundle-map.json` 으로 분리했다.
+`affected-docs-map.json` 은 `$doc-work-ref` 와 넓은 영향 관계 검토 후보로 유지한다.
 
 ---
 
@@ -82,7 +84,7 @@ specdrive/config/affected-docs-map.json
 - `docs/specdrive/README.md`
 - `docs/specdrive/session-stage.md`
 - `docs/specdrive/git-stage.md`
-- `docs/specdrive/cli-manual.md`
+- `docs/specdrive/skill-wizard-manual.md`
 - `docs/specdrive/util-scripts.md`
 
 역할:
@@ -120,7 +122,7 @@ specdrive/config/affected-docs-map.json
 
 ## 6. 엔트리 형태
 
-현재 draft 설정의 각 항목은 아래 정도의 의미를 가진다.
+현재 `affected-docs-map.json` draft 설정의 각 항목은 아래 정도의 의미를 가진다.
 
 ```json
 {
@@ -144,6 +146,21 @@ specdrive/config/affected-docs-map.json
 ```
 
 현재 이 형태는 draft 이며, 스크립트 입력 계약으로 확정된 것은 아니다.
+
+`$doc-work-bundle` 전용 board 묶음은 아래처럼 별도 map을 사용한다.
+
+```json
+{
+  "key": "requirements",
+  "path": "specs/02-requirements.md",
+  "bundle_refs": [
+    "01-overview.md",
+    "specs/03-design.md",
+    "specs/04-application-structure.md"
+  ],
+  "reason": "요구사항은 후속 설계와 구현 계획의 입력이므로 주요 문서와 정합성을 점검한다."
+}
+```
 
 ---
 

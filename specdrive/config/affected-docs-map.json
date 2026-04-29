@@ -105,21 +105,21 @@
           "reason": "실행 자산 구조 설명이 specdrive 전용 규칙과 일치하는지 확인"
         },
         {
-          "path": "docs/specdrive/cli-manual.md",
+          "path": "docs/specdrive/skill-wizard-manual.md",
           "action": "review",
-          "reason": "CLI 운영 매뉴얼이 specdrive 전용 작업 규칙을 벗어나지 않는지 확인"
+          "reason": "skill-first 및 wizard 운영 매뉴얼이 specdrive 전용 작업 규칙을 벗어나지 않는지 확인"
         }
       ]
     },
-    "specdrive-cli-manual": {
-      "path": "docs/specdrive/cli-manual.md",
+    "specdrive-skill-wizard-manual": {
+      "path": "docs/specdrive/skill-wizard-manual.md",
       "scope": "specdrive",
       "history_recommended": true,
       "reference_docs": [
         "AGENTS.md",
         "docs/specdrive/AGENTS.md"
       ],
-      "note_template": "cli-manual.md 변경에 따른 CLI 단계 문서 및 util 문서 점검",
+      "note_template": "skill-wizard-manual.md 변경에 따른 skill/wizard 흐름 및 관련 단계 문서 점검",
       "include_for_bundle": [
         "AGENTS.md",
         "docs/AI_CONTEXT.md",
@@ -129,17 +129,17 @@
         {
           "path": "docs/specdrive/session-stage.md",
           "action": "review",
-          "reason": "session 명령 설명과 session 단계 기준이 일치하는지 확인"
+          "reason": "session action 설명과 session 단계 기준이 일치하는지 확인"
         },
         {
           "path": "docs/specdrive/git-stage.md",
           "action": "review",
-          "reason": "git 명령 설명과 git 단계 기준이 일치하는지 확인"
+          "reason": "git action 설명과 git 단계 기준이 일치하는지 확인"
         },
         {
           "path": "docs/specdrive/util-scripts.md",
           "action": "review",
-          "reason": "util 상세 설명이 CLI 매뉴얼의 요약과 일치하는지 확인"
+          "reason": "util 상세 설명이 skill-first 및 wizard 운영 기준과 충돌하지 않는지 확인"
         }
       ]
     },
@@ -375,7 +375,7 @@
         }
       ]
     },
-    "board-design-summary": {
+    "board-design": {
       "path": "docs/projects/board/specs/03-design.md",
       "scope": "project-board",
       "history_recommended": true,

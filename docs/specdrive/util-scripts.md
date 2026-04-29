@@ -12,7 +12,7 @@
 
 ## 2. 현재 기준
 
-현재 util 스크립트는 상위 `specdrive/specdrive.ps1 util ...` 라우팅에 연결하지 않는다.
+현재 util 스크립트는 상위 단일 진입점 CLI 라우팅에 연결하지 않는다.
 필요할 때 PowerShell 파일을 직접 실행한다.
 
 현재 util 출력은 `.speclab/**` 아래에 저장한다.

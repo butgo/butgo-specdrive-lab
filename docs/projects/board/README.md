@@ -84,7 +84,7 @@ specdrive covers the following.
 - Session start and context recovery
 - Document reinforcement / confirmation / history-save procedures
 - Task decomposition and state management flow
-- CLI command structure
+- Repo-local skill-first flow and future wizard-style guidance candidates
 - Collaboration operating rules
 
 In other words, specdrive covers  
@@ -129,7 +129,7 @@ In other words, the board document set should be a
 
 The board document set does not directly cover the following.
 
-- specdrive's own CLI design
+- specdrive's own skill / automation / deferred CLI design
 - specdrive's skill structure
 - Detailed Codex exec design
 - Repository-wide shared operating rules
@@ -263,7 +263,7 @@ The current priorities in the board area are as follows.
 
 ### Priority 3
 - Actually apply specdrive's `doc` / `dev` flow to board project documents
-- Prepare a real document base for CLI testing
+- Prepare a real document base for repo-local skill and document-flow testing
 
 ---
 

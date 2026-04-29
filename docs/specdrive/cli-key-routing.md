@@ -82,7 +82,7 @@ target key 는
 
 - `board-overview`
 - `board-requirements`
-- `board-design-summary`
+- `board-design`
 
 target registry 에는 다음 정보가 들어간다.
 
@@ -270,11 +270,7 @@ legacy action별 target config 는 호환 fallback 으로만 남긴다.
 
 ### 7.1 기본: 비대화식 입력
 
-예:
-
-```powershell
-specdrive/specdrive.ps1 doc reinforce -Target board-overview
-```
+예: `doc reinforce` 계열의 후속 보조 도구가 생기더라도 대상 문서는 `board-overview` 같은 key 로 지정한다.
 
 장점:
 
@@ -339,7 +335,7 @@ specdrive/specdrive.ps1 doc reinforce -Target board-overview
 
 ## 10. 최종 정리
 
-현재 specdrive CLI는 이미 최소 preview 흐름은 작동한다.
+현재 specdrive의 문서 작업 스크립트는 이미 최소 preview 흐름을 검증했다.
 
 다음 단계에서 더 중요한 것은  
 경로 직접 입력을 늘리는 것이 아니라,  

@@ -1,11 +1,6 @@
----
-name: session-start
-description: Prepare a staged specdrive session recovery prompt. Prefer $session start; $session-start remains a compatibility command.
----
-
 # Session Start
 
-Use this skill to start session recovery in two steps.
+Use this action to start session recovery in two steps.
 
 Preferred argument-based invocation:
 
@@ -13,13 +8,13 @@ Preferred argument-based invocation:
 $session start
 ```
 
-This skill should avoid loading the full recovery document set immediately. It first performs a light recovery, then prints a copy prompt that the user can paste back when they want the full recovery pass.
+This action should avoid loading the full recovery document set immediately. It first performs a light recovery, then prints a copy prompt that the user can paste back when they want the full recovery pass.
 
 ## Read First
 
 Read only the minimum needed first:
 
-1. `.agents/skills/session-start-lite/SKILL.md`
+1. `.agents/skills/session/actions/start-lite.md`
 2. `docs/AI_CONTEXT.md`
 
 From `docs/AI_CONTEXT.md`, focus on:
@@ -31,6 +26,7 @@ From `docs/AI_CONTEXT.md`, focus on:
 5. work caution principles
 
 Do not read `README.md`, root `AGENTS.md`, `docs/specdrive/AGENTS.md`, or `docs/specdrive/session-stage.md` during this first step unless the user already gave a specific target that requires it.
+When full recovery is needed, prefer compact AGENTS documents first and read full AGENTS documents only for rule edits, conflicts, or unclear approval boundaries.
 
 ## Output
 
@@ -52,17 +48,19 @@ Use this shape for the copy prompt:
 먼저 다음 문서를 저장소에서 직접 읽어줘.
 
 1. README.md
-2. AGENTS.md
+2. AGENTS.compact.md
 3. docs/AI_CONTEXT.md
-4. docs/specdrive/AGENTS.md
+4. docs/specdrive/AGENTS.compact.md
 5. docs/specdrive/session-stage.md
 
 작업 대상 영역이 정해져 있으면 다음 문서도 추가로 읽어줘.
 
-1. 대상 영역의 AGENTS.md
+1. 대상 영역의 AGENTS.compact.md, 있으면 compact를 우선 읽어줘.
 2. 대상 영역의 README.md
 3. 대상 영역의 index.md
 4. 현재 수정 또는 작성할 대상 문서
+
+full AGENTS.md 원본은 규칙 수정, compact와의 충돌, 승인 필요 여부가 애매한 경우에만 추가로 읽어줘.
 
 ## Output
 
@@ -95,4 +93,4 @@ Do not edit files until the user explicitly asks you to do so.
 - Do not load the full recovery read set until the user pastes or explicitly asks to run the copy prompt.
 - Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 - Do not treat undecided ideas as confirmed decisions.
-- Keep the response brief; this skill is for staged re-entry, not full review.
+- Keep the response brief; this action is for staged re-entry, not full review.

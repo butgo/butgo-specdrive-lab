@@ -7,30 +7,6 @@
       "path": ".agents/skills/session/SKILL.md"
     },
     {
-      "name": "session-start-lite",
-      "command": "$session-start-lite",
-      "description": "호환 명령입니다. 새 호출은 `$session start-lite`를 우선 사용합니다.",
-      "path": ".agents/skills/session-start-lite/SKILL.md"
-    },
-    {
-      "name": "session-start",
-      "command": "$session-start",
-      "description": "호환 명령입니다. 새 호출은 `$session start`를 우선 사용합니다.",
-      "path": ".agents/skills/session-start/SKILL.md"
-    },
-    {
-      "name": "session-status",
-      "command": "$session-status",
-      "description": "호환 명령입니다. 새 호출은 `$session status`를 우선 사용합니다.",
-      "path": ".agents/skills/session-status/SKILL.md"
-    },
-    {
-      "name": "session-save",
-      "command": "$session-save",
-      "description": "호환 명령입니다. 새 호출은 `$session save`를 우선 사용합니다.",
-      "path": ".agents/skills/session-save/SKILL.md"
-    },
-    {
       "name": "specdrive-skills",
       "command": "$specdrive-skills",
       "description": "repo-local specdrive skill 목록을 간단한 설명과 함께 보여줍니다.",
@@ -51,7 +27,7 @@
     {
       "name": "doc-work-bundle",
       "command": "$doc-work-bundle",
-      "description": "대상 문서와 include_for_bundle을 읽고 reference/revise bundle 작업 프롬프트를 준비합니다.",
+      "description": "대상 문서와 doc-work-bundle-map.json의 bundle_refs를 읽고 reference/revise bundle 작업 프롬프트를 준비합니다.",
       "path": ".agents/skills/doc-work-bundle/SKILL.md"
     },
     {

@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "status": "draft",
+  "base_path": "docs/projects/board",
+  "description": "Doc Work Bundle 스킬에서 대상 문서와 상호 정합성을 점검할 문서 묶음 정의",
+  "entries": {
+    "overview": {
+      "target_keys": [
+        "board-overview"
+      ],
+      "path": "01-overview.md",
+      "bundle_refs": [
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "impl/01-implementation-plan.md",
+        "status/current-status.md"
+      ],
+      "reason": "개요는 프로젝트 범위와 방향의 기준이므로 요구사항, 설계, 구현 계획, 현재 상태와 정합성을 점검한다."
+    },
+    "requirements": {
+      "target_keys": [
+        "board-requirements"
+      ],
+      "path": "specs/02-requirements.md",
+      "bundle_refs": [
+        "01-overview.md",
+        "specs/03-design.md",
+        "specs/04-application-structure.md",
+        "specs/05-domain-model.md",
+        "specs/06-api-spec.md",
+        "specs/07-db-design.md",
+        "impl/01-implementation-plan.md",
+        "status/current-status.md"
+      ],
+      "reason": "요구사항은 후속 설계, 구조, 도메인, API, DB, 구현 계획의 입력이므로 전체 주요 문서와 정합성을 점검한다."
+    },
+    "design": {
+      "target_keys": [
+        "board-design"
+      ],
+      "path": "specs/03-design.md",
+      "bundle_refs": [
+        "01-overview.md",
+        "specs/02-requirements.md",
+        "specs/04-application-structure.md",
+        "specs/05-domain-model.md",
+        "specs/06-api-spec.md",
+        "specs/07-db-design.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "설계 문서는 요구사항을 구조화하고 구조, 도메인, API, DB, 구현 계획의 기준이 되므로 주요 설계 후속 문서와 함께 점검한다."
+    },
+    "application-structure": {
+      "target_keys": [
+        "board-application-structure"
+      ],
+      "path": "specs/04-application-structure.md",
+      "bundle_refs": [
+        "specs/03-design.md",
+        "specs/05-domain-model.md",
+        "specs/06-api-spec.md",
+        "specs/07-db-design.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "애플리케이션 구조는 설계 판단을 코드 배치 기준으로 옮기는 문서이므로 설계, 도메인, API, DB, 구현 계획과 정합성을 점검한다."
+    },
+    "domain-model": {
+      "target_keys": [
+        "board-domain-model"
+      ],
+      "path": "specs/05-domain-model.md",
+      "bundle_refs": [
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "specs/04-application-structure.md",
+        "specs/06-api-spec.md",
+        "specs/07-db-design.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "도메인 모델은 요구사항의 핵심 개념을 설계와 구현으로 연결하므로 요구사항, 설계, 구조, API, DB, 구현 계획과 함께 점검한다."
+    },
+    "api-spec": {
+      "target_keys": [
+        "board-api-spec"
+      ],
+      "path": "specs/06-api-spec.md",
+      "bundle_refs": [
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "specs/04-application-structure.md",
+        "specs/05-domain-model.md",
+        "specs/07-db-design.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "API 명세는 요구사항, 도메인, DB, 구현 작업과 직접 연결되므로 관련 문서와 요청/응답/검증/저장 흐름의 정합성을 점검한다."
+    },
+    "db-design": {
+      "target_keys": [
+        "board-db-design"
+      ],
+      "path": "specs/07-db-design.md",
+      "bundle_refs": [
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "specs/04-application-structure.md",
+        "specs/05-domain-model.md",
+        "specs/06-api-spec.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "DB 설계는 요구사항, 도메인, API, 구현 계획과 직접 연결되므로 데이터 구조와 기능 흐름의 정합성을 점검한다."
+    },
+    "implementation-plan": {
+      "target_keys": [
+        "board-implementation-plan"
+      ],
+      "path": "impl/01-implementation-plan.md",
+      "bundle_refs": [
+        "01-overview.md",
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "specs/04-application-structure.md",
+        "specs/05-domain-model.md",
+        "specs/06-api-spec.md",
+        "specs/07-db-design.md",
+        "status/current-status.md"
+      ],
+      "reason": "구현 계획은 모든 스펙 문서를 실제 작업 순서로 연결하므로 전체 스펙과 현재 상태를 함께 점검한다."
+    },
+    "current-status": {
+      "target_keys": [
+        "board-current-status"
+      ],
+      "path": "status/current-status.md",
+      "bundle_refs": [
+        "01-overview.md",
+        "specs/02-requirements.md",
+        "specs/03-design.md",
+        "impl/01-implementation-plan.md"
+      ],
+      "reason": "현재 상태 문서는 전체 문서보다 현재 범위, 설계 기준, 구현 계획과의 일치 여부를 우선 점검한다."
+    }
+  }
+}

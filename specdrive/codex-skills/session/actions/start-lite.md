@@ -1,11 +1,6 @@
----
-name: session-start-lite
-description: Quickly recover the current specdrive focus and next entry point from docs/AI_CONTEXT.md with minimal document reads. Prefer $session start-lite; $session-start-lite remains a compatibility command.
----
-
 # Session Start Lite
 
-Use this skill for a lightweight session re-entry before running the full session recovery flow.
+Use this action for a lightweight session re-entry before running the full session recovery flow.
 
 Preferred argument-based invocation:
 
@@ -39,7 +34,7 @@ Reply with only a short recovery summary:
 2. next entry point
 3. caution areas for changes
 
-Keep the response brief. This skill is intended to avoid heavy first-run context loading in VSCode.
+Keep the response brief. This action is intended to avoid heavy first-run context loading in VSCode.
 
 ## Stop Points
 
@@ -55,7 +50,7 @@ Do not edit files until the user explicitly asks you to do so.
 
 ## Boundaries
 
-- Do not perform `doc`, `dev`, `session-save`, or `git` work.
+- Do not perform `doc`, `dev`, `session save`, or `git` work.
 - Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 - Do not treat undecided ideas as confirmed decisions.
-- Do not print a large copy prompt; that belongs to `$session-start`.
+- Do not print a large copy prompt; that belongs to `$session start`.

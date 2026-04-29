@@ -1,11 +1,6 @@
----
-name: session-status
-description: Show a compact specdrive session status in about six lines. Prefer $session status; $session-status remains a compatibility command.
----
-
 # Session Status
 
-Use this skill to show a compact status snapshot for the current specdrive session.
+Use this action to show a compact status snapshot for the current specdrive session.
 
 Preferred argument-based invocation:
 
@@ -42,12 +37,12 @@ next: <one short next-entry line from AI_CONTEXT>
 note: <one caution or "no file changes made">
 ```
 
-Keep each line short. This skill is for quick orientation, not full session recovery.
+Keep each line short. This action is for quick orientation, not full session recovery.
 
 ## Boundaries
 
 - Do not edit files.
 - Do not generate a copy prompt.
-- Do not perform `doc`, `dev`, `git`, or `session-save` work.
+- Do not perform `doc`, `dev`, `git`, or `session save` work.
 - Do not treat AI_CONTEXT content as automatically up to date if Git changes suggest it may be stale.
 - If local changes include `docs/AI_CONTEXT.md`, mention that the AI_CONTEXT status itself is modified locally.

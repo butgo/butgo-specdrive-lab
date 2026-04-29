@@ -1,11 +1,6 @@
----
-name: session-save
-description: Draft a safe session-save summary for specdrive. Prefer $session save; $session-save remains a compatibility command.
----
-
 # Session Save
 
-Use this skill to prepare a session closing summary and `docs/AI_CONTEXT.md` update candidate.
+Use this action to prepare a session closing summary and `docs/AI_CONTEXT.md` update candidate.
 
 Preferred argument-based invocation:
 
@@ -67,7 +62,7 @@ After showing the draft, wait for explicit user approval such as "저장해줘" 
 
 ## Boundaries
 
-- This skill does not replace `doc history-save`.
-- This skill does not create Git commit messages or PR messages.
-- This skill does not create new documents unless the user explicitly asks.
-- This skill does not inspect `docs/history/**` unless the user explicitly asks for history lookup.
+- This action does not replace `doc history-save`.
+- This action does not create Git commit messages or PR messages.
+- This action does not create new documents unless the user explicitly asks.
+- This action does not inspect `docs/history/**` unless the user explicitly asks for history lookup.

@@ -1,6 +1,6 @@
 ---
 name: doc-work-bundle
-description: Work on one specdrive target document with its configured include_for_bundle documents from affected-docs-map.json. Supports reference and revise actions with bundle-prefixed history snapshots.
+description: Work on one specdrive target document with its configured bundle_refs documents from doc-work-bundle-map.json. Supports reference and revise actions with bundle-prefixed history snapshots.
 ---
 
 # Doc Work Bundle
@@ -10,9 +10,9 @@ Use this skill when a target document should be checked or revised against its c
 This skill sits above `$doc-work-ref`:
 
 - `$doc-work` reads one target document only.
-- `$doc-work-ref` reads the target document plus `reference_docs` only.
-- `$doc-work-bundle` reads the target document plus `include_for_bundle`.
-- `$doc-work-bundle` may use `check_targets` only as conditional impact validation.
+- `$doc-work-ref` reads the target document plus `reference_docs` from `affected-docs-map.json` only.
+- `$doc-work-bundle` reads the target document plus `bundle_refs` from `doc-work-bundle-map.json`.
+- `$doc-work-bundle` is for mutual consistency checks, not broad impact validation by default.
 
 ## Read First
 
@@ -20,14 +20,24 @@ Read these registries first:
 
 ```text
 specdrive/config/target-registry.json
-specdrive/config/affected-docs-map.json
+specdrive/config/doc-work-bundle-map.json
 ```
 
-If the user did not provide a target key or document path, list target keys that have entries in `affected-docs-map.json` and stop.
+If the user did not provide a target key or document path, list bundle entry keys and mapped target keys from `doc-work-bundle-map.json` and stop.
 
-Resolve the target key or path from `target-registry.json`, then find the matching entry in `affected-docs-map.json` by key or `path`.
+Resolve the user input against `doc-work-bundle-map.json` first, then use `target-registry.json` to enrich metadata when a mapped target key exists.
 
-If the user provided only a target and no action, read only the target metadata and affected-docs entry metadata. Show the action choices.
+Find the matching bundle entry by:
+
+1. exact bundle entry key
+2. `target_keys`
+3. target document path after removing the bundle map `base_path`
+4. entry `path`
+
+If the input matches only `target-registry.json`, use the target's `document_path` to find the bundle entry.
+If the input matches a bundle entry key, resolve the target document by joining `base_path` and entry `path`.
+
+If the user provided only a target and no action, read only the target metadata and bundle entry metadata. Show the action choices.
 
 Supported actions for now:
 
@@ -37,15 +47,9 @@ Supported actions for now:
 For `reference` or `revise`, read first:
 
 1. the resolved target document
-2. documents listed in that entry's `include_for_bundle`
+2. documents listed in that entry's `bundle_refs`
 
-Do not read all `check_targets[*].path` by default.
-
-Use `check_targets` only as a second-pass impact map:
-
-- Read `check_targets[*].path` only when the first pass finds a likely inconsistency or impact.
-- Use `check_targets[*].reason` to explain why that second-pass check is needed.
-- If the user explicitly asks for full impact validation, read all configured `check_targets[*].path`.
+Resolve relative `path` and `bundle_refs` against the bundle map `base_path`.
 
 Do not inspect `docs/history/**` file contents unless the user explicitly asks for history lookup.
 
@@ -71,10 +75,25 @@ yyyy-MM-dd_HHmmss_bundle_<document-base>_dev-revised.note.md
 For project documents, use:
 
 ```text
-docs/history/projects/<project>/<document-base>/
+docs/history/projects/<project>/<document-base>/bundle/
 ```
 
 The `<document-base>` is the changed document filename without `.md`, such as `02-requirements`.
+
+History completion is intentionally lightweight.
+Use preview steps for document reasoning and mutual consistency judgment.
+After the developer approves a bundle reference or revise preview, do not regenerate, re-explain, or re-compare the documents.
+Apply the latest approved preview content, write the matching history snapshots and notes only when requested, then verify each changed document and its snapshot hash match.
+Do not inspect existing history file bodies during completion.
+
+## Output Fencing Rules
+
+When showing any target, bundle, impact, or revised document preview, wrap the whole preview with `~~~markdown`, not triple backticks.
+This prevents inner Markdown examples such as code blocks, JSON examples, or text snippets from closing the outer preview block.
+Inside a document preview, prefer indented examples or inline code for short snippets.
+If fenced examples are needed inside the preview, use triple backticks only because the outer preview uses tildes.
+
+Copy-ready prompts may use triple backticks with `text`, but do not put full document previews inside copy-ready prompt blocks.
 
 ## Output: Target Only
 
@@ -82,19 +101,18 @@ For target-only selection, reply with:
 
 1. target key and document path
 2. target document role
-3. bundle documents from `include_for_bundle`
-4. conditional impact targets from `check_targets`, with reasons summarized briefly
+3. bundle entry key and reason
+4. bundle documents from `bundle_refs`
 5. action choices
 6. copy-ready examples such as `$doc-work-bundle board-requirements reference` and `$doc-work-bundle board-requirements revise`
 
 ## Output: Reference
 
-For `reference`, output a copy-ready prompt that asks Codex to read the target and `include_for_bundle`, then prepare a bundle-based reinforcement preview.
+For `reference`, output a copy-ready prompt that asks Codex to read the target and `bundle_refs`, then prepare a bundle-based reinforcement preview.
 
 The reference prompt must ask Codex to:
 
-- read the target document and `include_for_bundle` documents first
-- use `check_targets` only when impact validation is needed
+- read the target document and `bundle_refs` documents first
 - keep every document's role and scope
 - separate current decisions from deferred ideas
 - avoid editing files before approval
@@ -103,15 +121,16 @@ The reference prompt must ask Codex to:
 - use `bundle` in every proposed history filename
 - use the same timestamp across all history files in one approved bundle operation
 - ask for explicit approval before editing files or creating history files
+- keep the approval/completion step as simple apply, copy, note, and hash verification
 
 The reference prompt should ask for this output before execution:
 
 1. target document preview, if the target document should change
 2. bundle document previews, only for bundle documents that should change
-3. impact target previews, only if `check_targets` were used and those documents should change
+3. impact target previews, only if the user explicitly requested extra impact validation and those documents should change
 4. target document path to update
 5. changed bundle or impact document paths to update, if any
-6. whether `check_targets` were used, and why
+6. whether extra impact validation was used, and why
 7. per-document history snapshot paths
 8. per-document history note paths
 9. per-document summary note bodies within 10 lines each
@@ -150,7 +169,7 @@ The summary should be 10 lines or fewer.
 The copy-ready approval prompt for reference should use this shape:
 
 ```text
-위 bundle reference preview를 기준으로 아래 문서들을 업데이트하고,
+승인된 bundle reference preview를 기준으로 아래 문서들을 업데이트하고,
 각 변경 문서의 내용을 해당 bundle history snapshot과 note로 저장해줘.
 
 Changed documents:
@@ -165,6 +184,7 @@ History files:
 
 모든 history 파일은 같은 timestamp를 사용하고, 파일명에는 timestamp 뒤에 `bundle`을 포함해줘.
 각 note에는 Bundle Context와 Summary를 포함해줘.
+승인된 preview를 다시 생성하거나 설명하지 말고, 단순 적용/저장/검증으로 처리해줘.
 수정 전 최종 대상 파일과 history 파일 존재 여부를 다시 확인하고 진행해줘.
 ```
 
@@ -174,8 +194,7 @@ For `revise`, output a copy-ready prompt that asks Codex to apply developer revi
 
 The revise prompt must:
 
-- read the target document and `include_for_bundle` documents first
-- use `check_targets` only when impact validation is needed
+- read the target document and `bundle_refs` documents first
 - include a clearly marked blank section for the developer's revision request
 - keep every document's role and scope unchanged
 - produce revised previews for every document it proposes to update
@@ -183,17 +202,21 @@ The revise prompt must:
 - for history-worthy changes, use `_bundle_<document-base>_dev-revised.md` and `_bundle_<document-base>_dev-revised.note.md`
 - use the same timestamp across all history files in one approved bundle revise operation
 - ask before editing files, creating documents, or changing document roles
+- keep the approval/completion step as simple apply, optional history copy, note, and hash verification
 
 When the user invokes `$doc-work-bundle <target> revise`, output only one copy-ready fenced code block: Preview Prompt.
+Generated copy-ready execution prompts must not start with `$doc-work-bundle`.
+Use a plain execution header such as `Doc-work-bundle <target-key> <action> 실행 기준으로 진행해줘.` instead.
+Reserve `$doc-work-bundle ...` only for user-facing command examples, not for prompts that should be pasted back for execution.
 
 The revise Preview Prompt should ask the next Codex response for this output before execution:
 
 1. revised target document preview, if the target document should change
 2. revised bundle document previews, only for bundle documents that should change
-3. revised impact target previews, only if `check_targets` were used and those documents should change
+3. revised impact target previews, only if the user explicitly requested extra impact validation and those documents should change
 4. target document path to update
 5. changed bundle or impact document paths to update, if any
-6. whether `check_targets` were used, and why
+6. whether extra impact validation was used, and why
 7. per-document summary note bodies within 10 lines each
 8. whether each changed document is worth saving to history
 9. explicit approval question
@@ -247,7 +270,7 @@ The preview follow-up prompt for revise should use this shape:
 The document-only completion prompt for revise should use this shape:
 
 ```text
-위 bundle revised preview를 기준으로 아래 문서들만 업데이트해줘.
+승인된 bundle revised preview를 기준으로 아래 문서들만 업데이트해줘.
 이번 수정은 history snapshot을 생성하지 않는다.
 
 Changed documents:
@@ -260,7 +283,7 @@ Changed documents:
 The document-plus-history completion prompt for revise should use this shape:
 
 ```text
-위 bundle revised preview를 기준으로 아래 문서들을 업데이트하고,
+승인된 bundle revised preview를 기준으로 아래 문서들을 업데이트하고,
 각 변경 문서의 내용을 해당 bundle dev-revised history snapshot과 note로 저장해줘.
 
 Changed documents:
@@ -275,6 +298,7 @@ History files:
 
 모든 history 파일은 같은 timestamp를 사용하고, 파일명에는 timestamp 뒤에 `bundle`을 포함해줘.
 각 note에는 Bundle Context, Developer Revision Request, Summary를 포함해줘.
+승인된 preview를 다시 생성하거나 설명하지 말고, 단순 적용/저장/검증으로 처리해줘.
 수정 전 최종 대상 파일과 history 파일 존재 여부를 다시 확인하고 진행해줘.
 ```
 
@@ -291,8 +315,9 @@ Ask for confirmation before:
 
 ## Boundaries
 
-- Start from `include_for_bundle`; treat `check_targets` as conditional impact validation.
+- Start from `bundle_refs` in `specdrive/config/doc-work-bundle-map.json`.
 - Do not read `reference_docs` unless explicitly requested.
+- Do not read `affected-docs-map.json` unless explicitly requested for ref or broader impact checking.
 - Do not inspect `docs/history/**` contents unless explicitly requested.
 - Do not turn bundle review into a full rewrite.
 - Do not perform Git work.
