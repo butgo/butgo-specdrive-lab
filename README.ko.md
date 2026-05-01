@@ -458,7 +458,7 @@ butgo-specdrive는 다음을 직접 소유하는 시스템이 아니다.
 3. `docs/README.md`  
    docs 전체 구조와 진입 문서 안내
 
-4. `docs/specdrive/README.md`  
+4. `specdrive/docs/README.md`  
    specdrive 자체의 정체성과 문서 구조
 
 5. `docs/projects/README.md`  
@@ -482,13 +482,13 @@ butgo-specdrive는 다음을 직접 소유하는 시스템이 아니다.
   - docs 전체 진입 문서
 
 ### 16.2 specdrive 문서
-- `docs/specdrive/**`
+- `specdrive/docs/**`
   - specdrive 자체의 운영 구조와 협업 도구 문서군
 
 예:
-- `docs/specdrive/AGENTS.md`
-- `docs/specdrive/README.md`
-- `docs/specdrive/index.md`
+- `specdrive/docs/AGENTS.md`
+- `specdrive/docs/README.md`
+- `specdrive/docs/index.md`
 
 ### 16.3 projects 문서
 - `docs/projects/**`

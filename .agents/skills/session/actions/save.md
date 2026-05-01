@@ -25,7 +25,7 @@ If the session focused on a target area, also read:
 3. the target area's `index.md`
 4. the edited or reviewed target document
 
-Use Git status only when needed to understand the changed areas. Do not require a full file list by default.
+Git is handled directly by the developer during the initial version. Do not require Git status, Git summaries, commit messages, or PR prompts for session save. If Git context is needed, ask the developer instead of invoking Git skills by default.
 
 ## Output
 
@@ -64,5 +64,6 @@ After showing the draft, wait for explicit user approval such as "저장해줘" 
 
 - This action does not replace `doc history-save`.
 - This action does not create Git commit messages or PR messages.
+- This action does not require Git status. Git is handled directly by the developer unless explicitly requested.
 - This action does not create new documents unless the user explicitly asks.
 - This action does not inspect `docs/history/**` unless the user explicitly asks for history lookup.

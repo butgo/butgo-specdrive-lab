@@ -13,8 +13,6 @@ $session status
 Read only what is needed:
 
 1. `docs/AI_CONTEXT.md`
-2. current branch
-3. `git status --short`
 
 From `docs/AI_CONTEXT.md`, check only:
 
@@ -30,10 +28,9 @@ Reply in about six lines. Use this shape:
 
 ```text
 AI_CONTEXT: <last-updated or unknown>, <one-line freshness note>
-branch: <current branch>
-workspace: <clean or changed paths count and major areas>
 focus: <one short focus line from AI_CONTEXT>
 next: <one short next-entry line from AI_CONTEXT>
+git: developer-managed, not checked unless explicitly requested
 note: <one caution or "no file changes made">
 ```
 
@@ -44,5 +41,4 @@ Keep each line short. This action is for quick orientation, not full session rec
 - Do not edit files.
 - Do not generate a copy prompt.
 - Do not perform `doc`, `dev`, `git`, or `session save` work.
-- Do not treat AI_CONTEXT content as automatically up to date if Git changes suggest it may be stale.
-- If local changes include `docs/AI_CONTEXT.md`, mention that the AI_CONTEXT status itself is modified locally.
+- Git is handled directly by the developer. Do not check Git status unless the developer explicitly asks.

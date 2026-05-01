@@ -6,6 +6,7 @@ description: Work on one specdrive target document with only its configured uppe
 # Doc Work Ref
 
 Use this skill when a target document should be checked or revised against only its configured upper/reference documents.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 This skill sits between `$doc-work` and `$doc-work-bundle`:
 
@@ -62,10 +63,11 @@ yyyy-MM-dd_HHmmss_ref_<document-base>_dev-revised.note.md
 For project documents, use:
 
 ```text
-docs/history/projects/<project>/<document-base>/ref/
+docs/history/projects/<project>/doc/<document-base>/ref/
 ```
 
 The `<document-base>` is the target document filename without `.md`, such as `02-requirements`.
+Older history paths directly under `docs/history/projects/<project>/<document-base>/...` are preserved as past history and should not be moved unless the developer explicitly asks.
 
 If a reference document is also changed, use that changed document's own ref history directory and document base.
 

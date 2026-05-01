@@ -6,6 +6,7 @@ description: List the repo-local specdrive Codex skills available in this reposi
 # Specdrive Skills
 
 Use this skill to show the repo-local specdrive Codex skills available in this repository.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 ## Read First
 

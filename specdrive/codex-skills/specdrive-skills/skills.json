@@ -3,7 +3,7 @@
     {
       "name": "session",
       "command": "$session",
-      "description": "session action을 인자로 받아 start-lite/start/status/save로 라우팅합니다.",
+      "description": "session action을 인자로 받아 start-lite/restore/start/status/save로 라우팅합니다.",
       "path": ".agents/skills/session/SKILL.md"
     },
     {
@@ -29,6 +29,18 @@
       "command": "$doc-work-bundle",
       "description": "대상 문서와 doc-work-bundle-map.json의 bundle_refs를 읽고 reference/revise bundle 작업 프롬프트를 준비합니다.",
       "path": ".agents/skills/doc-work-bundle/SKILL.md"
+    },
+    {
+      "name": "plan",
+      "command": "$plan",
+      "description": "plan action을 인자로 받아 extract-candidates/wp-split/phase-split/cycle-split/task-split으로 라우팅합니다.",
+      "path": ".agents/skills/plan/SKILL.md"
+    },
+    {
+      "name": "dev",
+      "command": "$dev",
+      "description": "dev action을 인자로 받아 start/run/test/sync로 라우팅합니다.",
+      "path": ".agents/skills/dev/SKILL.md"
     },
     {
       "name": "git",

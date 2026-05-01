@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "status": "draft",
+  "description": "SpecDrive plan/dev 흐름에서 사용할 docs/projects/{project} 프로젝트 key와 기본 문서 경로를 관리한다.",
+  "default_project": "board",
+  "projects": {
+    "board": {
+      "name": "board",
+      "display_name": "Board",
+      "description": "첫 번째 실제 애플리케이션 검증 프로젝트다.",
+      "root": "docs/projects/board",
+      "agents": "docs/projects/board/AGENTS.md",
+      "readme": "docs/projects/board/README.md",
+      "index": "docs/projects/board/index.md",
+      "overview": "docs/projects/board/01-overview.md",
+      "specs": "docs/projects/board/specs",
+      "work": {
+        "root": "docs/projects/board/work",
+        "candidates": "docs/projects/board/work/work-candidates.md",
+        "roadmap": "docs/projects/board/work/work-roadmap.md",
+        "policy": "docs/projects/board/work/work-policy.md",
+        "index": "docs/projects/board/work/work-index.md",
+        "log": "docs/projects/board/work/work-log.md"
+      },
+      "history": {
+        "doc": {
+          "root": "docs/history/projects/board/doc"
+        },
+        "plan": {
+          "root": "docs/history/projects/board/plan",
+          "candidates": "docs/history/projects/board/plan/work-candidates",
+          "roadmap": "docs/history/projects/board/plan/work-roadmap"
+        },
+        "dev": {
+          "root": "docs/history/projects/board/dev"
+        }
+      },
+      "status": {
+        "current": "docs/projects/board/status/current-status.md"
+      },
+      "manual": "docs/projects/board/manual",
+      "rules": "docs/projects/board/rules",
+      "plan": {
+        "extract_candidates": {
+          "default_source_scope": "all",
+          "apply_target": "docs/projects/board/work/work-candidates.md",
+          "history": {
+            "directory": "docs/history/projects/board/plan/work-candidates",
+            "filename_prefix": "generate-candidates",
+            "artifact_key": "work-candidates",
+            "snapshot_suffix": "_generate-candidates_extract-candidates.md",
+            "note_suffix": "_generate-candidates_extract-candidates.note.md",
+            "stage": "plan-extract-candidates"
+          },
+          "source_scopes": {
+            "current": {
+              "description": "현재 세션 focus와 next entry에서 식별되는 board 문서만 사용한다. 기본 경로는 후보이며 실제 읽을 문서는 현재 문맥에 맞게 줄인다.",
+              "base_documents": [
+                "AGENTS.md",
+                "docs/AI_CONTEXT.md",
+                "specdrive/config/project-registry.json",
+                "docs/projects/board/AGENTS.md"
+              ],
+              "candidate_documents": [
+                "docs/projects/board/01-overview.md",
+                "docs/projects/board/specs/02-requirements.md",
+                "docs/projects/board/specs/03-design.md",
+                "docs/projects/board/specs/04-application-structure.md",
+                "docs/projects/board/specs/05-domain-model.md",
+                "docs/projects/board/specs/06-api-spec.md",
+                "docs/projects/board/specs/07-db-design.md",
+                "docs/projects/board/work/work-candidates.md"
+              ]
+            },
+            "all": {
+              "description": "board overview와 specs 전체를 사용해 작업 후보를 추출한다.",
+              "base_documents": [
+                "AGENTS.md",
+                "docs/AI_CONTEXT.md",
+                "specdrive/config/project-registry.json",
+                "docs/projects/board/AGENTS.md"
+              ],
+              "documents": [
+                "docs/projects/board/01-overview.md",
+                "docs/projects/board/specs/02-requirements.md",
+                "docs/projects/board/specs/03-design.md",
+                "docs/projects/board/specs/04-application-structure.md",
+                "docs/projects/board/specs/05-domain-model.md",
+                "docs/projects/board/specs/06-api-spec.md",
+                "docs/projects/board/specs/07-db-design.md",
+                "docs/projects/board/work/work-candidates.md"
+              ]
+            },
+            "file": {
+              "description": "사용자가 지정한 Source Files만 개발 문서 입력으로 사용한다. 규칙 확인용 base documents는 함께 읽을 수 있다.",
+              "base_documents": [
+                "AGENTS.md",
+                "docs/AI_CONTEXT.md",
+                "specdrive/config/project-registry.json",
+                "docs/projects/board/AGENTS.md"
+              ],
+              "documents_from_input": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

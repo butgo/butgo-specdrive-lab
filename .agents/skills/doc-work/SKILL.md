@@ -6,6 +6,7 @@ description: Work on one specdrive target document at a time. Use when the user 
 # Doc Work
 
 Use this skill as the basic single-document entry point for specdrive doc-stage work.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 ## Read First
 
@@ -33,7 +34,8 @@ If the user provided a target and action, read only the resolved target document
 Do not read `specdrive/config/affected-docs-map.json` for this skill unless the user explicitly asks for reference or bundle checking.
 
 Before generating an action prompt, check existing history filenames for the target under its doc-work history directory.
-For project documents, use `docs/history/projects/<project>/<document-base>/work/` where `<document-base>` is the target document filename without `.md`.
+For project documents, use `docs/history/projects/<project>/doc/<document-base>/work/` where `<document-base>` is the target document filename without `.md`.
+Older history paths directly under `docs/history/projects/<project>/<document-base>/...` are preserved as past history and should not be moved unless the developer explicitly asks.
 
 - For `draft`, if any file matching `*_dev-draft.md` exists for the target document base, report that a developer draft history already exists and stop.
 - For `reinforce`, if any file matching `*_codex-reinforced.md` exists for the target document base, report that a Codex reinforced history already exists and stop.
@@ -155,8 +157,8 @@ The copy-ready approval prompt for reinforce should use this shape:
 
 ```text
 승인된 reinforced document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
-같은 내용을 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_codex-reinforced.md`에 저장한 뒤,
-note를 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_codex-reinforced.note.md`에 저장해줘.
+같은 내용을 `docs/history/projects/board/doc/01-overview/work/<timestamp>01-overview_codex-reinforced.md`에 저장한 뒤,
+note를 `docs/history/projects/board/doc/01-overview/work/<timestamp>01-overview_codex-reinforced.note.md`에 저장해줘.
 대상 문서의 `_dev-draft.md` history snapshot은 이미 있으므로 새로 만들지 않아도 돼.
 수정 전 최종 대상 파일 3개를 다시 확인하고 진행해줘.
 ```
@@ -302,8 +304,8 @@ The document-plus-history completion prompt for revise should use this shape:
 
 ```text
 승인된 revised document preview를 기준으로 `docs/projects/board/01-overview.md`를 업데이트하고,
-같은 내용을 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_dev-revised.md`에 저장한 뒤,
-Developer Revision Request와 Summary를 포함한 note를 `docs/history/projects/board/01-overview/work/<timestamp>01-overview_dev-revised.note.md`에 저장해줘.
+같은 내용을 `docs/history/projects/board/doc/01-overview/work/<timestamp>01-overview_dev-revised.md`에 저장한 뒤,
+Developer Revision Request와 Summary를 포함한 note를 `docs/history/projects/board/doc/01-overview/work/<timestamp>01-overview_dev-revised.note.md`에 저장해줘.
 수정 전 최종 대상 파일 3개를 다시 확인하고 진행해줘.
 ```
 

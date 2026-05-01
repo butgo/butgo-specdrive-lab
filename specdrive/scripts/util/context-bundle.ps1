@@ -44,6 +44,21 @@ function Select-ContextBundleKey {
         $Config
     )
 
+    # 대화형 선택 메뉴의 번호 기준이다.
+    # 이 순서를 바꾸면 화면에 표시되는 bundle 번호도 함께 바뀐다.
+    #
+    #   1: default
+    #   2: readme-ko-all
+    #   3: readme-en-all
+    #   4: readme-all
+    #   5: agents-compact
+    #   6: agents-all
+    #   7: repo-skills
+    #   8: codex-skills
+    #   9: legacy-skills
+    #   10: onboarding-all
+    #   11: codex-base-review
+    #   12: standards-all
     $orderedKeys = @(
         "default",
         "readme-ko-all",
@@ -62,8 +77,15 @@ function Select-ContextBundleKey {
     Write-Host "[context bundle] select bundle:"
     for ($i = 0; $i -lt $orderedKeys.Count; $i++) {
         $key = $orderedKeys[$i]
-        if ($null -ne $Config.bundles.$key) {
-            Write-Host ("  {0}: {1}" -f ($i + 1), $key)
+        $bundle = $Config.bundles.$key
+        if ($null -ne $bundle) {
+            $description = $bundle.description
+            if ([string]::IsNullOrWhiteSpace($description)) {
+                Write-Host ("  {0}: {1}" -f ($i + 1), $key)
+            }
+            else {
+                Write-Host ("  {0}: {1} - {2}" -f ($i + 1), $key, $description)
+            }
         }
     }
 

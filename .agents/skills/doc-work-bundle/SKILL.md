@@ -6,6 +6,7 @@ description: Work on one specdrive target document with its configured bundle_re
 # Doc Work Bundle
 
 Use this skill when a target document should be checked or revised against its configured mutual-impact document bundle.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 This skill sits above `$doc-work-ref`:
 
@@ -75,10 +76,11 @@ yyyy-MM-dd_HHmmss_bundle_<document-base>_dev-revised.note.md
 For project documents, use:
 
 ```text
-docs/history/projects/<project>/<document-base>/bundle/
+docs/history/projects/<project>/doc/<document-base>/bundle/
 ```
 
 The `<document-base>` is the changed document filename without `.md`, such as `02-requirements`.
+Older history paths directly under `docs/history/projects/<project>/<document-base>/...` are preserved as past history and should not be moved unless the developer explicitly asks.
 
 History completion is intentionally lightweight.
 Use preview steps for document reasoning and mutual consistency judgment.

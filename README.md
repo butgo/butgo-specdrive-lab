@@ -479,7 +479,7 @@ When first entering this repository, or returning to it later, it is best to rea
 3. `docs/README.md`  
    The overall docs structure and entry document guide
 
-4. `docs/specdrive/README.md`  
+4. `specdrive/docs/README.md`  
    The identity of specdrive itself and its document structure
 
 5. `docs/projects/README.md`  
@@ -503,13 +503,13 @@ The current document structure is operated around the following axes.
   - Entry document for the entire docs area
 
 ### 16.2 specdrive Documents
-- `docs/specdrive/**`
+- `specdrive/docs/**`
   - The document set for specdrive’s own operating structure and collaboration tooling
 
 Examples:
-- `docs/specdrive/AGENTS.md`
-- `docs/specdrive/README.md`
-- `docs/specdrive/index.md`
+- `specdrive/docs/AGENTS.md`
+- `specdrive/docs/README.md`
+- `specdrive/docs/index.md`
 
 ### 16.3 projects Documents
 - `docs/projects/**`

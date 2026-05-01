@@ -78,12 +78,12 @@ Examples:
 The document set that covers specdrive's own operating structure, AI collaboration method, and tool perspective
 
 Location:
-- `docs/specdrive/**`
+- `specdrive/docs/**`
 
 Entry document examples:
-- `docs/specdrive/README.md`
-- `docs/specdrive/AGENTS.md`
-- `docs/specdrive/index.md`
+- `specdrive/docs/README.md`
+- `specdrive/docs/AGENTS.md`
+- `specdrive/docs/index.md`
 
 ### 4.3 projects Documents
 The document set that covers development specification documents for real applications
@@ -121,7 +121,7 @@ They cover shared concerns such as the following.
 - Guidance on document layers
 - Shared entry standards in the overall workflow
 
-### 5.2 `docs/specdrive/**`
+### 5.2 `specdrive/docs/**`
 This area covers specdrive's own tool perspective, such as the following.
 
 - The identity and goals of specdrive
@@ -133,7 +133,7 @@ This area covers specdrive's own tool perspective, such as the following.
 - The direction of skill-centered execution structure
 - The operating structure as a tool
 
-In other words, `docs/specdrive/**` covers  
+In other words, `specdrive/docs/**` covers  
 **how AI collaboration should be executed**.
 
 ### 5.3 `docs/projects/**`
@@ -180,12 +180,12 @@ When reading the documents, it is helpful to understand the following layers fir
 - `docs/README.md`
 
 ### 6.4 Entry Documents by Area
-- `docs/specdrive/README.md`
+- `specdrive/docs/README.md`
 - `docs/projects/README.md`
 - `docs/projects/board/README.md`
 
 ### 6.5 Area-Specific Rules
-- `docs/specdrive/AGENTS.md`
+- `specdrive/docs/AGENTS.md`
 - `docs/projects/board/AGENTS.md`
 
 ### 6.6 Individual Working Documents
@@ -204,7 +204,7 @@ When reading the documents, it is helpful to understand the following layers fir
 1. Root `README.md`
 2. Root `AGENTS.md`
 3. `docs/AI_CONTEXT.md`
-4. `docs/specdrive/README.md`
+4. `specdrive/docs/README.md`
 5. `docs/projects/board/README.md`
 
 ### 7.2 When Entering Through the docs Structure
@@ -216,9 +216,9 @@ When reading the documents, it is helpful to understand the following layers fir
 1. Root `README.md`
 2. Root `AGENTS.md`
 3. `docs/AI_CONTEXT.md`
-4. `docs/specdrive/AGENTS.md`
-5. `docs/specdrive/README.md`
-6. `docs/specdrive/index.md`
+4. `specdrive/docs/AGENTS.md`
+5. `specdrive/docs/README.md`
+6. `specdrive/docs/index.md`
 7. The target specdrive document
 
 ### 7.4 When Starting project Work
@@ -245,7 +245,7 @@ Is this content about repository-wide shared rules or shared entry standards?
 ### Question 2
 Is this content about specdrive's own tool behavior, collaboration flow, or operating structure?
 
-- If yes -> `docs/specdrive/**`
+- If yes -> `specdrive/docs/**`
 
 ### Question 3
 Is this content about the requirements, design, or implementation decisions of a specific application?

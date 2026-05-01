@@ -1,5 +1,10 @@
+# 실행 예:
+# .\specdrive\scripts\util\project-tree.ps1
+# .\specdrive\scripts\util\project-tree.ps1 -Root "docs/projects" -MaxDepth 6
+# .\specdrive\scripts\util\project-tree.ps1 -Root "docs/projects" -MaxDepth 6 -DryRun
 param(
     [string]$Name = "project-tree",
+    [string]$Root = ".",
     [int]$MaxDepth = 4,
     [switch]$DirectoriesOnly,
     [switch]$DryRun,
@@ -11,6 +16,15 @@ $commonScript = Join-Path $PSScriptRoot "..\common\specdrive-common.ps1"
 . $commonScript
 
 $repoRoot = Resolve-SpecdriveRepoRoot
+$normalizedRoot = $Root.Trim()
+if ([string]::IsNullOrWhiteSpace($normalizedRoot) -or $normalizedRoot -eq ".") {
+    $treeRoot = $repoRoot
+    $displayRoot = "."
+}
+else {
+    $displayRoot = $normalizedRoot.Replace("\", "/").TrimEnd("/")
+    $treeRoot = Join-SpecdriveRepoPath -RepoRoot $repoRoot -RelativePath $displayRoot
+}
 $outputDirectory = ".speclab/tree-output"
 
 function Test-ExcludedTreeItem {
@@ -77,24 +91,29 @@ if ($MaxDepth -lt 1) {
     throw "MaxDepth must be greater than 0."
 }
 
+if (-not (Test-Path -LiteralPath $treeRoot)) {
+    throw "Tree root not found: $displayRoot"
+}
+
 $treeLines = [System.Collections.Generic.List[string]]::new()
 $treeLines.Add("# Project Tree")
 $treeLines.Add("")
 $treeLines.Add("- generated_at: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')")
 $treeLines.Add("- repo_root: $repoRoot")
+$treeLines.Add("- tree_root: $displayRoot")
 $treeLines.Add("- max_depth: $MaxDepth")
 $treeLines.Add("- directories_only: $DirectoriesOnly")
 $treeLines.Add("- excluded: $($Exclude -join ', ')")
 $treeLines.Add("")
 $treeLines.Add('```text')
-$treeLines.Add("./")
-Add-TreeLines -OutputLines $treeLines -Path $repoRoot -MaxDepth $MaxDepth -DirectoriesOnly:$DirectoriesOnly -ExcludedNames $Exclude
+$treeLines.Add("$displayRoot/")
+Add-TreeLines -OutputLines $treeLines -Path $treeRoot -MaxDepth $MaxDepth -DirectoriesOnly:$DirectoriesOnly -ExcludedNames $Exclude
 $treeLines.Add('```')
 
 $treeContent = $treeLines -join [Environment]::NewLine
 
 Write-Host "[project tree] root:"
-Write-Host "  $repoRoot"
+Write-Host "  $displayRoot"
 Write-Host "[project tree] output directory:"
 Write-Host "  $outputDirectory"
 

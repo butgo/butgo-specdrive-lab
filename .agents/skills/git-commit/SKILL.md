@@ -6,6 +6,7 @@ description: Run the simplest Git commit flow. Prefer $git commit; $git-commit r
 # Git Commit
 
 Use the simplest flow.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 Preferred argument-based invocation:
 

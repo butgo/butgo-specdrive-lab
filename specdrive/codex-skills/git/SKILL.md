@@ -6,6 +6,7 @@ description: Route specdrive Git actions by argument. Use when the user invokes 
 # Git
 
 Use this skill as the argument-based entry point for specdrive Git delivery work.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 Supported actions:
 

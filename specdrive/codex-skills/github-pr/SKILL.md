@@ -6,6 +6,7 @@ description: Prepare a GitHub pull request safely. Prefer $git pr; $github-pr re
 # GitHub PR
 
 Use this skill to prepare and optionally create a GitHub pull request safely.
+Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
 
 Preferred argument-based invocation:
 

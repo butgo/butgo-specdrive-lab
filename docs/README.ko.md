@@ -78,12 +78,12 @@ projects 하위에서 공통으로 참조하는
 specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 문서군
 
 위치:
-- `docs/specdrive/**`
+- `specdrive/docs/**`
 
 진입 문서 예:
-- `docs/specdrive/README.md`
-- `docs/specdrive/AGENTS.md`
-- `docs/specdrive/index.md`
+- `specdrive/docs/README.md`
+- `specdrive/docs/AGENTS.md`
+- `specdrive/docs/index.md`
 
 ### 4.3 projects 문서
 실제 애플리케이션의 개발 스펙 문서를 다루는 문서군
@@ -121,7 +121,7 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 - 문서 계층 안내
 - 전체 작업 흐름에서의 공통 진입 기준
 
-### 5.2 `docs/specdrive/**`
+### 5.2 `specdrive/docs/**`
 다음과 같은 specdrive 자체의 도구 관점을 다룬다.
 
 - specdrive의 정체성과 목표
@@ -133,7 +133,7 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 - skill 중심 실행 구조의 방향
 - 도구로서의 운영 구조
 
-즉, `docs/specdrive/**` 는  
+즉, `specdrive/docs/**` 는  
 **어떻게 AI 협업을 실행할 것인가**를 다룬다.
 
 ### 5.3 `docs/projects/**`
@@ -180,12 +180,12 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 - `docs/README.md`
 
 ### 6.4 영역별 진입 문서
-- `docs/specdrive/README.md`
+- `specdrive/docs/README.md`
 - `docs/projects/README.md`
 - `docs/projects/board/README.md`
 
 ### 6.5 영역별 전용 규칙
-- `docs/specdrive/AGENTS.md`
+- `specdrive/docs/AGENTS.md`
 - `docs/projects/board/AGENTS.md`
 
 ### 6.6 개별 작업 문서
@@ -204,7 +204,7 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 1. 루트 `README.md`
 2. 루트 `AGENTS.md`
 3. `docs/AI_CONTEXT.md`
-4. `docs/specdrive/README.md`
+4. `specdrive/docs/README.md`
 5. `docs/projects/board/README.md`
 
 ### 7.2 docs 구조를 따라 들어갈 때
@@ -216,9 +216,9 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 1. 루트 `README.md`
 2. 루트 `AGENTS.md`
 3. `docs/AI_CONTEXT.md`
-4. `docs/specdrive/AGENTS.md`
-5. `docs/specdrive/README.md`
-6. `docs/specdrive/index.md`
+4. `specdrive/docs/AGENTS.md`
+5. `specdrive/docs/README.md`
+6. `specdrive/docs/index.md`
 7. 대상 specdrive 문서
 
 ### 7.4 project 작업을 시작할 때
@@ -245,7 +245,7 @@ specdrive 자체의 운영 구조, AI 협업 방식, 도구 관점을 다루는 
 ### 질문 2
 이 내용이 specdrive 자체의 도구 동작, 협업 흐름, 운영 구조에 관한 것인가?
 
-- 그렇다 → `docs/specdrive/**`
+- 그렇다 → `specdrive/docs/**`
 
 ### 질문 3
 이 내용이 특정 애플리케이션의 요구사항, 설계, 구현 판단인가?
