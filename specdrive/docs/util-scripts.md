@@ -42,6 +42,8 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey onboarding-all
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey codex-base-review
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey standards-all
+powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey board-dev-docs
+powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey specdrive-docs
 ```
 
 `BundleKey`, `Documents`, `IncludeDefault` 같은 선택 옵션 없이 실행하면 번호 선택 메뉴가 표시된다.
@@ -51,10 +53,16 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 2: readme-ko-all
 3: readme-en-all
 4: readme-all
-5: agents-all
-6: onboarding-all
-7: codex-base-review
-8: standards-all
+5: agents-compact
+6: agents-all
+7: repo-skills
+8: codex-skills
+9: legacy-skills
+10: onboarding-all
+11: codex-base-review
+12: standards-all
+13: board-dev-docs
+14: specdrive-docs
 ```
 
 출력 위치:
@@ -129,14 +137,26 @@ specdrive/config/context-bundle-map.json
   - 저장소 안의 모든 `README.md`
 - `readme-all`
   - 저장소 안의 모든 `README.md` 와 `README.ko.md`
+- `agents-compact`
+  - 저장소 안의 AGENTS compact 문서
 - `agents-all`
   - 저장소 안의 모든 `AGENTS.md`
+- `repo-skills`
+  - 현재 repo-local Codex skill 사용본
+- `codex-skills`
+  - 배포/패키징 후보 Codex skill 원본
+- `legacy-skills`
+  - 기존 specdrive skill 문서
 - `onboarding-all`
   - ChatGPT 업로드용으로 모든 `README.md`, `README.ko.md`, `AGENTS.md`
 - `codex-base-review`
   - Codex 기본 문맥 검토용 핵심 `README`, `AGENTS`, `AI_CONTEXT`
 - `standards-all`
   - 프로젝트 공통 standards 문서 전체
+- `board-dev-docs`
+  - board 프로젝트의 개발 기준 문서, specs, status, work 문서
+- `specdrive-docs`
+  - `specdrive/docs/**` 아래의 현재 문서 전체
 
 이 설정은 `affected-docs-map.json` 과 분리한다.
 `context-bundle-map.json` 은 문서 묶음 생성용이고,

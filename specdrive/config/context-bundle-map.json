@@ -18,7 +18,7 @@
       "documents": [
         "README.ko.md",
         "docs/README.ko.md",
-        "docs/specdrive/README.ko.md",
+        "specdrive/docs/README.ko.md",
         "docs/projects/README.ko.md",
         "docs/projects/board/README.ko.md"
       ]
@@ -29,7 +29,7 @@
       "documents": [
         "README.md",
         "docs/README.md",
-        "docs/specdrive/README.md",
+        "specdrive/docs/README.md",
         "docs/projects/README.md",
         "docs/projects/board/README.md"
       ]
@@ -42,8 +42,8 @@
         "README.ko.md",
         "docs/README.md",
         "docs/README.ko.md",
-        "docs/specdrive/README.md",
-        "docs/specdrive/README.ko.md",
+        "specdrive/docs/README.md",
+        "specdrive/docs/README.ko.md",
         "docs/projects/README.md",
         "docs/projects/README.ko.md",
         "docs/projects/board/README.md",
@@ -55,7 +55,7 @@
       "name": "agents-compact",
       "documents": [
         "AGENTS.compact.md",
-        "docs/specdrive/AGENTS.compact.md",
+        "specdrive/docs/AGENTS.compact.md",
         "docs/projects/board/AGENTS.compact.md"
       ]
     },
@@ -64,7 +64,7 @@
       "name": "agents-all",
       "documents": [
         "AGENTS.md",
-        "docs/specdrive/AGENTS.md",
+        "specdrive/docs/AGENTS.md",
         "docs/projects/board/AGENTS.md"
       ]
     },
@@ -96,8 +96,8 @@
         "README.md",
         "AGENTS.compact.md",
         "docs/AI_CONTEXT.md",
-        "docs/specdrive/README.md",
-        "docs/specdrive/AGENTS.compact.md",
+        "specdrive/docs/README.md",
+        "specdrive/docs/AGENTS.compact.md",
         "docs/projects/README.md",
         "docs/projects/board/README.md",
         "docs/projects/board/AGENTS.compact.md"
@@ -117,6 +117,36 @@
         "docs/projects/standards/phase1-standards-checklist.md"
       ]
     },
+    "board-dev-docs": {
+      "description": "board 프로젝트의 개발 기준 문서와 work 문서를 함께 묶는다.",
+      "name": "board-dev-docs",
+      "documents": [
+        "docs/projects/board/AGENTS.compact.md",
+        "docs/projects/board/README.md",
+        "docs/projects/board/index.md",
+        "docs/projects/board/01-overview.md",
+        "docs/projects/board/specs/02-requirements.md",
+        "docs/projects/board/specs/03-design.md",
+        "docs/projects/board/specs/04-application-structure.md",
+        "docs/projects/board/specs/05-domain-model.md",
+        "docs/projects/board/specs/06-api-spec.md",
+        "docs/projects/board/specs/07-db-design.md",
+        "docs/projects/board/status/current-status.md",
+        "docs/projects/board/work/README.md",
+        "docs/projects/board/work/work-policy.md",
+        "docs/projects/board/work/work-index.md",
+        "docs/projects/board/work/work-candidates.md",
+        "docs/projects/board/work/work-roadmap.md",
+        "docs/projects/board/work/work-log.md"
+      ]
+    },
+    "specdrive-docs": {
+      "description": "specdrive/docs 아래의 현재 문서 전체를 묶는다.",
+      "name": "specdrive-docs",
+      "directories": [
+        "specdrive/docs"
+      ]
+    },
     "onboarding-all": {
       "description": "ChatGPT 업로드용으로 README 문서와 AGENTS compact 문서를 함께 묶는다.",
       "name": "onboarding-all",
@@ -126,9 +156,9 @@
         "AGENTS.compact.md",
         "docs/README.md",
         "docs/README.ko.md",
-        "docs/specdrive/README.md",
-        "docs/specdrive/README.ko.md",
-        "docs/specdrive/AGENTS.compact.md",
+        "specdrive/docs/README.md",
+        "specdrive/docs/README.ko.md",
+        "specdrive/docs/AGENTS.compact.md",
         "docs/projects/README.md",
         "docs/projects/README.ko.md",
         "docs/projects/board/README.md",

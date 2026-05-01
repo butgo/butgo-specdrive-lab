@@ -59,6 +59,8 @@ function Select-ContextBundleKey {
     #   10: onboarding-all
     #   11: codex-base-review
     #   12: standards-all
+    #   13: board-dev-docs
+    #   14: specdrive-docs
     $orderedKeys = @(
         "default",
         "readme-ko-all",
@@ -71,7 +73,9 @@ function Select-ContextBundleKey {
         "legacy-skills",
         "onboarding-all",
         "codex-base-review",
-        "standards-all"
+        "standards-all",
+        "board-dev-docs",
+        "specdrive-docs"
     )
 
     Write-Host "[context bundle] select bundle:"
