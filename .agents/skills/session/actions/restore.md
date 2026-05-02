@@ -12,15 +12,17 @@ $session restore
 
 Read only what is needed for a practical restart:
 
-1. `docs/AI_CONTEXT.md`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/session-policy.md`
 
-From `docs/AI_CONTEXT.md`, focus on:
+If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
 
-1. current one-line summary
-2. current focus
-3. next entry point
-4. work caution principles
-5. last updated date
+From `docs/AI_CONTEXT.compact.md`, focus on:
+
+1. current focus
+2. next entry point
+3. read scope hint
+4. open questions
 
 Do not read `docs/history/**` unless the user explicitly asks for history lookup.
 Do not load the full recovery read set unless the user explicitly asks for deeper recovery.
@@ -51,7 +53,7 @@ Do not edit files until the user explicitly asks you to do so.
 ## Boundaries
 
 - Do not perform `doc`, `dev`, `session save`, or `git` work.
-- Git is handled directly by the developer. Do not check Git status unless the developer explicitly asks.
-- Do not create a full recovery copy prompt; that belongs to `$session start`.
+- Git is handled directly by the developer. Session restore does not request Git information.
+- Do not create a full recovery copy prompt; that belongs to `$session start-full`.
 - Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 - Do not treat undecided ideas as confirmed decisions.

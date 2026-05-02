@@ -169,10 +169,10 @@
 - `specdrive/scripts/session/start.ps1`, `status.ps1`, `save.ps1` 와 관련 문서를 함께 정리해 `session` 3종의 역할을 현재 기준으로 맞춤
 - `specdrive/docs/index.md`, `specdrive/docs/AGENTS.md` 까지 포함해 session skill 해석을 문서 전반에 동기화
 - `butgo-specdrive-lab.code-workspace` 멀티루트 workspace 설정 추가
-- `$session start` 가 경량 복구 후 full recovery copy prompt 를 보여주는 흐름으로 정리
-- `$session`, `specdrive-skills`, `git-commit`, `github-pr` repo-local Codex skill 을 `.agents/skills/**` 아래에 작성하고 1차 테스트
+- `$session start` 는 경량 복구, `$session start-full` 은 full recovery copy prompt 를 보여주는 흐름으로 정리
+- `$session`, `specdrive-skills` repo-local Codex skill 을 `.agents/skills/**` 아래에 유지하고 Git 관련 skill은 삭제
 - 배포/패키징 후보 원본을 `specdrive/codex-skills/**` 아래에 두는 방향으로 정리
-- `git-commit` skill 에 commit 후 push 요청 프롬프트를 복사해 사용할 수 있도록 추가
+- Git 관련 skill은 토큰 절감을 위해 현재 repo-local skill 대상에서 제외
 - repo-local Codex skill 흐름 관련 변경을 `feat(specdrive): add repo-local codex skills workflow`, `docs(skill): add push prompt to git commit skill` 커밋으로 저장하고 원격 브랜치에 push
 
 ---
@@ -204,8 +204,8 @@
 - 위저드형 skill 출력은 후속작업이 필요할 때만 copy-ready prompt를 출력하고, 후속작업이 없으면 프롬프트를 출력하지 않는다.
 - dev 단계 핵심 흐름은 `$dev start / run / test / sync` 다.
 - 현재 Work Package는 dev 코딩의 한 묶음으로 정의하며, 완료 시 의미 있는 동작, 구조, 검증 결과 중 하나 이상이 남아야 한다.
-- 세션 단계 핵심 흐름은 `$session start-lite / restore / start / status / save` 다.
-- Git 단계 핵심 흐름은 `git-commit / github-pr` skill 검증이다.
+- 세션 단계 핵심 흐름은 `$session start / restore / start-full / status / save` 다.
+- Git skill은 현재 repo-local skill 대상에서 제외하고, Git 실행은 개발자가 직접 처리한다.
 - 현재 AI 엔진 기준은 Codex다.
 - 현재 실행 인터페이스 기준은 repo-local Codex skill 직접 사용이다.
 - 현재는 멀티 AI 엔진 지원을 우선하지 않는다.
@@ -220,25 +220,23 @@
 - 현재 artifact naming 규칙 중 일부는 `doc-action-registry.json` 에서 읽고, 스크립트는 이를 소비하는 방향으로 옮기기 시작했다.
 - `doc-reinforce-targets.json`, `doc-confirm-targets.json`, `doc-history-targets.json` 는 현재 기준으로 주로 `default_target` fallback 용 legacy config 로 남아 있다.
 - 현재 버전에서는 단일 진입점 CLI 라우터를 기준 경로에서 제외하고 파일도 제거했다.
-- 현재 `session` 단계는 `$session` 라우터와 `start-lite/restore/start/status/save` action 직접 사용을 기준으로 검증한다.
-- 현재 `$session restore` 는 VSCode/Codex 재시작 뒤 `docs/AI_CONTEXT.md` 기준으로 현재 focus와 다음 진입점을 확인하는 읽기 전용 복구 절차로 본다.
-- 현재 `$session start` 는 경량 복구 후 전체 복구용 copy prompt 를 보여주는 Codex 절차로 본다.
-- 현재 `$session status` 는 AI_CONTEXT 상태와 다음 진입점을 6줄 내외로 보여주는 Codex 절차로 본다.
-- 현재 `$session save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 먼저 제안하는 Codex 절차로 본다.
-- `$session save` 결과는 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.md` 수정으로 이어진다.
+- 현재 `session` 단계는 `$session` 라우터와 `start/restore/start-full/status/save` action 직접 사용을 기준으로 검증한다.
+- 현재 `$session restore` 는 VSCode/Codex 재시작 뒤 `docs/AI_CONTEXT.compact.md` 기준으로 현재 focus와 다음 진입점을 확인하는 읽기 전용 복구 절차로 본다.
+- 현재 `$session start` 는 경량 복구 절차로 보고, 전체 복구용 copy prompt 는 `$session start-full` 로 분리한다.
+- 현재 `$session status` 는 `docs/AI_CONTEXT.compact.md` 상태와 다음 진입점을 6줄 내외로 보여주는 Codex 절차로 본다.
+- 현재 `$session save` 는 파일 저장이 아니라 `docs/AI_CONTEXT.compact.md` 반영 초안을 먼저 제안하는 Codex 절차로 본다.
+- `$session save` 결과는 먼저 사람 검토를 거치고, 개발자가 "저장해줘" 같이 명시적으로 요청한 경우에만 실제 `docs/AI_CONTEXT.compact.md` 수정으로 이어진다.
 - 기존 `session start / status / save` CLI는 현재 버전 기준 흐름에서 제외한다.
-- 현재 `git` 단계는 기존 CLI 3종이 아니라 `git-commit`, `github-pr` skill 중심으로 검증한다.
-- 현재 `session` 과 `git` 단계는 분리하되, 초기 버전 정리 중에는 Git을 개발자가 직접 처리한다.
-- session 흐름은 Git 상태 확인, Git skill 호출, commit/push/PR 프롬프트를 기본 요구하지 않는다.
-- Codex는 Git 도움이 필요할 때 개발자가 별도로 질문한 범위에서만 돕는다.
+- 현재 Git skill은 repo-local skill 대상에서 제외한다.
+- 현재 `session` 과 Git handoff는 분리하며, Git은 개발자가 직접 처리한다.
+- session 흐름은 Git 상태 확인, Git skill 호출, commit/push/PR 프롬프트를 요구하지 않는다.
+- Codex는 Git 도움이 필요할 때 사용자가 제공한 요약 범위에서 메시지 초안만 돕는다.
 - 현재 테스트 중인 Codex skill 은 전역 설치 없이 repo-local `.agents/skills/**` 에 둔다.
 - 현재 배포/패키징 후보 Codex skill 원본은 `specdrive/codex-skills/**` 아래에 둔다.
 - 현재 `$specdrive-skills` 는 repo-local specdrive skill 목록을 빠르게 보여주는 안내 skill 로 둔다.
-- 현재 `$git-commit` 은 변경 확인, 커밋 분리 판단, 커밋 메시지 후보, 승인 후 add/commit, 후속 push 프롬프트 생성을 돕는 skill 로 둔다.
-- 현재 `$github-pr` 은 GitHub PR 생성 전 점검과 PR 제목/본문 초안을 돕는 skill 로 두되, 실제 PR 자동화는 GitHub CLI `gh` 설치 후 검증한다.
-- 현재 `git branch-name / git-message / pr-message` 3종은 현재 버전 범위에서 제외한다.
+- 현재 Git 관련 skill은 현재 버전 범위에서 제외한다.
 - 기존 Git 상태 조회 helper 관련 처리는 보존하되, 현재 session 흐름에서는 Git 상태 확인을 기본 요구하지 않는다.
-- 현재 `$session start` 는 공통 진입 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 `AGENTS.md`, README, index, 대상 문서를 추가로 확인하도록 안내한다.
+- 현재 `$session start-full` 은 공통 compact 문서 외에도 작업 대상 영역이 정해지면 해당 영역의 compact/index/대상 문서를 추가로 확인하도록 안내한다.
 - 신규 문서 생성, 문서 역할 변경, 요구사항에서 설계 또는 설계에서 구현 계획으로 넘어가는 전환점은 개발자 확인 후 진행하는 규칙으로 명시했다.
 - 현재 util 스크립트는 상위 CLI 라우팅에 연결하지 않고 직접 실행하며, 출력은 `.speclab/**` 아래 재생성 가능한 산출물로 둔다.
 - 현재 `context-bundle-map.json` 은 ChatGPT 업로드용 문서 묶음 설정, `doc-map.json` 은 문서 인벤토리 draft, `affected-docs-map.json` 은 문서 영향 관계 draft 로 분리한다.
@@ -269,7 +267,7 @@
 - `doc reinforce / confirm-prompt / apply-prompt` 반복 테스트와 출력 품질 검증
 - `docs/history/projects/**` 폴더 구조와 문서대장 운영 규칙 고정
 - `doc reinforce -Execute` 실행 시 Codex 환경 경고 처리 기준 확정
-- GitHub CLI `gh` 기반 `$github-pr` 반복 검증
+- GitHub CLI `gh` 기반 PR 자동화 검증
 - Codex GitHub plugin 도입 여부 판단. 현재는 필수로 보지 않고 `gh` 기반 흐름을 우선 검토
 - `plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 실제 흐름 검증
 - `dev start / run / test / sync` 실제 흐름 검증
@@ -359,11 +357,11 @@
 - `confirm-prompt` 를 새 `doc` 루프 안에서 어떤 위치에 둘지 판단
 - `$session start`, `$session save` action 을 Codex에서 직접 호출해 5~10회 사용하며 절차를 다듬기
 - 테스트 중인 `$session` 은 전역 설치 없이 repo local `.agents/skills/**` 에 설치한다.
-- 배포/패키징 후보 원본은 `specdrive/codex-skills/session/SKILL.md` 와 `specdrive/codex-skills/session/actions/**` 로 둔다.
+- session 실행 기준은 `.agents/skills/session/**` 사용본으로 두고, `specdrive/codex-skills/session/**` mirror는 보존하되 session context bundle에서는 제외한다.
 - Git은 초기 버전 정리 중 개발자가 직접 처리하므로 session 흐름에서 Git 상태 조회나 commit/push/PR 프롬프트를 기본 요구하지 않는다.
 
 ### 우선순위 3
-- GitHub CLI `gh` 설치 후 `$github-pr` skill 을 다시 실행해 기존 PR 확인, base branch 결정, PR 제목/본문 초안, PR 생성 흐름 검증. 단, Git 작업은 개발자가 명시적으로 요청할 때만 Codex가 돕는다.
+- GitHub CLI `gh` 기반 PR 자동화 검증은 후속 후보로 둔다. 단, Git 작업은 개발자가 직접 처리한다.
 - `doc reinforce -Execute` 실제 사용감 점검
 - `codex exec` 실제 실행 연결 범위 확대 여부 판단
 - `plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 흐름은 실제 코딩 전 작업 분해 시점의 후속 테스트 대상으로 유지
@@ -385,7 +383,7 @@
 - `doc` 단계의 최소 흐름을 정규화 프롬프트 + 명시적 history 저장 중심으로 반복 가능하게 유지하는 것
 - `specdrive/docs` 문서가 실제 registry 기반 라우팅 상태를 정확히 설명하도록 유지하는 것
 - `session` 단계가 `doc` / `dev` 를 침범하지 않고 skill 중심 세션 운영 절차로만 유지되게 하는 것
-- `$session start-lite`, `$session restore`, `$session start`, `$session status`, `$session save` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
+- `$session start`, `$session restore`, `$session start-full`, `$session status`, `$session save` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
 - `git` 단계는 브랜치/메시지/PR 전달 절차로 분리하되, 초기 버전 정리 중에는 Git을 개발자가 직접 처리하고 Codex는 명시 요청이 있을 때만 돕는 것
 - CLI는 현재 버전 기준 흐름에서 제외하고 후속 후보로만 보류하는 것
 - `plan` 단계는 `specdrive/manual/plan-manual.md` 와 `.agents/skills/plan/**` 기준으로 `$plan extract-candidates` 1차 정리를 마쳤고, 다음은 `$plan wp-split` 흐름으로 넘어갈지 판단하는 것이다.
@@ -440,7 +438,7 @@
 - README / AGENTS / AI_CONTEXT를 먼저 정비한 뒤 skill 테스트를 진행하는 방향 반영
 - standards 1차 문서 세트와 후속 2차 문서 후보 상태 반영
 - `doc` 단계 기본 target, preview 탐색 규칙, execute 조건, artifact naming 일부를 config 중심으로 이동
-- `$session start-lite`, `$session restore`, `$session start`, `$session status`, `$session save` 를 각각 경량 복구 / 재시작 복구 / 전체 복구 prompt / 6줄 상태 스냅샷 / AI_CONTEXT 반영 초안 요청용 action 으로 해석하는 현재 기준을 반영
+- `$session start`, `$session restore`, `$session start-full`, `$session status`, `$session save` 를 각각 경량 복구 / 재시작 복구 / 전체 복구 prompt / 6줄 상태 스냅샷 / compact 상태 반영 초안 요청용 action 으로 해석하는 현재 기준을 반영
 - `doc-work`, `doc-work-ref`, `doc-work-bundle` repo-local skill 을 추가하고, 사용본은 `.agents/skills/**`, 배포 후보 원본은 `specdrive/codex-skills/**` 아래에 두는 기준을 반영
 - `$doc-work` 를 단일 target 문서 작업 진입점으로 정리하고, 현재 지원 action 을 `draft`, `reinforce`, `revise` 로 둔 기준을 반영
 - `$doc-work <target> revise` 는 초기 Codex 보강 이후 개발자 수정/검토 흐름으로 두며, 실행 시 Preview Prompt 만 출력하고 preview 이후 follow-up / document-only / document-plus-history completion prompt 를 분리 출력하는 기준을 반영
@@ -492,16 +490,16 @@
 - `docs/projects/board/01-overview.md` 에서 auth와 board의 독립 배포를 즉시 확정이 아니라 장기 고려 방향으로 조정하고, logging/auth/board 같은 재사용 후보 영역의 경계를 overview 수준에서 명시했다.
 - 같은 revised 결과를 `docs/history/projects/board/01-overview/2026-04-25_204400_01-overview_dev-revised.md` 와 `.note.md` 에 저장했다.
 - 다음 board 문서 작업은 `01-overview.md` 에서 정리한 재사용 가능 경계와 독립 배포 고려 방향을 `specs/03-design.md` 또는 `specs/04-application-structure.md` 에서 어느 수준으로 구체화할지 판단하는 것이 자연스럽다.
-- repo-local Codex skill 을 중심으로 `$session`, `specdrive-skills`, `git-commit`, `github-pr` 를 만들고 1차 테스트했다.
+- repo-local Codex skill 을 중심으로 `$session`, `specdrive-skills` 를 유지하고 Git 관련 skill은 삭제했다.
 - 테스트 중에는 전역 skill 설치를 사용하지 않고 `.agents/skills/**` 를 기준으로 둔다.
 - 배포/패키징 후보 원본은 `specdrive/codex-skills/**` 로 둔다.
-- `github-pr` 실제 PR 생성 검증은 아직 GitHub CLI `gh` 미설치로 보류 중이며, Codex GitHub plugin 은 현재 필수로 보지 않는다.
+- GitHub CLI `gh` 기반 PR 자동화 검증은 보류 중이며, Codex GitHub plugin 은 현재 필수로 보지 않는다.
 - `feat(specdrive): add repo-local codex skills workflow`, `docs(skill): add push prompt to git commit skill` 커밋을 원격 브랜치에 push한 상태다.
 - 현재 `doc` 단계는 `draft-save`, `reinforce-prompt`, `confirm-prompt`, `apply-prompt` 중심의 수동 보강 루프를 먼저 정리하고, 실제 저장 자동화 범위는 후속 판단 대상으로 남겨 두었다.
 - 현재 `doc` 단계 문서는 execute-first 보다 prompt-first 해석을 우선하도록 재정리 중이다.
 - 현재 구현 명령과 문서 해석 모두 `confirm-prompt`, `apply-prompt`, `apply-only-prompt` 기준으로 정리한 상태다.
-- 현재 `$session save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.md` 반영 초안을 제안하는 action 으로 해석하는 편이 맞다.
-- 이후 세션에서는 `$session start` 후 작업 대상 영역의 전용 `AGENTS.md` 를 추가로 읽고, 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
+- 현재 `$session save` 는 `.speclab` 저장이 아니라 `docs/AI_CONTEXT.compact.md` 반영 초안을 제안하는 action 으로 해석하는 편이 맞다.
+- 이후 세션에서는 `$session start` 로 최소 복구 후, 필요할 때만 `$session start-full` 로 작업 대상 영역 문서를 추가 확인한다. 새 문서 생성이나 요구사항/설계/구현 계획 전환 전에는 개발자에게 먼저 확인해야 한다.
 - `docs(board): add board design draft and session guardrails` 커밋 이후 작업 트리는 clean 상태로 확인했다.
 - `main` pull/merge/push 후 로컬 `main` 과 `origin/main` 은 같은 지점으로 정리했다.
 - 다음 board 개발 문서 작업용 브랜치는 `docs/board-spec-structure` 로 잡았고, 생성 직후 작업 트리는 clean 상태다.
@@ -514,7 +512,7 @@
 - `$doc-work-ref` 는 `reference / revise` action과 `ref` history prefix 규칙으로 정리했다.
 - `$doc-work-bundle` 은 `reference / revise` action과 `bundle` history prefix 규칙으로 정리했다.
 - ref/bundle 작업에서 여러 문서가 수정되면 같은 timestamp를 공유하되 문서별 snapshot/note를 각각 남기는 규칙을 추가했다.
-- session/git도 인자형 호출을 지원하도록 `$session start-lite|restore|start|status|save`, `$git commit|pr` 라우터 스킬을 추가했다.
+- session은 인자형 호출을 지원하도록 `$session start|restore|start-full|status|save` 라우터 스킬을 유지한다.
 - 기존 `$session-start-*`, `$session-save` 호환 스킬은 노출을 줄이기 위해 `$session` 내부 action 문서로 통합했다.
 - Git은 초기 버전 정리 중 개발자가 직접 처리하며, session save/status/restore 흐름은 Git 상태 확인이나 commit/push/PR 프롬프트를 기본 요구하지 않는 것으로 정리했다.
 - `specdrive/manual/plan-manual.md` 에서 `$plan extract-candidates` 실행 기준을 정리했고, Project Name은 `docs/projects/{project}` key이며 `specdrive/config/project-registry.json` 에서 관리하는 것으로 고정했다.

@@ -6,7 +6,12 @@ description: Work on one specdrive target document with only its configured uppe
 # Doc Work Ref
 
 Use this skill when a target document should be checked or revised against only its configured upper/reference documents.
-Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
+## Wizard Rule
+
+This skill performs only the current action.
+It prints one copy-ready prompt only when a clear next action exists.
+
+Detailed rule: `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear.
 
 This skill sits between `$doc-work` and `$doc-work-bundle`:
 

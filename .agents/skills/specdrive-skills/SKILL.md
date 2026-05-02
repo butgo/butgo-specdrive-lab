@@ -6,7 +6,12 @@ description: List the repo-local specdrive Codex skills available in this reposi
 # Specdrive Skills
 
 Use this skill to show the repo-local specdrive Codex skills available in this repository.
-Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
+## Wizard Rule
+
+This skill performs only the current action.
+It prints one copy-ready prompt only when a clear next action exists.
+
+Detailed rule: `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear.
 
 ## Read First
 

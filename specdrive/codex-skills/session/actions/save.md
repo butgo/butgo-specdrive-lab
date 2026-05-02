@@ -1,6 +1,6 @@
 # Session Save
 
-Use this action to prepare a session closing summary and `docs/AI_CONTEXT.md` update candidate.
+Use this action to prepare a session closing summary and compact state update candidate.
 
 Preferred argument-based invocation:
 
@@ -12,58 +12,65 @@ $session save
 
 Read these files directly from the repository:
 
-1. `README.md`
-2. `AGENTS.md`
-3. `docs/AI_CONTEXT.md`
-4. `docs/specdrive/AGENTS.md`
-5. `docs/specdrive/session-stage.md`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/session-policy.md`
 
-If the session focused on a target area, also read:
+If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
 
-1. the target area's `AGENTS.md`
-2. the target area's `README.md`
-3. the target area's `index.md`
-4. the edited or reviewed target document
+Optional references:
 
-Git is handled directly by the developer during the initial version. Do not require Git status, Git summaries, commit messages, or PR prompts for session save. If Git context is needed, ask the developer instead of invoking Git skills by default.
+- `temp/last-note.md` if it exists
+- current project's `work/work-index.md` only if the user asks to confirm the current work pointer
+- current project's `work/work-log.md` only when the last entry is needed
+
+`$session save` does not read edited or reviewed target documents by default.
+If target document confirmation is needed, hand it off to `$doc confirm`, `$doc history-save`, `$dev sync`, or another explicit action.
+
+Git is handled directly by the developer. Session save does not request or inspect Git information.
 
 ## Output
 
 Prepare a draft with these sections:
 
-1. work completed in this session
-2. verification performed
-3. `docs/AI_CONTEXT.md` update candidate
-4. next entry point
-5. pending or deferred items
-6. save prompt
-7. files to be changed
+1. Summary
+2. AI_CONTEXT.compact Update Candidate
+3. Next Entry Point
+4. Issues Found
+5. Save Prompt
 
 Keep it concise and separate confirmed facts from suggestions.
 
-For the save prompt section, include a short copy-ready prompt that the user can paste back to approve saving. Use this shape:
+For the `AI_CONTEXT.compact Update Candidate` section, you MUST wrap the content inside a markdown code block using ` ```markdown `.
+
+For the `Save Prompt` section, always include a short copy-ready prompt that the user can paste back to approve the save operation. Use this shape:
 
 ```text
-아래 `docs/AI_CONTEXT.md` 반영 후보를 기준으로 저장해줘.
-변경되는 파일은 `docs/AI_CONTEXT.md` 로 한정해줘.
-```
-
-For the files to be changed section, list the files that would be edited if the user approves. By default, this should be:
-
-```text
-docs/AI_CONTEXT.md
+제공된 반영 초안을 기준으로 `docs/AI_CONTEXT.compact.md` 파일에 반영해줘.
+(파일 쓰기 작업을 명시적으로 승인함. 다른 파일은 절대 수정하지 마.)
 ```
 
 ## Stop Points
 
-Do not directly edit `docs/AI_CONTEXT.md` or any status/history document.
+Do not directly edit files while preparing `$session save` output.
 
-After showing the draft, wait for explicit user approval such as "저장해줘" before making file changes.
+If the user explicitly approves with wording such as "저장해줘", the default editable file is limited to:
+
+```text
+docs/AI_CONTEXT.compact.md
+```
+
+Do not edit `docs/AI_CONTEXT.md`, status documents, history documents, target documents, or project documents unless the user invokes `$session save-full` or another explicit action.
 
 ## Boundaries
 
 - This action does not replace `doc history-save`.
 - This action does not create Git commit messages or PR messages.
-- This action does not require Git status. Git is handled directly by the developer unless explicitly requested.
+- Git is handled directly by the developer. This action does not request Git information.
 - This action does not create new documents unless the user explicitly asks.
 - This action does not inspect `docs/history/**` unless the user explicitly asks for history lookup.
+- Do not read target documents by default.
+- Do not validate document correctness.
+- Do not summarize full project docs.
+- Do not inspect Git information.
+- Do not create or update history files.
+- Do not perform doc, dev, plan, or git work.

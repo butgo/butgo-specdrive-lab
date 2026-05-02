@@ -202,39 +202,33 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 
 핵심 흐름 예:
 
-- session start-lite
 - session restore
 - session start
+- session start-full
 - session status
 - session save
 
 원칙:
 
 - `session` 은 세션 복구와 저장을 돕는 메타 운영 단계다.
-- `$session start-lite` 는 최소 문맥으로 현재 focus 와 다음 진입점을 빠르게 복구한다.
-- `$session restore` 는 VSCode/Codex 재시작 뒤 현재 focus 와 Git 작업트리 상태를 함께 복구한다.
-- `$session start` 는 실행 범위를 조정하고 다음 단계용 copy prompt 출력을 돕는다.
-- `$session status` 는 `docs/AI_CONTEXT.md` 상태와 현재 Git 상태를 짧게 확인한다.
-- `$session save` 는 `docs/AI_CONTEXT.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
+- `$session start` 는 최소 문맥으로 현재 focus 와 다음 진입점을 빠르게 복구한다.
+- `$session restore` 는 VSCode/Codex 재시작 뒤 현재 focus 와 다음 진입점을 복구한다.
+- `$session start-full` 은 전체 복구용 copy prompt 출력을 돕는다.
+- `$session status` 는 `docs/AI_CONTEXT.compact.md` 상태와 다음 진입점을 짧게 확인한다.
+- `$session save` 는 `docs/AI_CONTEXT.compact.md` 반영 초안을 요청하는 copy prompt 출력을 돕는다.
 - `session` 은 `doc` / `plan` / `dev` 내부 처리 로직을 대신하지 않는다.
 
-### 6.5 git 단계
-commit, push, PR 같은 Git 전달 단위를 준비하는 단계다.
+### 6.5 Git handoff
+Git은 현재 repo-local skill 대상에서 제외한다.
 
-핵심 흐름 예:
+기본 원칙:
 
-- git-commit
-- github-pr
-
-원칙:
-
-- `git` 은 전달 단위 생성과 승인 기반 실행 단계다.
-- `git-commit` 은 현재 브랜치와 변경 파일을 확인하고 commit/push 제안을 준비한다.
-- `github-pr` 은 push된 브랜치를 기준으로 PR 초안을 만들고, 명시 승인 후에만 PR을 생성한다.
-- `git` 은 merge 실행을 대신하지 않는다.
+- Git commit / push / PR 실행은 개발자가 직접 수행한다.
+- AI는 사용자가 명시적으로 요청하고 필요한 정보를 제공한 경우에만 commit message 또는 PR description 초안을 보조한다.
+- session 흐름은 Git 상태 확인, Git skill 호출, commit/push/PR prompt를 기본 요구하지 않는다.
 
 ### 6.6 단계 혼합 금지
-specdrive 문서와 스크립트를 설계할 때 `doc`, `plan`, `dev`, `session`, `git` 의 책임을 섞지 않는다.
+specdrive 문서와 스크립트를 설계할 때 `doc`, `plan`, `dev`, `session`, `Git handoff` 의 책임을 섞지 않는다.
 
 예:
 
@@ -242,7 +236,7 @@ specdrive 문서와 스크립트를 설계할 때 `doc`, `plan`, `dev`, `session
 - phase / cycle 로직을 문서 확정 로직에 섞지 않는다.
 - confirm 되지 않은 문서를 바로 task 실행 기준으로 사용하지 않는다.
 - 세션 메모 로직을 문서 확정 절차와 같은 단계로 섞지 않는다.
-- Git 전달 단위 생성 로직을 세션 메모 로직과 같은 단계로 섞지 않는다.
+- Git handoff 보조를 세션 메모 로직과 같은 단계로 섞지 않는다.
 
 ---
 
@@ -302,18 +296,18 @@ AI는 SpecDrive 문서나 프로젝트 적용 문서를 수정할 때 다음 원
 - `$dev sync`
 
 ### 세션 단계
-- `$session start-lite`
 - `$session restore`
 - `$session start`
+- `$session start-full`
 - `$session status`
 - `$session save`
 
-### Git 단계
-- `$git-commit`
-- `$github-pr`
+### Git handoff
+- Git skill은 현재 repo-local skill 대상에서 제외
+- 필요 시 사용자가 제공한 변경 요약을 바탕으로 메시지 초안만 보조
 
 현재는 문서 단계와 plan 단계의 경계를 먼저 고정하는 것이 중요하다.  
-dev 단계와 세션/Git 단계는 문서 기준과 작업 분해 기준이 어느 정도 안정된 뒤 확장한다.
+dev 단계와 session/Git handoff 경계는 문서 기준과 작업 분해 기준이 어느 정도 안정된 뒤 확장한다.
 
 ---
 
@@ -347,13 +341,11 @@ skill은 다음 역할을 가져야 한다.
 현재 기준 skill 방향:
 
 - `.agents/skills/session`
-- `.agents/skills/session/actions/start-lite.md`
 - `.agents/skills/session/actions/restore.md`
 - `.agents/skills/session/actions/start.md`
+- `.agents/skills/session/actions/start-full.md`
 - `.agents/skills/session/actions/status.md`
 - `.agents/skills/session/actions/save.md`
-- `.agents/skills/git-commit`
-- `.agents/skills/github-pr`
 
 원칙:
 

@@ -23,7 +23,9 @@ Read only what is needed for the selected project.
 
 First read:
 
-1. `specdrive/config/project-registry.json`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/plan-policy.md`
+3. `specdrive/config/project-registry.json`
 
 Project Name means the `{project}` key in `docs/projects/{project}`.
 Resolve it through `specdrive/config/project-registry.json` when possible.

@@ -6,7 +6,12 @@ description: Route specdrive dev actions by argument. Use when the user invokes 
 # Dev
 
 Use this skill as the argument-based entry point for specdrive dev work.
-Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
+## Wizard Rule
+
+This skill performs only the current action.
+It prints one copy-ready prompt only when a clear next action exists.
+
+Detailed rule: `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear.
 
 ## Invocation Rule
 

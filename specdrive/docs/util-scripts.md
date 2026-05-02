@@ -44,6 +44,8 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey standards-all
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey board-dev-docs
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey specdrive-docs
+powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey session-skill
+powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey specdrive-rules
 ```
 
 `BundleKey`, `Documents`, `IncludeDefault` 같은 선택 옵션 없이 실행하면 번호 선택 메뉴가 표시된다.
@@ -63,6 +65,8 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 12: standards-all
 13: board-dev-docs
 14: specdrive-docs
+15: session-skill
+16: specdrive-rules
 ```
 
 출력 위치:
@@ -157,6 +161,10 @@ specdrive/config/context-bundle-map.json
   - board 프로젝트의 개발 기준 문서, specs, status, work 문서
 - `specdrive-docs`
   - `specdrive/docs/**` 아래의 현재 문서 전체
+- `session-skill`
+  - `$session` repo-local skill 사용본
+- `specdrive-rules`
+  - `specdrive/rules/**` 아래의 현재 rule layer 문서
 
 이 설정은 `affected-docs-map.json` 과 분리한다.
 `context-bundle-map.json` 은 문서 묶음 생성용이고,

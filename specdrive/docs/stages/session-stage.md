@@ -72,31 +72,23 @@ repo local skill 설치 위치는 다음과 같다.
 
 ```text
 .agents/skills/session/SKILL.md
-.agents/skills/session/actions/start-lite.md
-.agents/skills/session/actions/restore.md
 .agents/skills/session/actions/start.md
+.agents/skills/session/actions/start-full.md
+.agents/skills/session/actions/restore.md
 .agents/skills/session/actions/status.md
 .agents/skills/session/actions/save.md
 ```
 
 테스트 중에는 전역 skill 경로에 설치하지 않는다.
-배포/패키징 후보 원본 위치는 다음과 같다.
-
-```text
-specdrive/codex-skills/session/SKILL.md
-specdrive/codex-skills/session/actions/start-lite.md
-specdrive/codex-skills/session/actions/restore.md
-specdrive/codex-skills/session/actions/start.md
-specdrive/codex-skills/session/actions/status.md
-specdrive/codex-skills/session/actions/save.md
-```
+현재 session 실행 기준은 `.agents/skills/session/**` 사용본이다.
+`specdrive/codex-skills/session/**` mirror는 프로젝트 분리와 후속 패키징 후보로 보존하되, 기본 context bundle에서는 제외한다.
 
 Codex 대화에서는 다음처럼 직접 호출해 사용해 보는 방향을 우선한다.
 
 ```text
-$session start-lite
-$session restore
 $session start
+$session restore
+$session start-full
 $session status
 $session save
 ```

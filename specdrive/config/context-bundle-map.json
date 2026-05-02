@@ -147,6 +147,44 @@
         "specdrive/docs"
       ]
     },
+    "session-skill": {
+      "description": "$session repo-local skill 사용본만 묶는다.",
+      "name": "session-skill",
+      "documents": [
+        "docs/AI_CONTEXT.compact.md",
+        "specdrive/rules/session-policy.md",
+        ".agents/skills/session/SKILL.md",
+        ".agents/skills/session/actions/start.md",
+        ".agents/skills/session/actions/start-full.md",
+        ".agents/skills/session/actions/restore.md",
+        ".agents/skills/session/actions/status.md",
+        ".agents/skills/session/actions/save.md"
+      ]
+    },
+    "plan-skill": {
+      "description": "$plan repo-local skill 사용본과 plan manual을 묶는다.",
+      "name": "plan-skill",
+      "documents": [
+        "docs/AI_CONTEXT.compact.md",
+        "specdrive/rules/plan-policy.md",
+        "specdrive/rules/skill-wizard-rule.md",
+        "specdrive/manual/plan-manual.md",
+        ".agents/skills/plan/SKILL.md",
+        ".agents/skills/plan/inputs.md",
+        ".agents/skills/plan/actions/extract-candidates.md",
+        ".agents/skills/plan/actions/phase-split.md",
+        ".agents/skills/plan/actions/cycle-split.md",
+        ".agents/skills/plan/actions/wp-split.md",
+        ".agents/skills/plan/actions/task-split.md"
+      ]
+    },
+    "specdrive-rules": {
+      "description": "specdrive/rules 아래의 현재 rule layer 문서를 묶는다.",
+      "name": "specdrive-rules",
+      "directories": [
+        "specdrive/rules"
+      ]
+    },
     "onboarding-all": {
       "description": "ChatGPT 업로드용으로 README 문서와 AGENTS compact 문서를 함께 묶는다.",
       "name": "onboarding-all",

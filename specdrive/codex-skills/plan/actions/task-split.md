@@ -21,12 +21,12 @@ Tasks are the smaller execution steps needed to finish that Work Package.
 
 Read only what is needed:
 
-1. project `work/work-roadmap.md`
-2. project `work/work-policy.md` if it exists
-3. relevant project specs
-4. `specdrive/docs/work-system.md`
-5. `specdrive/docs/stages/plan-stage.md`
-6. `specdrive/docs/stages/dev-stage.md`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/plan-policy.md`
+3. project `work/work-roadmap.md`
+4. selected Work Package
+5. directly related design/API/DB docs
+6. needed minimal target specs
 
 ## Output
 

@@ -23,7 +23,9 @@ Read only what is needed for the selected project.
 
 First read:
 
-1. `specdrive/config/project-registry.json`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/plan-policy.md`
+3. `specdrive/config/project-registry.json`
 
 Project Name means the `{project}` key in `docs/projects/{project}`.
 Resolve it through `specdrive/config/project-registry.json` when possible.
@@ -45,19 +47,15 @@ Do not inspect `docs/history/**` unless the user explicitly asks for history loo
 
 Provide a generated list of work candidate drafts.
 
-Follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`.
-If generated candidates should be created or updated in `work-candidates.md`, treat that as follow-up work:
+Follow `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear.
+`generate` prints candidate drafts only by default.
+If the user requested `apply` or explicitly asked for an apply prompt, treat that as follow-up work:
 
-- include an Apply Draft with target file, change summary, history snapshot path, and history note path;
+- include an Apply Draft with target file and change summary;
 - include a copy-ready approval prompt asking the developer to approve applying the generated candidates;
 - do not edit `work-candidates.md` or history files before that explicit approval.
 
-History filenames must use the common context/action rule:
-
-```text
-yyyy-MM-dd_HHmmss_generate-candidates_extract-candidates.md
-yyyy-MM-dd_HHmmss_generate-candidates_extract-candidates.note.md
-```
+History snapshot/note paths are optional follow-up candidates after apply approval, not default `generate` output.
 
 Use this shape:
 
@@ -70,6 +68,10 @@ Source Docs:
 Run Mode: <generate|review|apply>
 Output Mode: <table|markdown|prompt>
 
+Summary:
+
+Plan Update Candidate:
+
 Work Candidates:
 
 - ID: CAND-001
@@ -79,7 +81,7 @@ Work Candidates:
   Impact Area:
   Impact Confidence: High | Medium | Low
   Impact Evidence:
-  Suggested Next Action: wp-split | phase-split | defer | clarify
+  Suggested Next Action: phase-split | defer | clarify
   Status: Proposed | Needs Clarification
   Notes:
 
@@ -91,13 +93,27 @@ Review Notes:
 Apply Draft:
 - Target file:
 - Changes:
-- History snapshot:
-- History note:
 - Approval required: yes
 
-Approval Prompt:
-- Include only when generated candidates need to be applied to `work-candidates.md`.
+Files To Change:
+
+Issues Found:
+
+Next Step:
+
+Copy-ready Prompt:
+- Include only when the user requested `apply` or asked for an apply prompt.
 ```
+
+## Next Prompt
+
+Print a `$plan phase-split` copy-ready prompt only when:
+
+- candidate drafts are sufficiently organized;
+- human review or confirmation is not needed first;
+- the next step is clearly `$plan phase-split`.
+
+Do not print a copy-ready prompt otherwise.
 
 ## Boundaries
 
@@ -108,5 +124,5 @@ Approval Prompt:
 - Do not set current work pointer.
 - Do not code.
 - Do not edit files unless the developer explicitly asks to apply the generated candidate draft.
-- When applying to `work-candidates.md`, propose and create history snapshot/note paths from `project-registry.json` only after developer approval.
+- When applying to `work-candidates.md`, handle history snapshot/note paths only as optional follow-up candidates after developer approval.
 - Mark unclear candidates as `Needs Clarification`.

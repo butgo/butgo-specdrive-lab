@@ -12,13 +12,15 @@ $session status
 
 Read only what is needed:
 
-1. `docs/AI_CONTEXT.md`
+1. `docs/AI_CONTEXT.compact.md`
 
-From `docs/AI_CONTEXT.md`, check only:
+If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
+
+From `docs/AI_CONTEXT.compact.md`, check only:
 
 1. last updated date
-2. current one-line summary
-3. next entry point heading or first candidate
+2. current focus
+3. next entry point
 
 Do not read the full recovery document set. Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 
@@ -30,7 +32,6 @@ Reply in about six lines. Use this shape:
 AI_CONTEXT: <last-updated or unknown>, <one-line freshness note>
 focus: <one short focus line from AI_CONTEXT>
 next: <one short next-entry line from AI_CONTEXT>
-git: developer-managed, not checked unless explicitly requested
 note: <one caution or "no file changes made">
 ```
 
@@ -41,4 +42,4 @@ Keep each line short. This action is for quick orientation, not full session rec
 - Do not edit files.
 - Do not generate a copy prompt.
 - Do not perform `doc`, `dev`, `git`, or `session save` work.
-- Git is handled directly by the developer. Do not check Git status unless the developer explicitly asks.
+- Git is handled directly by the developer. Session status does not request Git information.

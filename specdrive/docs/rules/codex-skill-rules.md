@@ -28,12 +28,27 @@
 - stop point 변경
 - 읽기/쓰기 경계 변경
 - 개발자 승인 조건 변경
+- `SKILL.md` 공통 Wizard Rule 변경
 
 ---
 
-## 4. 금지 사항
+## 4. SKILL.md 공통 Wizard Rule
+
+`specdrive/codex-skills/**/SKILL.md` 원본도 사용본과 같은 Wizard Rule 요약을 포함한다.
+
+```md
+## Wizard Rule
+
+This skill performs only the current action.
+It prints one copy-ready prompt only when a clear next action exists.
+
+Detailed rule: `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear.
+```
+
+---
+
+## 5. 금지 사항
 
 - 검증 전 실험 흐름을 배포 후보 원본에 확정 규칙처럼 쓰지 않는다.
 - 프로젝트별 판단을 Core skill 원본에 직접 고정하지 않는다.
 - skill 원본이 repo-local 사용본의 현재 실험 상태를 숨기지 않는다.
-

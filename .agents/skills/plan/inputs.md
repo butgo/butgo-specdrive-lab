@@ -87,25 +87,20 @@ Review Notes:
 Apply Draft:
 - Target file:
 - Changes:
-- History snapshot:
-- History note:
 - Approval required: yes
 ```
 
 Run Mode controls which sections are emphasized:
 
-- `generate`: print the action-specific generated section first. Review Notes and Apply Draft may be omitted only when empty. If generated content should be written to a project `work/` document, include an Apply Draft and approval prompt as follow-up work.
+- `generate`: print the action-specific generated section first. Do not include Apply Draft, approval prompt, or history snapshot/note by default.
 - `review`: include Review Notes and compare against existing work documents when available.
-- `apply`: include Apply Draft, target file, change summary, proposed history snapshot/note paths, and approval requirement. Do not edit files or history files unless the developer explicitly asks to apply.
+- `apply`: include Apply Draft, target file, change summary, and approval requirement. Do not edit files or history files unless the developer explicitly asks to apply.
 
-Follow-up prompts follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`: print a copy-ready prompt only when follow-up work needs another Codex prompt, and omit it when no follow-up work is needed.
+Follow-up prompts follow `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear: print one copy-ready prompt only when follow-up work needs another Codex prompt, and omit it when no follow-up work is needed.
 
-When apply creates or updates a project `work/` document, the apply proposal must include a history snapshot and note.
-History paths should come from `specdrive/config/project-registry.json` when the action has a registered history rule.
-History filenames must include a context/action discriminator after the timestamp, following the common rule in `specdrive/docs/skill-wizard-manual.md`.
-For plan `extract-candidates` generate results, use `generate-candidates`. For example: `yyyy-MM-dd_HHmmss_generate-candidates_extract-candidates.md`.
-Project history is split by stage first: `docs/history/projects/{project}/doc/**`, `docs/history/projects/{project}/plan/**`, and `docs/history/projects/{project}/dev/**`.
-Plan action history belongs under `docs/history/projects/{project}/plan/**`.
+Apply Draft is included only when the user requested `apply` or explicitly asked for an apply prompt.
+History snapshot/note paths are not part of the default `generate` output.
+History snapshot/note may be handled after apply approval as an optional follow-up candidate.
 Do not inspect existing `docs/history/**` file bodies unless the developer explicitly asks for history lookup.
 
 ---
@@ -125,9 +120,9 @@ Do not inspect existing `docs/history/**` file bodies unless the developer expli
 | Action | Project Name | Source Scope | Source Files | Target Mode | Phase | Cycle | WP ID | Task ID | Scope Note | Run Mode | Output Mode |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `extract-candidates` | O | O | file일 때 | - | - | - | - | - | O | O | O |
-| `wp-split` | O | - | - | `candidate`, `wp`, `roadmap` | - | - | - | - | O | O | O |
 | `phase-split` | O | - | - | `candidate`, `phase`, `roadmap` | O | - | - | - | O | O | O |
 | `cycle-split` | O | - | - | `phase`, `cycle`, `roadmap` | O | O | - | - | O | O | O |
+| `wp-split` | O | - | - | `cycle`, `wp`, `roadmap` | O | O | - | - | O | O | O |
 | `task-split` | O | - | - | `wp`, `roadmap` | O | O | O | - | O | O | O |
 
 ---
@@ -137,9 +132,9 @@ Do not inspect existing `docs/history/**` file bodies unless the developer expli
 | Action | Primary Reference |
 |---|---|
 | `extract-candidates` | project overview, specs, optional `work-candidates.md` |
-| `wp-split` | `work-candidates.md` |
 | `phase-split` | `work-candidates.md`, `work-roadmap.md` |
 | `cycle-split` | `work-roadmap.md` |
+| `wp-split` | `work-roadmap.md`, selected Cycle |
 | `task-split` | `work-roadmap.md` |
 
 ---
@@ -156,7 +151,7 @@ Plan actions do not directly update:
 - `docs/projects/{project}/work/work-index.md`
 - actual code files
 - test execution results
-- Git commit / push / PR
+- version-control outputs
 - session save files
 
 ---

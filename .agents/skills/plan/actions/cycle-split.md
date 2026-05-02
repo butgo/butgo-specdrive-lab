@@ -24,11 +24,12 @@ Default Cycles:
 
 Read only what is needed:
 
-1. project `work/work-roadmap.md`
-2. project `work/work-candidates.md` if needed
-3. relevant project specs
-4. `specdrive/docs/work-system.md`
-5. `specdrive/docs/stages/plan-stage.md`
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/plan-policy.md`
+3. project `work/work-roadmap.md`
+4. selected Phase
+5. project `work/work-candidates.md` if needed
+6. needed minimal target specs
 
 ## Output
 
@@ -41,24 +42,48 @@ Plan action: cycle-split
 Target project: <project>
 Target Phase: <phase>
 
+Summary:
+
+Plan Update Candidate:
+
 Cycle Draft:
 
 - Cycle 1 - Minimal Implementation
-  Work Packages:
+  Included Phase Items:
   Completion Criteria:
 
 - Cycle 2 - Stability
-  Work Packages:
+  Included Phase Items:
   Completion Criteria:
 
 - Cycle 3 - Operational Readiness
-  Work Packages:
+  Included Phase Items:
   Completion Criteria:
+
+Files To Change:
+
+Issues Found:
+
+Next Step:
+
+Copy-ready Prompt:
+- Include only when the Next Prompt condition is satisfied.
 ```
+
+## Next Prompt
+
+Print a `$plan wp-split` copy-ready prompt only when:
+
+- the target Cycle is clear;
+- the Cycle draft can proceed to the next step;
+- the next step is clearly `$plan wp-split`.
+
+Do not print it when human review or Cycle confirmation is needed first.
 
 ## Boundaries
 
 - Do not set current execution pointer.
 - Do not code.
 - Do not treat Cycle placement as confirmed until developer approval.
+- Do not split Work Package or Task details in this action.
 - Keep future extension ideas out of Cycle 1 unless required for minimum operation.

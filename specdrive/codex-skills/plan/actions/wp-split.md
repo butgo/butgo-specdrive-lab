@@ -12,7 +12,7 @@ $plan wp-split
 
 ## Purpose
 
-Create dev coding bundle candidates from work candidates or development documents.
+Create dev coding bundle candidates from a selected Cycle.
 
 At the current SpecDrive standard, a Work Package is a dev coding bundle.  
 It should leave at least one meaningful behavior, structure, or verification result when completed.
@@ -21,11 +21,12 @@ It should leave at least one meaningful behavior, structure, or verification res
 
 Read only what is needed for the selected project:
 
-1. root `AGENTS.md`
-2. `docs/AI_CONTEXT.md`
-3. project `AGENTS.md`
-4. project overview and relevant specs
-5. project `work/work-candidates.md` if it exists
+1. `docs/AI_CONTEXT.compact.md`
+2. `specdrive/rules/plan-policy.md`
+3. project `work/work-roadmap.md`
+4. selected Cycle
+5. project `work/work-candidates.md` if needed
+6. needed minimal target specs
 
 Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 
@@ -57,5 +58,6 @@ Work Package Candidates:
 - Do not create confirmed Tasks.
 - Do not set current work pointer.
 - Do not code.
+- Do not split Task details in this action.
 - Do not edit files unless the developer explicitly asks to apply the draft.
 - Mark unclear candidates as `Needs Clarification`.

@@ -41,24 +41,6 @@
       "command": "$dev",
       "description": "dev action을 인자로 받아 start/run/test/sync로 라우팅합니다.",
       "path": ".agents/skills/dev/SKILL.md"
-    },
-    {
-      "name": "git",
-      "command": "$git",
-      "description": "git action을 인자로 받아 commit/pr로 라우팅합니다.",
-      "path": ".agents/skills/git/SKILL.md"
-    },
-    {
-      "name": "git-commit",
-      "command": "$git-commit",
-      "description": "호환 명령입니다. 새 호출은 `$git commit`을 우선 사용합니다.",
-      "path": ".agents/skills/git-commit/SKILL.md"
-    },
-    {
-      "name": "github-pr",
-      "command": "$github-pr",
-      "description": "호환 명령입니다. 새 호출은 `$git pr`을 우선 사용합니다.",
-      "path": ".agents/skills/github-pr/SKILL.md"
     }
   ]
 }
