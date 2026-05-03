@@ -30,33 +30,38 @@ Read only what is needed:
 
 Provide a draft Phase structure.
 
+`generate` creates a new Phase draft from the current source.
+`revise` prints an editable Preview Prompt for revising the Phase draft.
+It still does not apply files.
+
 Use this shape:
 
-```text
+~~~text
 Plan action: phase-split
 Target project: <project>
+Run Mode: <generate|revise>
 
 Summary:
 
 Plan Update Candidate:
-
-Phase Draft:
+```markdown
+### Phase Draft
 
 - Phase 1 - <name>
   Goal:
   Included Candidates:
   Excluded / Deferred:
-  Open Questions:
+  Dependency:
+  Exit Criteria:
+```
 
 Files To Change:
+docs/projects/<project>/work/work-roadmap.md
 
 Issues Found:
 
 Next Step:
-
-Copy-ready Prompt:
-- Include only when the Next Prompt condition is satisfied.
-```
+~~~
 
 ## Next Prompt
 

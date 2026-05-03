@@ -6,6 +6,8 @@ Preferred argument-based invocation:
 
 ```text
 $session start
+$session start specdrive
+$session start board
 ```
 
 ## Read First
@@ -14,12 +16,20 @@ Read only the minimum needed from:
 
 ```text
 docs/AI_CONTEXT.compact.md
+<target AI_CONTEXT.compact.md>
 specdrive/rules/session-policy.md
 ```
 
-If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
+`docs/AI_CONTEXT.compact.md` is the workspace router. Use it to choose one target context.
 
-Focus on these sections first:
+Target mapping:
+
+- `specdrive` -> `specdrive/AI_CONTEXT.compact.md`
+- `board` -> `docs/projects/board/AI_CONTEXT.compact.md`
+
+If no target is provided, use the router's active/default target.
+
+From the selected target context, focus on:
 
 1. current focus
 2. next entry point
@@ -32,9 +42,10 @@ Do not read `README.md`, root `AGENTS.md`, `specdrive/docs/AGENTS.md`, or `specd
 
 Reply with only a short recovery summary:
 
-1. current focus
-2. next entry point
-3. caution areas for changes
+1. active target
+2. current focus
+3. next entry point
+4. caution areas for changes
 
 Keep the response brief. This action is intended to avoid heavy first-run context loading.
 

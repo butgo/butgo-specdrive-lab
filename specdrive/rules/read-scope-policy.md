@@ -20,12 +20,37 @@
 AI는 항상 다음 원칙을 따른다.
 
 - 기본은 compact 문서를 먼저 읽는다.
+- workspace에 여러 context가 있으면 `docs/AI_CONTEXT.compact.md`를 router로만 읽는다.
+- target이 정해지면 target compact context 하나만 추가로 읽는다.
 - full 문서는 필요할 때만 읽는다.
 - bundle 문서는 명시 요청 시에만 읽는다.
 - `docs/history/**`는 기본 읽기 범위에서 제외한다.
 - 작업 대상 문서가 명확하면 해당 문서와 직접 참조 문서만 읽는다.
 - 판단이 어렵다고 전체 문서를 먼저 읽지 않는다.
 - 추가 문서가 필요하면 먼저 이유를 짧게 제안한다.
+
+---
+
+### 2.1 Context Routing Rule
+
+SpecDrive 자체와 구현 project가 같은 workspace에 있을 때 AI는 모든 AI_CONTEXT 파일을 기본으로 읽지 않는다.
+
+기본 routing은 다음을 따른다.
+
+- Workspace routing:
+  - `docs/AI_CONTEXT.compact.md`
+- SpecDrive engine/workflow work:
+  - `specdrive/AI_CONTEXT.compact.md`
+- Project work:
+  - `docs/projects/{project}/AI_CONTEXT.compact.md`
+
+`docs/AI_CONTEXT.compact.md`는 현재 상태 본문이 아니라 target context를 고르는 router다.
+
+SpecDrive context와 project context를 함께 읽는 경우는 다음으로 제한한다.
+
+- 사용자가 cross-context consistency review를 명시적으로 요청한 경우
+- SpecDrive policy 변경이 project context 파일의 read scope 규칙과 직접 충돌하는 경우
+- packaging 또는 template 검증처럼 engine과 project 분리가 작업 대상인 경우
 
 ---
 
@@ -38,7 +63,9 @@ AI 기본 주입용 최소 문서다.
 예:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace context router)
+- `specdrive/AI_CONTEXT.compact.md` (SpecDrive target context)
+- `docs/projects/{project}/AI_CONTEXT.compact.md` (project target context)
 - `docs/projects/{project}/AGENTS.compact.md`
 - `docs/projects/{project}/PROJECT.compact.md`
 - `docs/projects/{project}/work/work-index.md`
@@ -111,7 +138,8 @@ bundle은 review 전용이다.
 읽기 허용:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target의 compact context 하나
 - 현재 작업에 필요한 policy 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 project의 `work/work-index.md`
@@ -138,12 +166,22 @@ bundle은 review 전용이다.
 session 작업의 기본 policy는 `session-policy.md` 하나다.
 단순 session status / start / restore / save에서는 `core-collaboration-rules.md`와 이 문서를 함께 읽지 않는다.
 
+session은 먼저 `docs/AI_CONTEXT.compact.md`를 router로 읽고, target이 명확할 때만 target compact context 하나를 추가로 읽는다.
+
+target 예:
+
+- `specdrive`
+- `board`
+
+target 없이 호출한 `$session status`는 workspace router만 읽고 active area를 출력한다.
+
 ### 5.1 session status
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
-- 현재 project의 `work/work-index.md`
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- target이 명시된 경우 target compact context 하나
+- target이 project이고 현재 포인터 확인이 필요한 경우 현재 project의 `work/work-index.md`
 - `temp/last-note.md` (있을 때만)
 
 읽지 않기:
@@ -166,10 +204,11 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- active/default target compact context 하나
 - `specdrive/rules/session-policy.md`
-- 현재 project의 `AGENTS.compact.md`
-- 현재 project의 `work/work-index.md`
+- target이 project인 경우 현재 project의 `AGENTS.compact.md`
+- target이 project인 경우 현재 project의 `work/work-index.md`
 
 읽지 않기:
 
@@ -190,10 +229,11 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- active/default target compact context 하나
 - `specdrive/rules/session-policy.md`
-- 현재 project의 `AGENTS.compact.md`
-- 현재 project의 `work/work-index.md`
+- target이 project인 경우 현재 project의 `AGENTS.compact.md`
+- target이 project인 경우 현재 project의 `work/work-index.md`
 - 필요 시 개발자가 제공한 작업트리 메모
 
 읽지 않기:
@@ -215,10 +255,11 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- target이 명확한 경우 target compact context 하나
 - `temp/last-note.md` (있을 때만)
-- 현재 project의 `work/work-index.md`
-- 현재 project의 `work/work-log.md` 마지막 항목
+- target이 project이고 필요한 경우 현재 project의 `work/work-index.md`
+- target이 project이고 필요한 경우 현재 project의 `work/work-log.md` 마지막 항목
 
 읽지 않기:
 
@@ -229,7 +270,7 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 - history 전체
 - bundle 전체
 
-`docs/AI_CONTEXT.compact.md`가 없더라도 full `docs/AI_CONTEXT.md` 전체를 읽지 않는다.
+target compact context가 없더라도 full context 문서 전체를 읽지 않는다.
 현재 focus / 다음 진입점 섹션만 제한적으로 읽는다.
 
 목적:
@@ -243,10 +284,11 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `docs/AI_CONTEXT.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- target compact context (있을 때만)
 - `temp/last-note.md` (있을 때만)
-- 현재 project의 `work/work-index.md`
-- 현재 project의 `work/work-log.md`
+- target이 project인 경우 현재 project의 `work/work-index.md`
+- target이 project인 경우 현재 project의 `work/work-log.md`
 - 필요한 full AGENTS 또는 README
 
 읽지 않기:
@@ -273,7 +315,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 대상 문서
@@ -298,7 +341,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 대상 문서
@@ -323,7 +367,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 대상 문서
 - 승인된 변경 요청
@@ -368,7 +413,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 project의 `PROJECT.compact.md`
@@ -390,7 +436,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `work/work-candidates.md`
 - 필요한 직접 참조 문서
@@ -412,7 +459,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `work/work-roadmap.md`
 - 현재 선택된 Work Package
@@ -438,7 +486,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 project의 `work/work-roadmap.md`
@@ -461,7 +510,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 읽기:
 
 - `AGENTS.compact.md`
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `AGENTS.compact.md`
 - 현재 project의 `work/work-index.md`
@@ -485,7 +535,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `work/work-index.md`
 - 현재 Work Package 관련 테스트 파일
@@ -508,7 +559,8 @@ session 작업의 기본 policy는 `session-policy.md` 하나다.
 
 읽기:
 
-- `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- `docs/AI_CONTEXT.compact.md` (workspace router)
+- 현재 target compact context 하나
 - 해당 policy가 있으면 그 문서
 - 현재 project의 `work/work-index.md`
 - 현재 project의 `work/work-log.md`
@@ -538,7 +590,8 @@ Git 관련 정보가 필요하면 사용자가 직접 제공한 범위만 읽는
 
 - 사용자가 붙여넣은 branch / status / diff 요약
 - 사용자가 명시한 변경 파일 목록
-- 필요한 경우 `docs/AI_CONTEXT.compact.md` (없으면 `docs/AI_CONTEXT.md`의 현재 focus / 다음 진입점 섹션만)
+- 필요한 경우 `docs/AI_CONTEXT.compact.md` (workspace router)
+- 필요한 경우 현재 target compact context 하나
 
 읽지 않기:
 

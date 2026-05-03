@@ -34,37 +34,40 @@ Do not inspect `docs/history/**` unless the user explicitly asks for history loo
 
 Provide a draft list of Work Package candidates.
 
+`generate` creates a new Work Package candidate draft from the selected Cycle.
+`revise` prints an editable Preview Prompt for revising the Work Package candidate draft.
+It still does not apply files.
+
 Use this shape:
 
-```text
+~~~text
 Plan action: wp-split
 Target project: <project>
+Run Mode: <generate|revise>
 
 Summary:
 
 Plan Update Candidate:
+```markdown
+### Work Package Candidates
 
-Work Package Candidates:
-
-- ID: WP-CAND-001
-  Title:
-  Source Candidates:
-  Source Docs:
-  Expected Output:
-  Suggested Phase:
-  Suggested Cycle:
-  Status: Proposed | Needs Clarification
-  Notes:
+- ID: WP-001
+  Goal:
+  Source Anchor:
+  Scope:
+  Affected Area:
+  Verification:
+  Dependency:
+  Out of Scope:
+```
 
 Files To Change:
+docs/projects/<project>/work/work-roadmap.md
 
 Issues Found:
 
 Next Step:
-
-Copy-ready Prompt:
-- Include only when the Next Prompt condition is satisfied.
-```
+~~~
 
 ## Next Prompt
 

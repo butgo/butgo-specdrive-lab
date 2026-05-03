@@ -63,18 +63,22 @@ Use this concrete shape:
 ```text
 사용 가능한 $session action:
 
-- start: docs/AI_CONTEXT.compact.md 기준으로 최소 세션 복구를 합니다.
+- start: workspace router와 target compact context 기준으로 최소 세션 복구를 합니다.
 - restore: VSCode/Codex 재시작 후 현재 맥락을 복구합니다.
 - start-full: 전체 세션 복구용 copy prompt를 준비합니다.
-- status: 현재 세션 상태를 짧게 확인합니다.
-- save: 세션 저장용 compact 상태 반영 초안을 준비합니다.
+- status: workspace router 또는 target context 기준으로 현재 세션 상태를 짧게 확인합니다.
+- save: target compact context 상태 반영 초안을 준비합니다.
 
 예시:
 $session restore
 $session start
 $session start-full
 $session status
+$session status specdrive
+$session status board
 $session save
+$session save specdrive
+$session save board
 ```
 
 Examples:

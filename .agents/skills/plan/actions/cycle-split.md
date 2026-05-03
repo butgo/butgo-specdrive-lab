@@ -35,40 +35,53 @@ Read only what is needed:
 
 Provide a draft Cycle allocation.
 
+`generate` creates a new Cycle draft from the selected Phase.
+`revise` prints an editable Preview Prompt for revising the Cycle draft.
+It still does not apply files.
+
 Use this shape:
 
-```text
+~~~text
 Plan action: cycle-split
 Target project: <project>
 Target Phase: <phase>
+Run Mode: <generate|revise>
 
 Summary:
 
 Plan Update Candidate:
-
-Cycle Draft:
+```markdown
+### Cycle Draft
 
 - Cycle 1 - Minimal Implementation
+  Goal:
   Included Phase Items:
-  Completion Criteria:
+  Verification Focus:
+  Dependency:
+  Exit Criteria:
 
 - Cycle 2 - Stability
+  Goal:
   Included Phase Items:
-  Completion Criteria:
+  Verification Focus:
+  Dependency:
+  Exit Criteria:
 
 - Cycle 3 - Operational Readiness
+  Goal:
   Included Phase Items:
-  Completion Criteria:
+  Verification Focus:
+  Dependency:
+  Exit Criteria:
+```
 
 Files To Change:
+docs/projects/<project>/work/work-roadmap.md
 
 Issues Found:
 
 Next Step:
-
-Copy-ready Prompt:
-- Include only when the Next Prompt condition is satisfied.
-```
+~~~
 
 ## Next Prompt
 

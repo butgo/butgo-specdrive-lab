@@ -6,6 +6,8 @@ Preferred argument-based invocation:
 
 ```text
 $session start-full
+$session start-full specdrive
+$session start-full board
 ```
 
 Compatibility alias:
@@ -22,11 +24,17 @@ Read only the minimum needed first:
 
 1. `.agents/skills/session/actions/start.md`
 2. `docs/AI_CONTEXT.compact.md`
-3. `specdrive/rules/session-policy.md`
+3. selected target compact context
+4. `specdrive/rules/session-policy.md`
 
-If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
+`docs/AI_CONTEXT.compact.md` is the workspace router. Use it to choose one target context.
 
-From `docs/AI_CONTEXT.compact.md`, focus on:
+Target mapping:
+
+- `specdrive` -> `specdrive/AI_CONTEXT.compact.md`
+- `board` -> `docs/projects/board/AI_CONTEXT.compact.md`
+
+From the selected target context, focus on:
 
 1. current focus
 2. next entry point
@@ -41,6 +49,7 @@ When full recovery is needed, prefer compact AGENTS documents first and read ful
 Reply with two parts:
 
 1. a short recovery summary:
+   - active target
    - current focus
    - next entry point
    - caution areas for changes
@@ -57,15 +66,18 @@ Use this shape for the copy prompt:
 
 1. AGENTS.compact.md
 2. docs/AI_CONTEXT.compact.md
-3. specdrive/rules/core-collaboration-rules.md
-4. specdrive/rules/read-scope-policy.md
-5. specdrive/rules/session-policy.md
+3. target AI_CONTEXT.compact.md 하나
+4. specdrive/rules/core-collaboration-rules.md
+5. specdrive/rules/read-scope-policy.md
+6. specdrive/rules/session-policy.md
 
 작업 대상 영역이 정해져 있으면 다음 문서도 추가로 읽어줘.
 
 1. 대상 영역의 AGENTS.compact.md, 있으면 compact를 우선 읽어줘.
 2. 대상 영역의 index.md
 3. 현재 수정 또는 작성할 대상 문서
+
+SpecDrive context와 project context를 둘 다 읽는 것은 내가 cross-context consistency review를 명시적으로 요청한 경우로 제한해줘.
 
 full AGENTS.md, README, full AI_CONTEXT 원본은 규칙 수정, compact와의 충돌, 승인 필요 여부가 애매한 경우에만 추가로 읽어줘.
 

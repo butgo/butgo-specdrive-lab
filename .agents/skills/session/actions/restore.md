@@ -6,6 +6,8 @@ Preferred argument-based invocation:
 
 ```text
 $session restore
+$session restore specdrive
+$session restore board
 ```
 
 ## Read First
@@ -13,11 +15,19 @@ $session restore
 Read only what is needed for a practical restart:
 
 1. `docs/AI_CONTEXT.compact.md`
-2. `specdrive/rules/session-policy.md`
+2. selected target compact context
+3. `specdrive/rules/session-policy.md`
 
-If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
+`docs/AI_CONTEXT.compact.md` is the workspace router. Use it to choose one target context.
 
-From `docs/AI_CONTEXT.compact.md`, focus on:
+Target mapping:
+
+- `specdrive` -> `specdrive/AI_CONTEXT.compact.md`
+- `board` -> `docs/projects/board/AI_CONTEXT.compact.md`
+
+If no target is provided, use the router's active/default target.
+
+From the selected target context, focus on:
 
 1. current focus
 2. next entry point
@@ -31,10 +41,11 @@ Do not load the full recovery read set unless the user explicitly asks for deepe
 
 Reply with a compact restore summary:
 
-1. restored focus
-2. next entry point
-3. caution areas for changes
-4. suggested next session action, if useful
+1. restored target
+2. restored focus
+3. next entry point
+4. caution areas for changes
+5. suggested next session action, if useful
 
 Keep the response brief. This action is meant for "VSCode restarted, continue from here" recovery.
 

@@ -33,6 +33,16 @@ Supported actions:
 - `wp-split`
 - `task-split`
 
+Supported run modes:
+
+- `generate`: create a new Plan Update Candidate draft.
+- `revise`: print an editable revision prompt for the current action draft, similar to `doc-work revise`.
+
+If no run mode is provided, use `generate`.
+Run mode does not mean file apply, history save, or dev transition.
+If run mode is `revise` and the user's message does not include a concrete revision request, do not revise the draft immediately.
+Instead, output only one copy-ready Preview Prompt that the developer can edit and paste back.
+
 Aliases:
 
 - `extract` -> `extract-candidates`
@@ -81,6 +91,7 @@ Use this concrete shape:
 
 예시:
 $plan extract-candidates
+$plan extract-candidates revise
 $plan phase-split
 $plan cycle-split
 $plan wp-split
@@ -91,6 +102,7 @@ Examples:
 
 ```text
 $plan extract-candidates
+$plan extract-candidates revise
 $plan phase-split
 $plan cycle-split
 $plan wp-split

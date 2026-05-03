@@ -21,7 +21,7 @@ $outputDirectory = ".speclab/context-bundle-output"
 $defaultDocuments = @(
     "README.md",
     "AGENTS.compact.md",
-    "docs/AI_CONTEXT.md"
+    "docs/AI_CONTEXT.compact.md"
 )
 
 function Get-ContextBundleConfig {
@@ -48,24 +48,26 @@ function Select-ContextBundleKey {
     # 이 순서를 바꾸면 화면에 표시되는 bundle 번호도 함께 바뀐다.
     #
     #   1: default
-    #   2: readme-ko-all
-    #   3: readme-en-all
-    #   4: readme-all
-    #   5: agents-compact
-    #   6: agents-all
-    #   7: repo-skills
-    #   8: codex-skills
-    #   9: legacy-skills
-    #   10: onboarding-all
-    #   11: codex-base-review
-    #   12: standards-all
-    #   13: board-dev-docs
-    #   14: specdrive-docs
-    #   15: session-skill
-    #   16: plan-skill
-    #   17: specdrive-rules
+    #   2: context-routing
+    #   3: readme-ko-all
+    #   4: readme-en-all
+    #   5: readme-all
+    #   6: agents-compact
+    #   7: agents-all
+    #   8: repo-skills
+    #   9: codex-skills
+    #   10: legacy-skills
+    #   11: onboarding-all
+    #   12: codex-base-review
+    #   13: standards-all
+    #   14: board-dev-docs
+    #   15: specdrive-docs
+    #   16: session-skill
+    #   17: plan-skill
+    #   18: specdrive-rules
     $orderedKeys = @(
         "default",
+        "context-routing",
         "readme-ko-all",
         "readme-en-all",
         "readme-all",

@@ -6,21 +6,25 @@ Preferred argument-based invocation:
 
 ```text
 $session status
+$session status specdrive
+$session status board
 ```
 
 ## Read First
 
 Read only what is needed:
 
-1. `docs/AI_CONTEXT.compact.md`
+1. `docs/AI_CONTEXT.compact.md` as the workspace router
+2. target compact context only when a target is provided
 
-If `docs/AI_CONTEXT.compact.md` is missing, read only the current focus and next entry point sections from `docs/AI_CONTEXT.md`.
+Target mapping:
 
-From `docs/AI_CONTEXT.compact.md`, check only:
+- `specdrive` -> `specdrive/AI_CONTEXT.compact.md`
+- `board` -> `docs/projects/board/AI_CONTEXT.compact.md`
 
-1. last updated date
-2. current focus
-3. next entry point
+If no target is provided, read only the workspace router and report the active area hint.
+
+If a target compact context is missing, do not read full context documents by default. Report it in `note`.
 
 Do not read the full recovery document set. Do not inspect `docs/history/**` unless the user explicitly asks for history lookup.
 
@@ -29,9 +33,10 @@ Do not read the full recovery document set. Do not inspect `docs/history/**` unl
 Reply in about six lines. Use this shape:
 
 ```text
-AI_CONTEXT: <last-updated or unknown>, <one-line freshness note>
-focus: <one short focus line from AI_CONTEXT>
-next: <one short next-entry line from AI_CONTEXT>
+router: <available or missing>
+active: <active area or target>
+focus: <one short focus line, target only when provided>
+next: <one short next-entry line>
 note: <one caution or "no file changes made">
 ```
 

@@ -9,7 +9,18 @@
       "documents": [
         "README.md",
         "AGENTS.compact.md",
-        "docs/AI_CONTEXT.md"
+        "docs/AI_CONTEXT.compact.md"
+      ]
+    },
+    "context-routing": {
+      "description": "workspace router와 target compact context, context routing 정책을 함께 묶는다.",
+      "name": "context-routing",
+      "documents": [
+        "docs/AI_CONTEXT.compact.md",
+        "specdrive/AI_CONTEXT.compact.md",
+        "docs/projects/board/AI_CONTEXT.compact.md",
+        "specdrive/rules/read-scope-policy.md",
+        "specdrive/rules/session-policy.md"
       ]
     },
     "readme-ko-all": {
@@ -90,12 +101,14 @@
       ]
     },
     "codex-base-review": {
-      "description": "Codex 기본 문맥 검토용으로 핵심 README, AGENTS compact, AI_CONTEXT 문서를 묶는다.",
+      "description": "Codex 기본 문맥 검토용으로 핵심 README, AGENTS compact, context router와 target context 문서를 묶는다.",
       "name": "codex-base-review",
       "documents": [
         "README.md",
         "AGENTS.compact.md",
-        "docs/AI_CONTEXT.md",
+        "docs/AI_CONTEXT.compact.md",
+        "specdrive/AI_CONTEXT.compact.md",
+        "docs/projects/board/AI_CONTEXT.compact.md",
         "specdrive/docs/README.md",
         "specdrive/docs/AGENTS.compact.md",
         "docs/projects/README.md",
@@ -121,6 +134,7 @@
       "description": "board 프로젝트의 개발 기준 문서와 work 문서를 함께 묶는다.",
       "name": "board-dev-docs",
       "documents": [
+        "docs/projects/board/AI_CONTEXT.compact.md",
         "docs/projects/board/AGENTS.compact.md",
         "docs/projects/board/README.md",
         "docs/projects/board/index.md",
@@ -143,6 +157,9 @@
     "specdrive-docs": {
       "description": "specdrive/docs 아래의 현재 문서 전체를 묶는다.",
       "name": "specdrive-docs",
+      "documents": [
+        "specdrive/AI_CONTEXT.compact.md"
+      ],
       "directories": [
         "specdrive/docs"
       ]
@@ -152,7 +169,10 @@
       "name": "session-skill",
       "documents": [
         "docs/AI_CONTEXT.compact.md",
+        "specdrive/AI_CONTEXT.compact.md",
+        "docs/projects/board/AI_CONTEXT.compact.md",
         "specdrive/rules/session-policy.md",
+        "specdrive/rules/read-scope-policy.md",
         ".agents/skills/session/SKILL.md",
         ".agents/skills/session/actions/start.md",
         ".agents/skills/session/actions/start-full.md",
@@ -166,7 +186,9 @@
       "name": "plan-skill",
       "documents": [
         "docs/AI_CONTEXT.compact.md",
+        "specdrive/AI_CONTEXT.compact.md",
         "specdrive/rules/plan-policy.md",
+        "specdrive/rules/read-scope-policy.md",
         "specdrive/rules/skill-wizard-rule.md",
         "specdrive/manual/plan-manual.md",
         ".agents/skills/plan/SKILL.md",
@@ -181,6 +203,9 @@
     "specdrive-rules": {
       "description": "specdrive/rules 아래의 현재 rule layer 문서를 묶는다.",
       "name": "specdrive-rules",
+      "documents": [
+        "specdrive/AI_CONTEXT.compact.md"
+      ],
       "directories": [
         "specdrive/rules"
       ]
@@ -192,6 +217,7 @@
         "README.md",
         "README.ko.md",
         "AGENTS.compact.md",
+        "docs/AI_CONTEXT.compact.md",
         "docs/README.md",
         "docs/README.ko.md",
         "specdrive/docs/README.md",

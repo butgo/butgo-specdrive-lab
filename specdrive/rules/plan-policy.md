@@ -414,14 +414,25 @@ plan은 작업 구조를 만드는 단계이며, branch, commit, PR, push, merge
 
 plan 계열 명령의 기본 출력은 짧게 유지한다.
 
+지원 Run Mode:
+
+- `generate`: 기준 문서에서 현재 action의 계획 후보만 생성한다.
+- `revise`: 현재 action의 계획 후보를 다시 다듬기 위한 수정 요청용 Preview Prompt를 출력한다.
+
+`revise`는 파일 반영, 상세 검토, history 저장, dev 전환을 수행하지 않는다.
+사용자가 구체적인 수정 요청을 함께 쓰지 않은 경우, `revise`는 후보를 즉시 재작성하지 않고 editable Preview Prompt만 출력한다.
+수정 요청이 충분히 분명한 후에만 같은 action 안에서 같은 계층의 revised Plan Update Candidate를 만든다.
+
 기본 출력 형식:
 
-1. Summary
-2. Plan Update Candidate
-3. Files To Change
-4. Issues Found
-5. Next Step
-6. Copy-ready Prompt
+1. Plan action
+2. Target project
+3. Run Mode
+4. Summary
+5. Plan Update Candidate
+6. Files To Change
+7. Issues Found
+8. Next Step
 
 `Copy-ready Prompt`는 기본 출력에 포함하지 않는다.
 
@@ -442,6 +453,7 @@ plan 계열 명령의 기본 출력은 짧게 유지한다.
 - 하나의 action은 하나의 계층만 반영 후보로 만든다.
 - 기존 확정 항목을 임의로 삭제하지 않는다.
 - 불명확한 항목은 `Open Questions` 또는 `Issues Found`에 남긴다.
+- 문서 반영용 본문은 `Plan Update Candidate` 아래에 `markdown` 코드블록으로 감싸서 출력한다.
 
 권장 반영 대상 예:
 

@@ -32,35 +32,41 @@ Read only what is needed:
 
 Provide a draft Task split.
 
+`generate` creates a new Task draft from the selected Work Package.
+`revise` prints an editable Preview Prompt for revising the Task draft.
+It still does not apply files.
+
 Use this shape:
 
-```text
+~~~text
 Plan action: task-split
 Target project: <project>
 Target Work Package: <wp>
+Run Mode: <generate|revise>
 
 Summary:
 
 Plan Update Candidate:
+```markdown
+### Task Draft
 
-Task Draft:
-
-- T-001:
-  Purpose:
-  Inputs:
+- ID: T-001
+  Goal:
+  Source Anchor:
+  Input:
   Expected Output:
   Verification:
-  Notes:
+  Dependency:
+  Dev Handoff Note:
+```
 
 Files To Change:
+docs/projects/<project>/work/work-tasks.md
 
 Issues Found:
 
 Next Step:
-
-Copy-ready Prompt:
-- Omit by default.
-```
+~~~
 
 ## Next Prompt
 

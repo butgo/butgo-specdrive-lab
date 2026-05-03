@@ -27,7 +27,7 @@
 역할:
 
 - 선택한 문서를 하나의 Markdown bundle 로 묶는다.
-- 기본 문서로 `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md` 를 사용할 수 있다.
+- 기본 문서로 `README.md`, `AGENTS.compact.md`, `docs/AI_CONTEXT.compact.md` router 를 사용할 수 있다.
 - 특정 문서를 직접 지정해 작업용 context bundle 을 만들 수 있다.
 - `specdrive/config/context-bundle-map.json` 의 `BundleKey` 로 정해진 문서 묶음을 생성할 수 있다.
 - `-IncludeReadmeKo`, `-IncludeAgents` 로 저장소의 `README.ko.md`, `AGENTS.md` 전체를 묶을 수 있다.
@@ -40,6 +40,7 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey readme-ko-all
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey agents-all
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey onboarding-all
+powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey context-routing
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey codex-base-review
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey standards-all
 powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.ps1 -BundleKey board-dev-docs
@@ -52,21 +53,23 @@ powershell -ExecutionPolicy Bypass -File specdrive/scripts/util/context-bundle.p
 
 ```text
 1: default
-2: readme-ko-all
-3: readme-en-all
-4: readme-all
-5: agents-compact
-6: agents-all
-7: repo-skills
-8: codex-skills
-9: legacy-skills
-10: onboarding-all
-11: codex-base-review
-12: standards-all
-13: board-dev-docs
-14: specdrive-docs
-15: session-skill
-16: specdrive-rules
+2: context-routing
+3: readme-ko-all
+4: readme-en-all
+5: readme-all
+6: agents-compact
+7: agents-all
+8: repo-skills
+9: codex-skills
+10: legacy-skills
+11: onboarding-all
+12: codex-base-review
+13: standards-all
+14: board-dev-docs
+15: specdrive-docs
+16: session-skill
+17: plan-skill
+18: specdrive-rules
 ```
 
 출력 위치:
@@ -134,7 +137,9 @@ specdrive/config/context-bundle-map.json
 현재 등록된 주요 bundle key 는 다음과 같다.
 
 - `default`
-  - `README.md`, `AGENTS.md`, `docs/AI_CONTEXT.md`
+  - `README.md`, `AGENTS.compact.md`, `docs/AI_CONTEXT.compact.md`
+- `context-routing`
+  - workspace router, SpecDrive target context, board target context, context routing 정책
 - `readme-ko-all`
   - 저장소 안의 모든 `README.ko.md`
 - `readme-en-all`
@@ -152,17 +157,19 @@ specdrive/config/context-bundle-map.json
 - `legacy-skills`
   - 기존 specdrive skill 문서
 - `onboarding-all`
-  - ChatGPT 업로드용으로 모든 `README.md`, `README.ko.md`, `AGENTS.md`
+  - ChatGPT 업로드용으로 모든 `README.md`, `README.ko.md`, `AGENTS compact`, workspace router
 - `codex-base-review`
-  - Codex 기본 문맥 검토용 핵심 `README`, `AGENTS`, `AI_CONTEXT`
+  - Codex 기본 문맥 검토용 핵심 `README`, `AGENTS compact`, workspace router, target context
 - `standards-all`
   - 프로젝트 공통 standards 문서 전체
 - `board-dev-docs`
-  - board 프로젝트의 개발 기준 문서, specs, status, work 문서
+  - board target context, 개발 기준 문서, specs, status, work 문서
 - `specdrive-docs`
-  - `specdrive/docs/**` 아래의 현재 문서 전체
+  - `specdrive/AI_CONTEXT.compact.md` 와 `specdrive/docs/**` 아래의 현재 문서 전체
 - `session-skill`
-  - `$session` repo-local skill 사용본
+  - context router, target context, `$session` repo-local skill 사용본
+- `plan-skill`
+  - SpecDrive target context, `$plan` repo-local skill 사용본
 - `specdrive-rules`
   - `specdrive/rules/**` 아래의 현재 rule layer 문서
 
@@ -212,7 +219,8 @@ specdrive/config/affected-docs-map.json
 
 현재 설정은 다음 계층을 구분한다.
 
-- 루트 공통 문서: `AGENTS.md`, `README.md`, `docs/AI_CONTEXT.md`
+- 루트 공통 문서: `AGENTS.md`, `README.md`, `docs/AI_CONTEXT.compact.md`
+- SpecDrive context 문서: `specdrive/AI_CONTEXT.compact.md`
 - specdrive 문서: `specdrive/docs/**`, `specdrive/docs/AGENTS.md`
 - project 공통 문서: `docs/projects/**`
 - project 전용 문서: `docs/projects/board/**`, `docs/projects/board/AGENTS.md`
