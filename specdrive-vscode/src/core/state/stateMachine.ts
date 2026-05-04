@@ -1,11 +1,12 @@
 import { WorkflowState, SpecContext } from './types';
 import { AIEngine } from '../../clients/AIEngine';
-import { parseTaskFromMarkdown } from '../parser/markdownParser';
+import { parseTaskFromMarkdown, parseSpecMarkdown } from '../parser/markdownParser';
 
 export class SpecDriveStateMachine {
     private currentState: WorkflowState = WorkflowState.IDLE;
     private context: SpecContext = {};
     private aiEngine: AIEngine;
+    public onApply?: (code: string) => Promise<void>;
 
     constructor(aiEngine: AIEngine) {
         this.aiEngine = aiEngine;
@@ -56,6 +57,11 @@ export class SpecDriveStateMachine {
             if (!this.context.markdownContent) {
                 throw new Error("No markdown content to parse.");
             }
+            // 전체 섹션 파싱 및 저장
+            const sections = parseSpecMarkdown(this.context.markdownContent);
+            this.context.sections = sections;
+
+            // 핵심 Task 추출
             const task = parseTaskFromMarkdown(this.context.markdownContent);
             if (!task) {
                 throw new Error("Failed to extract task from markdown.");
@@ -109,8 +115,11 @@ export class SpecDriveStateMachine {
     }
 
     private async handleApplying(): Promise<void> {
-        console.log("[Apply] Writing code to file system...");
-        // 파일 시스템 I/O 로직 (VSCode WorkspaceEdit 등)
+        console.log("[Apply] Triggering onApply callback...");
+        
+        if (this.onApply && this.context.generatedCode) {
+            await this.onApply(this.context.generatedCode);
+        }
         
         // 작업 완료 후 IDLE 복귀
         await this.transitionTo(WorkflowState.IDLE);

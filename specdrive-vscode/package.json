@@ -2,7 +2,7 @@
   "name": "specdrive-vscode",
   "version": "1.0.0",
   "description": "SpecDrive Core Engine (Parser and State Machine) in VSCode",
-  "main": "./dist/extension.js",
+  "main": "./dist/src/extension.js",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -15,7 +15,17 @@
         "command": "specdrive.run",
         "title": "SpecDrive: Run Tasks"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "SpecDrive",
+      "properties": {
+        "specdrive.ai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for the AI Engine (e.g., Gemini API Key)"
+        }
+      }
+    }
   },
   "scripts": {
     "test": "jest",

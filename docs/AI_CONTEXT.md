@@ -52,7 +52,7 @@
 - `doc` 단계의 prompt-first 해석과 apply 중심 반영 경로 재정리
 - `target / skill / context-set / action` registry 기준 설명 정리
 - action registry / output policy 를 활용한 최소 rule/config 분리 적용 시작
-- PowerShell 스크립트 기반 preview 출력 검증
+- repo-local skill 직접 사용 기반 preview 출력 검증
 - board `01-overview.md` 를 첫 테스트 문서로 사용한 흐름 검증
 - `01-overview.md` 기준 `reinforce / confirm-prompt / apply-prompt` 역할 분리 테스트 정리
 - `draft-save -> reinforce-prompt -> apply-prompt` 수동 보강 루프 정리

@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { SpecDriveStateMachine } from './core/state/stateMachine';
 import { MockAIEngine } from './clients/AIEngine';
+import { AntigravityAdapter } from './clients/AntigravityAdapter';
+import { ReviewPanel } from './ui/ReviewPanel';
 import { WorkflowState } from './core/state/types';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -23,9 +25,38 @@ export function activate(context: vscode.ExtensionContext) {
 
         const markdownContent = document.getText();
         
-        // 1. 코어 엔진 생성 (추후 AntigravityAdapter 로 교체 가능)
-        const aiEngine = new MockAIEngine();
+        // 1. 코어 엔진 생성 (설정에서 API Key를 읽어옴)
+        const config = vscode.workspace.getConfiguration('specdrive.ai');
+        const apiKey = config.get<string>('apiKey');
+
+        let aiEngine;
+        if (apiKey && apiKey.trim() !== '') {
+            aiEngine = new AntigravityAdapter(apiKey);
+        } else {
+            vscode.window.showWarningMessage('API Key가 설정되어 있지 않아 Mock 모드로 동작합니다. (설정에서 specdrive.ai.apiKey를 등록해 주세요)');
+            aiEngine = new MockAIEngine();
+        }
+        
         const stateMachine = new SpecDriveStateMachine(aiEngine);
+
+        // 2. APPLYING 상태일 때 실행될 저장 로직 등록
+        stateMachine.onApply = async (code: string) => {
+            const extractedCode = extractCodeBlock(code);
+            const fileName = 'specdrive_output.py';
+            
+            try {
+                // 현재 마크다운 파일이 저장된 위치를 기준으로 경로 생성
+                const currentDocUri = editor.document.uri;
+                const folderUri = vscode.Uri.joinPath(currentDocUri, '..');
+                const fileUri = vscode.Uri.joinPath(folderUri, fileName);
+                
+                const data = Buffer.from(extractedCode, 'utf8');
+                await vscode.workspace.fs.writeFile(fileUri, data);
+                vscode.window.showInformationMessage(`[SpecDrive] ${fileName} 파일로 저장되었습니다! (위치: ${folderUri.fsPath})`);
+            } catch (error: any) {
+                vscode.window.showErrorMessage(`파일 저장 실패: ${error.message}`);
+            }
+        };
 
         vscode.window.showInformationMessage('SpecDrive: Task 파싱을 시작합니다...');
 
@@ -42,22 +73,16 @@ export function activate(context: vscode.ExtensionContext) {
                     const parsedTask = stateMachine.getContext().parsedTask;
                     const code = stateMachine.getContext().generatedCode;
                     
-                    // VSCode 알림창으로 리뷰 요청
-                    const action = await vscode.window.showInformationMessage(
-                        `[코드 생성 완료] 승인하시겠습니까?\nTask: ${parsedTask}`,
-                        '승인', '반려'
-                    );
+                    // Webview 기반 리뷰 패널 띄우기
+                    const result = await ReviewPanel.show(parsedTask || '작업 내용 없음', code || '');
 
-                    if (action === '승인') {
+                    if (result.action === 'approve') {
                         await stateMachine.approve();
-                        vscode.window.showInformationMessage('코드가 적용되었습니다!');
-                    } else if (action === '반려') {
-                        // 반려 시 임의의 피드백 전송 (실제로는 Webview에서 텍스트 입력)
-                        vscode.window.showInformationMessage('코드를 반려하고 다시 생성합니다.');
-                        await stateMachine.reject('사용자가 수동으로 반려함');
-                        // 여기서 다시 GENERATING 상태로 넘어가지만 예제 단순화를 위해 여기까지 구현
+                        vscode.window.showInformationMessage('코드가 성공적으로 적용되었습니다!');
                     } else {
-                        vscode.window.showWarningMessage('리뷰가 취소되었습니다.');
+                        vscode.window.showInformationMessage(`코드가 반려되었습니다. 사유: ${result.feedback}`);
+                        await stateMachine.reject(result.feedback || '반려됨');
+                        // 차후 여기서 다시 GENERATING 상태로 루프백 처리 가능
                     }
                 } else if (currentState === WorkflowState.IDLE) {
                     clearInterval(checkInterval);
@@ -73,3 +98,16 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+
+/**
+ * 마크다운 텍스트에서 ```...``` 코드 블록 내부의 내용만 추출합니다.
+ */
+function extractCodeBlock(text: string): string {
+    // 가장 먼저 등장하는 코드 블록을 추출
+    const regex = /```(?:\w+)?\r?\n([\s\S]*?)```/;
+    const match = text.match(regex);
+    if (match && match[1]) {
+        return match[1].trim();
+    }
+    return text; // 코드 블록이 없으면 전체 텍스트 반환
+}
