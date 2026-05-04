@@ -17,31 +17,20 @@
 
 ---
 
-## 2. 현재 상태 한 줄 요약
+## 2. 현재 상태 한 줄 요약 (🔥 NEW GOAL)
 
-- 현재는 specdrive 자체 문서를 `specdrive/docs/**` 로 분리하고, board 문서 구조를 `01-overview.md / specs / work / rules / status / manual` 기준으로 재정리하면서 `doc` / `session` / `git` / work system 흐름을 skill 중심으로 다시 검증하는 작업을 진행 중이다.
-
-현재 전체 개념에서 특히 중요한 점은, specdrive를 `.speclab` preview 생성 도구로 이해하지 않는 것이다.  
-현재 기준으로 specdrive는 project 문서를 읽고 AI 협업 흐름을 실행한 뒤, 의미 있는 변경을 실제 문서와 `docs/history/projects/**` 문서 이력으로 정착시키는 운영체계로 이해하는 편이 맞다.
+- **핵심 목표**: 기존의 Codex 기반 수동 스킬 검증 작업은 "참조용 구현(Reference Implementation)"으로 취급하며, 현재 진짜 목표는 **VSCode 확장 프로그램(`specdrive-vscode`) 기반의 Antigravity 로직 테스트 및 하네스 엔지니어링 구축**이다.
+- 본 저장소는 실 서비스 구현 전, 상태 제어기(State Machine)와 AI 엔진 어댑터 패턴을 테스트하는 **랩(Lab)** 성격을 가진다.
 
 ---
 
 ## 3. 현재 작업 모드
 
-- 문서 정체성 재정리
-- 문서 계층 분리
-- README / AGENTS / AI_CONTEXT 우선 정비
-- specdrive / projects / board / standards 역할 구분 정리
-- specdrive 자체 문서는 `specdrive/docs/**`, 실제 프로젝트 문서는 `docs/projects/**` 로 분리
-- `doc` / `dev` 단계 분리 정리
-- `session` 단계 분리 정리
-- `git` 단계 분리 정리
-- Codex 중심 skill 절차 검증
-- 현재 버전에서는 CLI를 기준 흐름에서 제외하고 skill 직접 사용을 우선
-- key 기반 registry routing 문서/스크립트 정합성 정리
-
-현재는 실제 제품 구현보다  
-**엔진/운영체계 문서와 애플리케이션 문서의 경계를 고정한 뒤, `doc` 단계 흐름을 반복 가능한 최소 구조로 검증하는 작업 모드**에 가깝다.
+- **VSCode 플러그인 뼈대 구축**: `specdrive-vscode` 디렉터리를 중심으로 TypeScript/Jest 환경 구성 완료.
+- **상태 제어기(State Machine) 검증**: `IDLE -> PARSING -> GENERATING -> REVIEWING -> APPLYING` 5단계 워크플로우를 통제하는 순수 비즈니스 로직 작성 및 단위 테스트 완료.
+- **하네스(Harness) 동작 확인**: 생성된 코드가 곧바로 적용되지 않고, 사용자가 `승인/반려`할 수 있도록 `REVIEWING` 상태에서 멈추는 통제 지점 테스트 완료.
+- **VSCode Extension 연동**: `extension.ts`를 통해 명령어(`specdrive.run`)로 파이프라인을 트리거하는 껍데기 통합 완료.
+- 기존 Codex 기반 문서 파이프라인(doc, plan, dev 단계 분리 등)은 향후 Antigravity 기반 구조를 짤 때 참고할 도메인 지식(Domain Knowledge)으로 활용.
 
 ---
 

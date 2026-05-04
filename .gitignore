@@ -34,3 +34,13 @@ go.work.sum
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+coverage/
+.nyc_output/
+.pnp.*
