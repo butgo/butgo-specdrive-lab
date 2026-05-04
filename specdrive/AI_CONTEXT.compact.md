@@ -13,7 +13,9 @@ Use this file only when working on SpecDrive rules, repo-local skills, CLI, manu
 - Rule layer is under `specdrive/rules/**`.
 - Repo-local skills are under `.agents/skills/**`.
 - Session and plan flows are being reduced to compact context, policy-first read scope, and short outputs.
-- Plan output contracts were simplified around `Plan Update Candidate`.
+- Plan output contracts are centered on `Plan Update Candidate`.
+- `$plan extract-candidates` now uses `generate` and guided `revise` as its core run modes.
+- For existing `work-candidates.md`, `$plan extract-candidates` separates next choices into `overwrite`, `keep`, and `revise`.
 - Git skill is currently excluded from repo-local skill scope.
 
 ---
@@ -29,7 +31,8 @@ Use this file only when working on SpecDrive rules, repo-local skills, CLI, manu
 
 ## Next Entry Point
 
-- Finish context routing cleanup across `read-scope-policy.md`, `session-policy.md`, and session action docs.
+- Re-run `$plan extract-candidates` against board when needed to verify the `overwrite / keep / revise` next-step output.
+- Continue SpecDrive context routing cleanup across `read-scope-policy.md`, `session-policy.md`, and session action docs.
 - Keep `Spec-to-Anchor` in `core-collaboration-rules.md` until `dev-policy.md` is created.
 
 ---

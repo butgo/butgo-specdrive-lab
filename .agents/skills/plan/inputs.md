@@ -57,12 +57,17 @@ Project Name은 다음 순서로 결정한다.
 
 | Run Mode | Meaning |
 |---|---|
-| `generate` | 기준 문서에서 현재 action의 계획 후보만 생성한다. |
-| `revise` | 현재 action의 계획 후보를 다시 다듬기 위한 수정 요청용 Preview Prompt를 출력한다. |
+| `generate` | 기준 문서를 읽고 현재 action의 Plan Update Candidate 초안을 새로 만든다. |
+| `revise` | 현재 action의 Plan Update Candidate 초안을 수정하기 위한 흐름이다. |
+
+`generate`는 계획 후보를 만드는 기본 모드다.
+대상 파일을 생성하거나 갱신하지 않고, history snapshot/note를 만들지 않으며, dev 단계로 전환하지 않는다.
 
 `revise`는 파일 반영 모드가 아니다.
-`revise`는 같은 plan action의 후보 초안을 수정하기 위한 개발자 입력 프롬프트 흐름이며, 문서 확정, history 저장, dev 전환을 수행하지 않는다.
-사용자가 구체적인 수정 요청을 함께 쓰지 않은 경우, `revise`는 후보를 즉시 재작성하지 않고 editable Preview Prompt만 출력한다.
+`revise`는 AI가 혼자 다시 검토하는 단계가 아니라, 기존 Plan Update Candidate를 대상으로 사용자가 선택한 수정 방향을 반영하는 단계다.
+사용자가 option 번호나 구체적인 수정 요청을 함께 쓴 경우, 그 입력을 기준으로 같은 plan action 안에서 같은 계층의 revised Plan Update Candidate를 만든다.
+사용자가 수정 방향을 주지 않은 경우에는 후보를 즉시 재작성하지 않고 action별 revise 선택지를 출력한다.
+`revise` 역시 문서 확정, history 저장, dev 전환을 수행하지 않는다.
 
 plan action은 기본적으로 파일 반영, 검토 보고, 승인 프롬프트 생성을 함께 수행하지 않는다.
 파일 반영이나 상세 검토가 필요하면 별도 요청 또는 후속 작업으로 다룬다.
@@ -82,7 +87,7 @@ Summary:
 
 Plan Update Candidate:
 ```markdown
-<Action-specific generated section>
+<Action-specific content>
 ```
 
 Files To Change:
@@ -92,7 +97,7 @@ Issues Found:
 Next Step:
 ~~~
 
-`Plan Update Candidate` is the only action-specific generated section.
+`Plan Update Candidate` is the only action-specific content section.
 Wrap its document-ready content in a `markdown` code block so it can be copied without losing structure.
 
 Follow-up prompts follow `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear: print one copy-ready prompt only when follow-up work needs another Codex prompt, and omit it when no follow-up work is needed.

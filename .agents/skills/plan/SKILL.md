@@ -36,12 +36,12 @@ Supported actions:
 Supported run modes:
 
 - `generate`: create a new Plan Update Candidate draft.
-- `revise`: print an editable revision prompt for the current action draft, similar to `doc-work revise`.
+- `revise`: reorganize the current action draft from a selected revise option or concrete revision request.
 
 If no run mode is provided, use `generate`.
 Run mode does not mean file apply, history save, or dev transition.
 If run mode is `revise` and the user's message does not include a concrete revision request, do not revise the draft immediately.
-Instead, output only one copy-ready Preview Prompt that the developer can edit and paste back.
+Follow the action document's revise guidance; for `extract-candidates`, output only the guided Revise Options.
 
 Aliases:
 

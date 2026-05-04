@@ -416,12 +416,17 @@ plan 계열 명령의 기본 출력은 짧게 유지한다.
 
 지원 Run Mode:
 
-- `generate`: 기준 문서에서 현재 action의 계획 후보만 생성한다.
-- `revise`: 현재 action의 계획 후보를 다시 다듬기 위한 수정 요청용 Preview Prompt를 출력한다.
+- `generate`: 기준 문서를 읽고 현재 action의 Plan Update Candidate 초안을 새로 만든다.
+- `revise`: 현재 action의 Plan Update Candidate 초안을 수정하기 위한 흐름이다.
 
-`revise`는 파일 반영, 상세 검토, history 저장, dev 전환을 수행하지 않는다.
-사용자가 구체적인 수정 요청을 함께 쓰지 않은 경우, `revise`는 후보를 즉시 재작성하지 않고 editable Preview Prompt만 출력한다.
-수정 요청이 충분히 분명한 후에만 같은 action 안에서 같은 계층의 revised Plan Update Candidate를 만든다.
+`generate`는 계획 후보를 만드는 기본 모드다.
+대상 파일을 생성하거나 갱신하지 않고, history snapshot/note를 만들지 않으며, dev 단계로 전환하지 않는다.
+
+`revise`는 파일 반영 모드가 아니다.
+`revise`는 AI가 혼자 다시 검토하는 단계가 아니라, 기존 Plan Update Candidate를 대상으로 사용자가 선택한 수정 방향을 반영하는 단계다.
+사용자가 option 번호나 구체적인 수정 요청을 함께 쓴 경우, 그 입력을 기준으로 같은 action 안에서 같은 계층의 revised Plan Update Candidate를 만든다.
+사용자가 수정 방향을 주지 않은 경우에는 후보를 즉시 재작성하지 않고 action별 revise 선택지를 출력한다.
+`revise` 역시 문서 확정, history 저장, dev 전환을 수행하지 않는다.
 
 기본 출력 형식:
 
@@ -439,6 +444,12 @@ plan 계열 명령의 기본 출력은 짧게 유지한다.
 `Copy-ready Prompt`는 `specdrive/rules/skill-wizard-rule.md`와 각 action의 Next Prompt Condition을 모두 만족할 때만 출력한다.
 
 후속 작업이 없거나 사람 검토가 먼저 필요하면 `Copy-ready Prompt` 섹션 자체를 출력하지 않는다.
+
+파일 생성 또는 반영이 명확한 다음 단계라면 `Save / Apply Boundary`에 따라 하나의 copy-ready prompt를 출력할 수 있다.
+단, 선택지가 여러 개인 경우에는 여러 prompt를 동시에 출력하지 않고 개발자 선택을 먼저 받는다.
+
+단, action 문서가 명시적으로 선택형 prompt 후보를 정의한 경우에는 예외적으로 여러 선택지를 표시할 수 있다.
+이 경우 각 prompt는 서로 독립된 선택 후보여야 하며, 현재 action 안에서 실행하지 않는다.
 
 ---
 
