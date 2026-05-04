@@ -32,13 +32,12 @@ Do not read both SpecDrive context and project context unless the user explicitl
 ---
 
 ## Active Context Hint
-
 - Default target: specdrive
-- Last active target: specdrive
-- Last action: plan output contract cleanup
+- Last active target: specdrive (specdrive-vscode focus)
+- Last action: specdrive-vscode observability implementation plan (Korean)
 
 ---
 
 ## Next Entry Point
 
-- Continue SpecDrive context routing cleanup through read-scope/session policy and repo-local session action docs.
+- Execute specdrive-vscode enhancement plan (Status Bar, Output Channel, Mode Toggle).
