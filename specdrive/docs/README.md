@@ -156,10 +156,10 @@ This is the stage of decomposing confirmed or near-confirmed development documen
 Core flow:
 
 - extract-candidates
-- wp-split
 - phase-split
 - cycle-split
 - task-split
+- wp
 
 Basic meaning:
 
@@ -372,8 +372,8 @@ The current priorities of specdrive are as follows.
 ### Priority 3
 - Validate the minimum repo-local skill flow
 - `doc reinforce / confirm-prompt / apply-prompt`
-- `plan extract-candidates / wp-split / phase-split / cycle-split / task-split`
-- `dev start / run / test / sync`
+- `plan extract-candidates / phase-split / cycle-split / task-split / wp`
+- `dev start / impl-run / test / sync`
 - `$session start-lite / $session restore / $session start / $session status / $session save`
 - `$git-commit / $github-pr`
 

@@ -23,7 +23,7 @@ dev
 `dev` 단계는 `plan` 단계가 만든 `work-roadmap.md` 를 기준으로 시작한다.
 
 dev 단계의 기본 실행 단위는 Task가 아니라 Work Package다.  
-Task는 Work Package 안에서 실행을 돕는 세부 항목이며, Task 분해는 `$plan task-split` 책임이다.
+Task는 WP 구성을 위한 후보이며, Work Package는 그 후보들을 묶은 dev 실행 단위다.
 
 ---
 
@@ -33,6 +33,7 @@ Task는 Work Package 안에서 실행을 돕는 세부 항목이며, Task 분해
 
 ```text
 $dev start
+$dev impl-run
 $dev run
 $dev test
 $dev sync
@@ -72,12 +73,14 @@ docs/projects/{project}/work/work-index.md
 - 테스트하지 않는다.
 - `work-roadmap.md` 에 없는 작업을 현재 포인터로 잡지 않는다.
 
-### 4.2 `$dev run`
+### 4.2 `$dev impl-run`
 
 현재 `work-index.md` 의 Work Package 안에서 코딩을 진행한다.
 
-`dev run`은 현재 Work Package를 기본 실행 단위로 삼는다.  
+`dev impl-run`은 현재 Work Package를 기본 실행 단위로 삼는다.  
 Focus Task는 참고하되, 같은 Work Package 안에서 자연스럽게 이어지는 인접 Task까지 함께 처리할 수 있다.
+
+`$dev run`은 `$dev impl-run`과 같은 구현 실행 action으로 본다.
 
 생성/갱신 대상:
 

@@ -193,7 +193,7 @@
 - 현재 작업 단계는 구조적으로 핵심 작업 단계 `doc`, `plan`, `dev`, 별도 운영 단계 `session`, 전달 단계 `git` 으로 정리한다.
 - 문서 단계 핵심 흐름은 현재 기준 `draft-save / reinforce-prompt / reinforce / confirm-prompt / apply-prompt / apply-only-prompt` 로 정리한다.
 - 현재 `doc` 단계는 execute-first 보다 prompt-first 해석을 우선하고, 정식 반영은 가능한 한 `apply-prompt` 중심으로 본다.
-- plan 단계 핵심 흐름은 `$plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 다.
+- plan 단계 핵심 흐름은 `$plan extract-candidates / phase-split / cycle-split / task-split / wp` 다.
 - 현재 `$plan extract-candidates` 는 개발 문서에서 작업 후보를 생성하는 plan action 으로 정리했고, Project Name은 `docs/projects/{project}` 의 `{project}` key로 본다.
 - 현재 plan Project Name, Source Scope, extract-candidates 문서 묶음, history 규칙은 `specdrive/config/project-registry.json` 을 기준으로 해석한다.
 - 현재 board의 `extract-candidates` 기본 Source Scope는 `all` 이며, `docs/history/**` 는 명시 요청 없이는 조회하지 않는다.
@@ -202,7 +202,7 @@
 - 현재 `$plan extract-candidates generate` 는 개발자가 후보 초안을 직접 작성하지 않아도 기준 문서를 읽어 후보 초안을 생성하는 흐름이고, `apply` 는 개발자 승인 전 자동 반영하지 않는다.
 - 현재 plan history 파일명은 plan 디렉토리 자체가 단계를 드러내므로 `plan` prefix 대신 context/action 구분을 사용한다. `extract-candidates` 로 `work-candidates.md` 를 반영할 때는 `yyyy-MM-dd_HHmmss_generate-candidates_extract-candidates.md` 와 `.note.md` 형식을 사용한다.
 - 위저드형 skill 출력은 후속작업이 필요할 때만 copy-ready prompt를 출력하고, 후속작업이 없으면 프롬프트를 출력하지 않는다.
-- dev 단계 핵심 흐름은 `$dev start / run / test / sync` 다.
+- dev 단계 핵심 흐름은 `$dev start / impl-run / test / sync` 다.
 - 현재 Work Package는 dev 코딩의 한 묶음으로 정의하며, 완료 시 의미 있는 동작, 구조, 검증 결과 중 하나 이상이 남아야 한다.
 - 세션 단계 핵심 흐름은 `$session start / restore / start-full / status / save` 다.
 - Git skill은 현재 repo-local skill 대상에서 제외하고, Git 실행은 개발자가 직접 처리한다.
@@ -269,8 +269,8 @@
 - `doc reinforce -Execute` 실행 시 Codex 환경 경고 처리 기준 확정
 - GitHub CLI `gh` 기반 PR 자동화 검증
 - Codex GitHub plugin 도입 여부 판단. 현재는 필수로 보지 않고 `gh` 기반 흐름을 우선 검토
-- `plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 실제 흐름 검증
-- `dev start / run / test / sync` 실제 흐름 검증
+- `plan extract-candidates / phase-split / cycle-split / task-split / wp` 실제 흐름 검증
+- `dev start / impl-run / test / sync` 실제 흐름 검증
 - 장기적으로 specdrive와 projects 분리 시 저장소 구조 구체화
 - Go 또는 Python 재구현 시점 판단
 
@@ -292,8 +292,8 @@
 - `specdrive/docs/stages/session-stage.md` 로 `session` 단계의 역할과 세션 복구/저장 범위를 정리한 상태다.
 - `specdrive/docs/stages/git-stage.md` 로 `git` 단계의 역할과 브랜치/메시지 생성 범위를 정리한 상태다.
 - `specdrive/docs/stages/doc-stage.md`, `plan-stage.md`, `dev-stage.md` 로 핵심 작업 단계를 `doc -> plan -> dev` 로 정리한 상태다.
-- 현재 `plan` 단계는 `$plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 후보 흐름으로 보고, Work Package를 dev 코딩의 한 묶음으로 정의했다.
-- 현재 `dev` 단계는 승인된 plan 결과에서 Work Package를 선택해 `$dev start / run / test / sync` 로 코딩, 테스트, 동기화하는 흐름으로 본다.
+- 현재 `plan` 단계는 `$plan extract-candidates / phase-split / cycle-split / task-split / wp` 흐름으로 보고, Task를 WP 구성을 위한 후보, Work Package를 AI 작업 단위로 정의했다.
+- 현재 `dev` 단계는 승인된 plan 결과에서 Work Package를 선택해 `$dev start / impl-run / test / sync` 로 구현, 테스트, 동기화하는 흐름으로 본다.
 - `.agents/skills/**` 와 `specdrive/codex-skills/**` 아래 repo-local skill 사용본과 배포 후보 원본이 생성된 상태다.
 - `specdrive/scripts/**`, `specdrive/skills/**`, `specdrive/config/**` 아래 과거 CLI/preview 검증 골격은 보존된 상태다.
 - 현재 `doc` 스크립트는 registry 를 주 경로로 사용하고, legacy action별 target config 는 `default_target` fallback 용으로 일부 남아 있다.
@@ -343,11 +343,11 @@
 현재 기준 다음 진입점 후보는 다음과 같다.
 
 ### 우선순위 1
-- `docs/projects/board/work/work-candidates.md` 의 `CAND-001 ~ CAND-018` 을 기준으로 `$plan wp-split` 실행 여부를 판단
-- `$plan wp-split` 전 `CAND-014` 와 `CAND-005`, `CAND-016` 과 `CAND-006`, `CAND-018` 과 `CAND-007` 의 중복/하위/연결 관계를 검토
-- `$plan wp-split` 으로 후보를 Work Package 후보로 나눈 뒤, `$plan phase-split` / `$plan cycle-split` 로 Phase / Cycle 구조에 배치
-- `work-index.md` 는 plan 단계에서 수정하지 않고, 현재 실행 포인터는 이후 `dev start` 단계에서 다룸
-- `$plan wp-split` skill과 `specdrive/manual/plan-manual.md` 의 wp-split 기준이 충분한지 실행 전에 확인
+- `docs/projects/board/work/work-candidates.md` 와 `work-roadmap.md` 를 기준으로 `$plan task-split` 또는 `$plan wp` 실행 여부를 판단
+- `$plan task-split` 전 Cycle 내부 후보 관계를 검토
+- `$plan task-split` 으로 Task 후보를 나눈 뒤, `$plan wp` 로 AI 실행 단위인 Work Package로 패키징
+- `work-index.md` 는 plan 단계에서 수정하지 않고, 현재 실행 포인터는 이후 dev 단계에서 다룸
+- `$plan task-split` / `$plan wp` skill과 `specdrive/manual/plan-manual.md` 의 기준이 충분한지 실행 전에 확인
 - 새 Work Package / Phase / Cycle 구조를 실제 문서에 반영하기 전에는 개발자 승인을 먼저 받기
 
 ### 우선순위 2
@@ -364,8 +364,8 @@
 - GitHub CLI `gh` 기반 PR 자동화 검증은 후속 후보로 둔다. 단, Git 작업은 개발자가 직접 처리한다.
 - `doc reinforce -Execute` 실제 사용감 점검
 - `codex exec` 실제 실행 연결 범위 확대 여부 판단
-- `plan extract-candidates / wp-split / phase-split / cycle-split / task-split` 흐름은 실제 코딩 전 작업 분해 시점의 후속 테스트 대상으로 유지
-- `dev start / run / test / sync` 흐름은 실제 코딩 시작 시점의 후속 테스트 대상으로 유지
+- `plan extract-candidates / phase-split / cycle-split / task-split / wp` 흐름은 실제 코딩 전 작업 분해 시점의 후속 테스트 대상으로 유지
+- `dev start / impl-run / test / sync` 흐름은 실제 코딩 시작 시점의 후속 테스트 대상으로 유지
 
 ### 우선순위 4
 - board 하위 실제 문서 목록 정의
@@ -386,7 +386,7 @@
 - `$session start`, `$session restore`, `$session start-full`, `$session status`, `$session save` 라우터 흐름과 기존 호환 명령을 함께 검증하는 것
 - `git` 단계는 브랜치/메시지/PR 전달 절차로 분리하되, 초기 버전 정리 중에는 Git을 개발자가 직접 처리하고 Codex는 명시 요청이 있을 때만 돕는 것
 - CLI는 현재 버전 기준 흐름에서 제외하고 후속 후보로만 보류하는 것
-- `plan` 단계는 `specdrive/manual/plan-manual.md` 와 `.agents/skills/plan/**` 기준으로 `$plan extract-candidates` 1차 정리를 마쳤고, 다음은 `$plan wp-split` 흐름으로 넘어갈지 판단하는 것이다.
+- `plan` 단계는 `specdrive/manual/plan-manual.md` 와 `.agents/skills/plan/**` 기준으로 `$plan extract-candidates` 1차 정리를 마쳤고, 다음은 `$plan phase-split / cycle-split / task-split / wp` 흐름으로 이어갈지 판단하는 것이다.
 - board `work-candidates.md` 는 현재 `CAND-001 ~ CAND-018` 상태이며, `CAND-013 ~ CAND-018` 은 specs 문서를 기준으로 추가한 후보다.
 - `CAND-014`, `CAND-016`, `CAND-018` 은 기존 후보와 연결/중복 가능성이 있으므로 Work Package 분해 전에 관계를 확인한다.
 - `doc` 단계는 `docs/projects/board/01-overview.md` 기준 1차 완료 판정을 마친 상태에서, `specs/02-requirements.md`, `specs/03-design.md` 같은 후속 board 문서에 반복 적용 가능한지 확인하는 것
@@ -518,10 +518,10 @@
 - `specdrive/manual/plan-manual.md` 에서 `$plan extract-candidates` 실행 기준을 정리했고, Project Name은 `docs/projects/{project}` key이며 `specdrive/config/project-registry.json` 에서 관리하는 것으로 고정했다.
 - `specdrive/config/project-registry.json` 을 추가해 board 프로젝트의 plan extract-candidates 기본 프로젝트, Source Scope, 대상 문서 묶음, history 경로/파일명 규칙을 관리한다.
 - `docs/projects/board/work/work-candidates.md` 에 `CAND-013 ~ CAND-018` 을 추가했고, 현재 후보 범위는 `CAND-001 ~ CAND-018` 이다.
-- `CAND-014`, `CAND-016`, `CAND-018` 은 각각 기존 후보와 연결/중복 가능성이 있으므로 다음 `$plan wp-split` 전 검토한다.
+- `CAND-014`, `CAND-016`, `CAND-018` 은 각각 기존 후보와 연결/중복 가능성이 있으므로 다음 `$plan task-split` 또는 `$plan wp` 전 검토한다.
 - plan history는 `docs/history/projects/board/plan/work-candidates/` 아래에 남기며, extract-candidates 반영 이력 파일명은 `generate-candidates_extract-candidates` context/action 형식을 따른다.
 - 모든 위저드형 skill은 후속작업이 필요할 때만 copy-ready prompt를 출력하고, 후속작업이 없으면 프롬프트를 출력하지 않는 공통 UX 규칙을 따른다.
-- 다음 세션의 가장 가까운 진입점은 `$plan wp-split` 로 board 작업 후보를 Work Package 후보로 나누는 것이다.
+- 다음 세션의 가장 가까운 진입점은 `$plan task-split` 또는 `$plan wp` 로 board 작업을 Task 후보와 Work Package 후보로 정리하는 것이다.
 
 ---
 

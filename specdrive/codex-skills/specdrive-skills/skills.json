@@ -33,7 +33,7 @@
     {
       "name": "plan",
       "command": "$plan",
-      "description": "plan action을 인자로 받아 extract-candidates/wp-split/phase-split/cycle-split/task-split으로 라우팅합니다.",
+      "description": "plan action을 인자로 받아 extract-candidates/phase-split/cycle-split/task-split/wp로 라우팅합니다.",
       "path": ".agents/skills/plan/SKILL.md"
     },
     {

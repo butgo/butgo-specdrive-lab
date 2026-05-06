@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Route specdrive plan actions by argument. Use when the user invokes $plan, $plan extract-candidates, $plan phase-split, $plan cycle-split, $plan wp-split, or $plan task-split.
+description: Route specdrive plan actions by argument. Use when the user invokes $plan, $plan extract-candidates, $plan phase-split, $plan cycle-split, $plan task-split, or $plan wp.
 ---
 
 # Plan
@@ -10,7 +10,7 @@ Use this skill as the argument-based entry point for specdrive plan work.
 Common action inputs are defined in `specdrive/codex-skills/plan/inputs.md`.
 
 Plan policy: `specdrive/rules/plan-policy.md`.
-Read it when dispatching a plan action or when plan boundaries are unclear.
+Read it only when the action file does not include enough policy detail or plan boundaries are unclear.
 
 ## Wizard Rule
 
@@ -30,23 +30,20 @@ Supported actions:
 - `extract-candidates`
 - `phase-split`
 - `cycle-split`
-- `wp-split`
 - `task-split`
+- `wp`
 
 Aliases:
 
 - `extract` -> `extract-candidates`
 - `extract-candidates` -> `extract-candidates`
-- `extract-wp` -> `wp-split`
-- `extract-work-packages` -> `wp-split`
-- `wp` -> `wp-split`
-- `wp-split` -> `wp-split`
 - `phase` -> `phase-split`
 - `phase-split` -> `phase-split`
 - `cycle` -> `cycle-split`
 - `cycle-split` -> `cycle-split`
 - `task` -> `task-split`
 - `task-split` -> `task-split`
+- `wp` -> `wp`
 
 If the user provided `$plan` without an action, or provided no recognizable action, list the action choices and stop.
 
@@ -57,8 +54,8 @@ Follow the matching repo-local plan action instructions:
 - `extract-candidates`: `.agents/skills/plan/actions/extract-candidates.md`
 - `phase-split`: `.agents/skills/plan/actions/phase-split.md`
 - `cycle-split`: `.agents/skills/plan/actions/cycle-split.md`
-- `wp-split`: `.agents/skills/plan/actions/wp-split.md`
 - `task-split`: `.agents/skills/plan/actions/task-split.md`
+- `wp`: `.agents/skills/plan/actions/wp.md`
 
 Do not combine actions in one response unless the user explicitly asks.
 
@@ -78,15 +75,15 @@ Use this concrete shape:
 - extract-candidates: 개발 문서에서 일반 작업 후보를 추출합니다.
 - phase-split: 추출된 작업 후보를 Phase 범위로 배치하는 초안을 준비합니다.
 - cycle-split: 선택된 Phase를 Cycle 완성도 단계로 배치하는 초안을 준비합니다.
-- wp-split: 선택된 Cycle을 dev 코딩 묶음인 Work Package 후보로 분해합니다.
-- task-split: 선택된 Work Package 내부 Task 분해 초안을 준비합니다.
+- task-split: CAND 후보를 WP 구성을 위한 Task 후보로 나눕니다.
+- wp: Task 후보를 AI 작업 단위인 Work Package로 패키징합니다.
 
 예시:
 $plan extract-candidates
 $plan phase-split
 $plan cycle-split
-$plan wp-split
 $plan task-split
+$plan wp
 ```
 
 Examples:
@@ -95,8 +92,8 @@ Examples:
 $plan extract-candidates
 $plan phase-split
 $plan cycle-split
-$plan wp-split
 $plan task-split
+$plan wp
 ```
 
 ## Boundaries

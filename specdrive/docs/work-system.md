@@ -194,7 +194,7 @@ Cycle 3의 산출물은 상태 문서보다 실행자 관점의 `manual/` 문서
 
 Work Package는 현재 Phase/Cycle 안에서 의미 있게 완료할 수 있는 작업 묶음이다.
 
-현재 기준에서 Work Package는 dev 코딩의 한 묶음이다.
+현재 기준에서 Work Package는 AI에게 맡길 수 있는 실행 단위다.
 
 Work Package는 Codex가 한 번 또는 여러 번의 실행으로 처리할 수 있는 중간 단위다.  
 완료되었을 때 의미 있는 동작, 구조, 검증 결과 중 하나 이상이 남아야 한다.
@@ -210,24 +210,25 @@ Phase 1 - 게시판 CRUD 최소 흐름
    └─ WP-04 최소 API 검증
 ```
 
-Work Package는 상세 Task보다 크고, Phase보다 작다.
+Work Package는 Task 후보를 묶은 패키지이며, Phase보다 작다.
 
-작업 진행과 `dev run` 의 기본 관리 단위는 상세 Task 하나가 아니라 Work Package다.
+작업 진행과 `$dev impl-run` 의 기본 관리 단위는 Task 후보 하나가 아니라 Work Package다.
 
-Task는 Work Package를 완료하기 위한 세부 실행 단위다.
+Task는 Work Package 구성을 위한 후보 재료다.
 
 ---
 
 ### 3.5 Task
 
-Task는 현재 Work Package를 수행하기 위한 최소 실행 단위다.
+Task는 CAND 후보에서 파생된 해야 할 일의 최소 후보다.
 
-Task는 반드시 특정 Phase / Cycle / Work Package 아래에 있어야 한다.
+Task 후보는 반드시 source CAND key와 연결되어야 하며, WP 소속은 `$plan wp`에서 정한다.
 
 Task 원칙:
 
 - 현재 Phase/Cycle 범위를 넘지 않는다.
-- 가능한 경우 테스트 또는 완료 기준과 연결된다.
+- 가능한 경우 예상 산출물 또는 검증 기준 후보와 연결된다.
+- WP 소속, 실행 순서, Codex 실행 단위는 이 단계에서 확정하지 않는다.
 - 반나절에서 하루 안에 진전 확인이 가능한 수준을 기본으로 한다.
 - 미래 확장을 위한 과도한 일반화 작업을 만들지 않는다.
 - Candidate에서 직접 Task가 되지 않고, Roadmap으로 승격된 뒤 Task가 된다.

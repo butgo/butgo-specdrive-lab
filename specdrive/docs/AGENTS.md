@@ -163,19 +163,19 @@ specdrive 문서 안에 특정 프로젝트 설계를 과하게 집어넣지 않
 핵심 흐름:
 
 - extract-candidates
-- wp-split
 - phase-split
 - cycle-split
 - task-split
+- wp
 
 원칙:
 
 - `plan` 단계는 confirm 된 문서 또는 개발자가 기준으로 삼겠다고 확인한 문서를 입력으로 삼는다.
 - Work Package는 dev 코딩의 한 묶음으로 본다.
 - `extract-candidates` 는 개발 문서에서 일반 작업 후보를 뽑되 Work Package나 Task로 확정하지 않는다.
-- `wp-split` 은 작업 후보를 Work Package 후보로 분해하되 확정 Task로 만들지 않는다.
+- `task-split` 은 Cycle 내부 작업을 WP 구성을 위한 Task 후보로 나누되 최종 구현 Task로 확정하지 않는다.
 - phase / cycle은 Work Package 후보를 기능 범위와 완성도 단계에 배치하는 기준이다.
-- task-split은 선택된 Work Package 내부를 실제 실행 Task로 쪼개는 절차다.
+- wp는 Task 후보를 AI 작업 단위인 Work Package로 패키징하는 절차다.
 - `plan` 단계는 코딩하지 않고 현재 실행 포인터도 확정하지 않는다.
 
 ### 6.3 dev 단계
@@ -284,13 +284,14 @@ AI는 SpecDrive 문서나 프로젝트 적용 문서를 수정할 때 다음 원
 ### 개발 단계
 현재 `plan` 단계 후보:
 - `$plan extract-candidates`
-- `$plan wp-split`
 - `$plan phase-split`
 - `$plan cycle-split`
 - `$plan task-split`
+- `$plan wp`
 
 현재 `dev` 단계 후보:
 - `$dev start`
+- `$dev impl-run`
 - `$dev run`
 - `$dev test`
 - `$dev sync`

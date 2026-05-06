@@ -160,18 +160,19 @@ Git 전달 단위를 담당한다.
 현재 action 후보:
 
 - `$plan extract-candidates`
-- `$plan wp-split`
 - `$plan phase-split`
 - `$plan cycle-split`
 - `$plan task-split`
+- `$plan wp`
 
 기준:
 
 - `plan`은 코딩하지 않는다.
 - Work Package는 dev 코딩의 한 묶음으로 본다.
 - `extract-candidates` 는 개발 문서에서 일반 작업 후보를 추출하되, 바로 Work Package나 Task로 확정하지 않는다.
-- `wp-split` 은 작업 후보를 Work Package 후보로 분해하되, 바로 확정 Task로 만들지 않는다.
-- `phase-split`, `cycle-split`, `task-split` 은 `work-roadmap.md` 를 실행 가능한 구조로 만드는 단계다.
+- `task-split` 은 Cycle 내부 작업을 WP 구성을 위한 Task 후보로 나눈다.
+- `wp` 는 Task 후보를 AI 작업 단위인 Work Package로 패키징한다.
+- `phase-split`, `cycle-split`, `task-split`, `wp` 는 `work-roadmap.md` 를 실행 가능한 구조로 만드는 단계다.
 - `work-index.md` 의 현재 실행 포인터 설정은 `dev` 단계에서 다룬다.
 
 ### 5.7 `$dev`
@@ -181,6 +182,7 @@ Git 전달 단위를 담당한다.
 현재 action 후보:
 
 - `$dev start`
+- `$dev impl-run`
 - `$dev run`
 - `$dev test`
 - `$dev sync`
@@ -189,7 +191,8 @@ Git 전달 단위를 담당한다.
 
 - `dev`는 후보 추출이나 Phase/Cycle/Task 분해를 대신하지 않는다.
 - `$dev start` 는 승인된 `work-roadmap.md` 에서 현재 Work Package를 선택하고 `work-index.md` 설정 초안을 준비한다.
-- `$dev run` 은 현재 Work Package 안에서 코딩을 진행한다.
+- `$dev impl-run` 은 현재 Work Package 안에서 구현을 진행한다.
+- `$dev run` 은 `$dev impl-run` 과 같은 구현 실행 action으로 본다.
 - `$dev test` 는 현재 Work Package 기준으로 테스트 또는 검증을 실행한다.
 - `$dev sync` 는 실행/테스트 결과를 `work-log.md`, status/manual 반영 후보로 정리한다.
 - commit/push/PR 생성은 `$git` 단계에서 다룬다.
@@ -202,8 +205,8 @@ Git 전달 단위를 담당한다.
 
 1. `$session start-lite / restore -> status -> save`
 2. `$doc-work <target> draft -> reinforce -> revise`
-3. `$plan extract-candidates -> wp-split -> phase-split -> cycle-split -> task-split`
-4. `$dev start -> run -> test -> sync`
+3. `$plan extract-candidates -> phase-split -> cycle-split -> task-split -> wp`
+4. `$dev start -> impl-run -> test -> sync`
 5. `$doc-work-ref` / `$doc-work-bundle`의 reference와 revise
 6. `$git commit -> $git pr`
 

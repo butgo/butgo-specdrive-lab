@@ -1,18 +1,21 @@
 # Plan Cycle Split
 
-Use this action to place Work Package candidates or Phase items into Cycle stages.
+Split one Phase from `work-roadmap.md` into Cycle stages.
 
-Common inputs follow `.agents/skills/plan/inputs.md`.
+Common inputs: `.agents/skills/plan/inputs.md` only if parsing is unclear.
+Policy fallback: `specdrive/rules/plan-policy.md` only if boundaries are unclear.
 
-Preferred argument-based invocation:
+Invocation:
 
 ```text
 $plan cycle-split
+$plan cycle-split <project>
+$plan cycle-split <project> <phase>
 ```
 
 ## Purpose
 
-Create a draft Cycle structure for a selected Phase.
+Create a Cycle Draft for one selected Phase.
 
 Default Cycles:
 
@@ -20,32 +23,33 @@ Default Cycles:
 - Cycle 2 - Stability
 - Cycle 3 - Operational Readiness
 
-## Read First
+Do not split Work Package or Task details.
 
-Read only what is needed:
+## Fast Read Scope
 
-1. `docs/AI_CONTEXT.compact.md`
-2. `specdrive/rules/plan-policy.md`
-3. project `work/work-roadmap.md`
-4. selected Phase
-5. project `work/work-candidates.md` if needed
-6. needed minimal target specs
+Default project: `board`.
+
+Read:
+
+1. `docs/projects/<project>/work/work-roadmap.md`
+2. `docs/projects/<project>/work/work-candidates.md` only if Phase items are unclear
+
+Read router/registry only when project is unclear.
+Read specs only when roadmap/candidates are missing or unclear.
+Do not read source code, README, full policies, unrelated specs, bundle docs, `docs/history/**`, or version-control data.
+
+## Target Phase
+
+If Phase is omitted, use Phase 1 only when it is the only implementation-ready Phase.
+Otherwise ask the user to choose one Phase.
 
 ## Output
-
-Provide a draft Cycle allocation.
-
-`generate` creates a new Cycle draft from the selected Phase.
-`revise` prints an editable Preview Prompt for revising the Cycle draft.
-It still does not apply files.
-
-Use this shape:
 
 ~~~text
 Plan action: cycle-split
 Target project: <project>
 Target Phase: <phase>
-Run Mode: <generate|revise>
+Run Mode: generate
 
 Summary:
 
@@ -81,22 +85,27 @@ docs/projects/<project>/work/work-roadmap.md
 Issues Found:
 
 Next Step:
+
+Copy-ready Prompt:
 ~~~
 
-## Next Prompt
+Rules:
 
-Print a `$plan wp-split` copy-ready prompt only when:
+- Use only the selected Phase and its candidate references.
+- Keep Cycle Draft concise.
+- Keep future extension ideas out of Cycle 1 unless required.
+- Treat output as draft until developer confirmation.
+- If no blocking issue, print one apply prompt for `work-roadmap.md`.
+- Do not print `$plan task-split` after a new Cycle Draft.
 
-- the target Cycle is clear;
-- the Cycle draft can proceed to the next step;
-- the next step is clearly `$plan wp-split`.
+Apply prompt:
 
-Do not print it when human review or Cycle confirmation is needed first.
+```text
+위 Plan Update Candidate를 기준으로 `docs/projects/<project>/work/work-roadmap.md` 파일에 선택한 Phase의 Cycle Draft를 반영해줘.
 
-## Boundaries
+변경 파일은 `docs/projects/<project>/work/work-roadmap.md` 하나로 제한해줘.
+문서 원문 재설계, source code 수정, 테스트 실행, history snapshot/note 생성, version-control 작업은 하지 마.
+`docs/history/**` 기존 파일 본문은 읽지 마.
+```
 
-- Do not set current execution pointer.
-- Do not code.
-- Do not treat Cycle placement as confirmed until developer approval.
-- Do not split Work Package or Task details in this action.
-- Keep future extension ideas out of Cycle 1 unless required for minimum operation.
+Boundaries: do not modify files, create history, set `work-index.md`, code, test, or perform version-control work.

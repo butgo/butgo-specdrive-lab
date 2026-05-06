@@ -26,6 +26,7 @@
 현재 `dev` 단계는 다음 action 후보를 기준으로 본다.
 
 - `$dev start`
+- `$dev impl-run`
 - `$dev run`
 - `$dev test`
 - `$dev sync`
@@ -34,9 +35,11 @@
 
 승인된 plan 결과에서 현재 시작할 Work Package를 선택하고 `work-index.md` 를 설정한다.
 
-### 3.2 `$dev run`
+### 3.2 `$dev impl-run`
 
 현재 `work-index.md` 의 Work Package 안에서 코딩을 진행한다.
+
+`$dev run`은 `$dev impl-run`과 같은 구현 실행 action으로 본다.
 
 ### 3.3 `$dev test`
 
@@ -52,8 +55,8 @@
 
 `dev` 단계의 기본 실행 단위는 Work Package다.
 
-Task는 Work Package를 완료하기 위한 세부 실행 단위다.  
-Codex는 Focus Task를 참고하되, 같은 Work Package 안에서 자연스럽게 이어지는 인접 Task까지 함께 처리할 수 있다.
+Task는 WP 구성을 위한 후보이며, Work Package는 그 후보들을 묶은 dev 실행 단위다.  
+Codex는 선택된 Work Package 범위 안에서 구현을 진행한다.
 
 단, 현재 Cycle 범위나 다음 Work Package로 임의 이동하지 않는다.
 

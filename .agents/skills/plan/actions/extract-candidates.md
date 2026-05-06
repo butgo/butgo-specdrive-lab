@@ -14,7 +14,7 @@ $plan extract-candidates
 
 Extract work candidates from development documents before deciding whether they are Phase items, Work Packages, Tasks, documentation work, or deferred ideas.
 
-This action is broader than `wp-split`.  
+This action is broader than `$plan wp`.  
 It collects possible work candidates and keeps them as candidates, not confirmed execution units.
 
 ## Read First

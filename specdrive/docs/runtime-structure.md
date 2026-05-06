@@ -62,13 +62,13 @@ specdrive/
 
 ### 3.2 `specdrive/scripts/plan/` 후속 후보
 - 계획 단계 명령 실행 흐름
-- 예: `plan extract-candidates`, `plan wp-split`, `plan phase-split`, `plan cycle-split`, `plan task-split`
+- 예: `plan extract-candidates`, `plan phase-split`, `plan cycle-split`, `plan task-split`, `plan wp`
 - 기준 문서를 Work Package 후보, Phase/Cycle 구조, Task 구조로 분해
 - 현재 구조에는 아직 별도 폴더가 없으며, 후속 plan skill 검증 뒤 추가 여부를 판단
 
 ### 3.3 `specdrive/scripts/dev/`
 - 개발 단계 명령 실행 흐름
-- 예: `dev start`, `dev run`, `dev test`, `dev sync`
+- 예: `dev start`, `dev impl-run`, `dev test`, `dev sync`
 - 승인된 plan 결과를 기준으로 현재 Work Package의 코딩, 테스트/검증, 동기화 흐름을 조합
 
 ### 3.4 `specdrive/scripts/session/`

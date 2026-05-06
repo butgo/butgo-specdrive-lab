@@ -20,7 +20,7 @@ This file is the shared input contract used by the action documents and Skill Wi
 | Target Mode | 작업 대상 종류 | `current`, `candidate`, `wp`, `phase`, `cycle`, `roadmap` |
 | Phase | 대상 Phase | 필요한 action에서만 사용 |
 | Cycle | 대상 Cycle | 필요한 action에서만 사용 |
-| Work Package ID | 대상 Work Package ID | `task-split`에서 주로 사용 |
+| Work Package ID | 대상 Work Package ID | `wp` 이후 dev 전환에서 주로 사용 |
 | Task ID | 대상 Task ID | plan 단계에서는 기본 미사용 |
 | Scope Note | 범위 제한 또는 제외 조건 | 선택 |
 | Run Mode | 실행 방식 | `generate`, `revise`; 기본값은 `generate` |
@@ -114,8 +114,8 @@ Do not inspect existing `docs/history/**` file bodies unless the developer expli
 | `extract-candidates` | O | O | file일 때 | - | - | - | - | - | O | O |
 | `phase-split` | O | - | - | `candidate`, `phase`, `roadmap` | O | - | - | - | O | O |
 | `cycle-split` | O | - | - | `phase`, `cycle`, `roadmap` | O | O | - | - | O | O |
-| `wp-split` | O | - | - | `cycle`, `wp`, `roadmap` | O | O | - | - | O | O |
-| `task-split` | O | - | - | `wp`, `roadmap` | O | O | O | - | O | O |
+| `task-split` | O | - | - | `cycle`, `roadmap` | O | O | - | - | O | O |
+| `wp` | O | - | - | `cycle`, `wp`, `roadmap` | O | O | O | - | O | O |
 
 ---
 
@@ -126,8 +126,8 @@ Do not inspect existing `docs/history/**` file bodies unless the developer expli
 | `extract-candidates` | project overview, specs, optional `work-candidates.md` |
 | `phase-split` | `work-candidates.md`, `work-roadmap.md` |
 | `cycle-split` | `work-roadmap.md` |
-| `wp-split` | `work-roadmap.md`, selected Cycle |
-| `task-split` | `work-roadmap.md` |
+| `task-split` | `work-roadmap.md`, `work-candidates.md` when needed |
+| `wp` | `work-tasks.md`, `work-roadmap.md` when context is unclear |
 
 ---
 

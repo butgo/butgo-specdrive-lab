@@ -214,8 +214,8 @@ SpecDrive 사용 절차를 실행자 관점으로 정리하는 매뉴얼 후보 
 
 현재 문서:
 
-- `plan-manual.md`: `$plan extract-candidates -> wp-split -> phase-split -> cycle-split -> task-split` 사용 절차
-- `dev-manual.md`: `$dev start -> run -> test -> sync` 사용 절차
+- `plan-manual.md`: `$plan extract-candidates -> phase-split -> cycle-split -> task-split -> wp` 사용 절차
+- `dev-manual.md`: `$dev start -> impl-run -> test -> sync` 사용 절차
 
 이 영역은 나중에 SpecDrive 전체 매뉴얼로 통합할 수 있는 실행 매뉴얼 초안을 둔다.
 

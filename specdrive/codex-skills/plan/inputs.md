@@ -20,11 +20,10 @@ This file is the shared input contract used by the action documents and Skill Wi
 | Target Mode | 작업 대상 종류 | `current`, `candidate`, `wp`, `phase`, `cycle`, `roadmap` |
 | Phase | 대상 Phase | 필요한 action에서만 사용 |
 | Cycle | 대상 Cycle | 필요한 action에서만 사용 |
-| Work Package ID | 대상 Work Package ID | `task-split`에서 주로 사용 |
+| Work Package ID | 대상 Work Package ID | `wp` 이후 dev 전환에서 주로 사용 |
 | Task ID | 대상 Task ID | plan 단계에서는 기본 미사용 |
 | Scope Note | 범위 제한 또는 제외 조건 | 선택 |
-| Run Mode | 실행 방식 | `generate`, `review`, `apply` |
-| Output Mode | 출력 형식 | `table`, `markdown`, `prompt` |
+| Run Mode | 실행 방식 | `generate`, `revise`; 기본값은 `generate` |
 
 `Target Mode = current`는 plan 단계에서 현재 포인터 설정으로 해석하지 않는다.  
 현재 포인터 설정은 `$dev start` 책임이므로, plan 단계에서는 현재 범위 확인이 필요할 때만 조회/제한용으로 사용한다.
@@ -58,110 +57,100 @@ Project Name은 다음 순서로 결정한다.
 
 | Run Mode | Meaning |
 |---|---|
-| `generate` | 개발자가 초안을 직접 작성하지 않아도 기준 문서에서 계획 후보를 생성한다. |
-| `review` | 기존 결과와 비교 검토한다. |
-| `apply` | 개발자 승인 후 반영안을 만든다. 실제 반영 전 변경 요약을 먼저 보여준다. |
+| `generate` | 기준 문서를 읽고 현재 action의 Plan Update Candidate 초안을 새로 만든다. |
+| `revise` | 현재 action의 Plan Update Candidate 초안을 수정하기 위한 흐름이다. |
 
-`apply`는 자동 반영을 뜻하지 않는다.  
-파일 수정은 action 문서가 허용하고 개발자가 명시적으로 요청한 경우에만 수행한다.
+`generate`는 계획 후보를 만드는 기본 모드다.
+대상 파일을 생성하거나 갱신하지 않고, history snapshot/note를 만들지 않으며, dev 단계로 전환하지 않는다.
+
+`revise`는 파일 반영 모드가 아니다.
+`revise`는 AI가 혼자 다시 검토하는 단계가 아니라, 기존 Plan Update Candidate를 대상으로 사용자가 선택한 수정 방향을 반영하는 단계다.
+사용자가 option 번호나 구체적인 수정 요청을 함께 쓴 경우, 그 입력을 기준으로 같은 plan action 안에서 같은 계층의 revised Plan Update Candidate를 만든다.
+사용자가 수정 방향을 주지 않은 경우에는 후보를 즉시 재작성하지 않고 action별 revise 선택지를 출력한다.
+`revise` 역시 문서 확정, history 저장, dev 전환을 수행하지 않는다.
+
+plan action은 기본적으로 파일 반영, 검토 보고, 승인 프롬프트 생성을 함께 수행하지 않는다.
+파일 반영이나 상세 검토가 필요하면 별도 요청 또는 후속 작업으로 다룬다.
 
 ---
 
 ## 5. Common Output Contract
 
-All plan action outputs should use the same top-level shape.
+All plan action outputs should use the same short top-level shape.
 
-```text
+~~~text
 Plan action: <action>
 Target project: <project>
-Run Mode: <generate|review|apply>
-Output Mode: <table|markdown|prompt>
+Run Mode: <generate|revise>
 
-<Action-specific generated section>
+Summary:
 
-Review Notes:
-- Duplicate / Existing Items:
-- Possible Missing Items:
-- Needs Clarification:
-
-Apply Draft:
-- Target file:
-- Changes:
-- History snapshot:
-- History note:
-- Approval required: yes
+Plan Update Candidate:
+```markdown
+<Action-specific content>
 ```
 
-Run Mode controls which sections are emphasized:
+Files To Change:
 
-- `generate`: print the action-specific generated section first. Review Notes and Apply Draft may be omitted only when empty. If generated content should be written to a project `work/` document, include an Apply Draft and approval prompt as follow-up work.
-- `review`: include Review Notes and compare against existing work documents when available.
-- `apply`: include Apply Draft, target file, change summary, proposed history snapshot/note paths, and approval requirement. Do not edit files or history files unless the developer explicitly asks to apply.
+Issues Found:
 
-Follow-up prompts follow the common Skill output UX rules in `specdrive/docs/skill-wizard-manual.md`: print a copy-ready prompt only when follow-up work needs another Codex prompt, and omit it when no follow-up work is needed.
+Next Step:
+~~~
 
-When apply creates or updates a project `work/` document, the apply proposal must include a history snapshot and note.
-History paths should come from `specdrive/config/project-registry.json` when the action has a registered history rule.
-History filenames must include a context/action discriminator after the timestamp, following the common rule in `specdrive/docs/skill-wizard-manual.md`.
-For plan `extract-candidates` generate results, use `generate-candidates`. For example: `yyyy-MM-dd_HHmmss_generate-candidates_extract-candidates.md`.
-Project history is split by stage first: `docs/history/projects/{project}/doc/**`, `docs/history/projects/{project}/plan/**`, and `docs/history/projects/{project}/dev/**`.
-Plan action history belongs under `docs/history/projects/{project}/plan/**`.
+`Plan Update Candidate` is the only action-specific content section.
+Wrap its document-ready content in a `markdown` code block so it can be copied without losing structure.
+
+Follow-up prompts follow `specdrive/rules/skill-wizard-rule.md` when wizard behavior is unclear: print one copy-ready prompt only when follow-up work needs another Codex prompt, and omit it when no follow-up work is needed.
+
+Detailed review, file apply, approval prompt, and history snapshot/note work are separate follow-up work.
 Do not inspect existing `docs/history/**` file bodies unless the developer explicitly asks for history lookup.
 
 ---
 
-## 6. Output Mode
+## 6. Action Input Matrix
 
-| Output Mode | Meaning |
-|---|---|
-| `table` | 표 중심 출력 |
-| `markdown` | 문서 반영용 Markdown 출력 |
-| `prompt` | Codex 실행 프롬프트 형태 출력 |
-
----
-
-## 7. Action Input Matrix
-
-| Action | Project Name | Source Scope | Source Files | Target Mode | Phase | Cycle | WP ID | Task ID | Scope Note | Run Mode | Output Mode |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| `extract-candidates` | O | O | file일 때 | - | - | - | - | - | O | O | O |
-| `wp-split` | O | - | - | `candidate`, `wp`, `roadmap` | - | - | - | - | O | O | O |
-| `phase-split` | O | - | - | `candidate`, `phase`, `roadmap` | O | - | - | - | O | O | O |
-| `cycle-split` | O | - | - | `phase`, `cycle`, `roadmap` | O | O | - | - | O | O | O |
-| `task-split` | O | - | - | `wp`, `roadmap` | O | O | O | - | O | O | O |
+| Action | Project Name | Source Scope | Source Files | Target Mode | Phase | Cycle | WP ID | Task ID | Scope Note | Run Mode |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `extract-candidates` | O | O | file일 때 | - | - | - | - | - | O | O |
+| `phase-split` | O | - | - | `candidate`, `phase`, `roadmap` | O | - | - | - | O | O |
+| `cycle-split` | O | - | - | `phase`, `cycle`, `roadmap` | O | O | - | - | O | O |
+| `task-split` | O | - | - | `cycle`, `roadmap` | O | O | - | - | O | O |
+| `wp` | O | - | - | `cycle`, `wp`, `roadmap` | O | O | O | - | O | O |
 
 ---
 
-## 8. Action Reference Targets
+## 7. Action Reference Targets
 
 | Action | Primary Reference |
 |---|---|
 | `extract-candidates` | project overview, specs, optional `work-candidates.md` |
-| `wp-split` | `work-candidates.md` |
 | `phase-split` | `work-candidates.md`, `work-roadmap.md` |
 | `cycle-split` | `work-roadmap.md` |
-| `task-split` | `work-roadmap.md` |
+| `task-split` | `work-roadmap.md`, `work-candidates.md` when needed |
+| `wp` | `work-tasks.md`, `work-roadmap.md` when context is unclear |
 
 ---
 
-## 9. Apply Targets
+## 8. Update Candidate Targets
 
 Plan actions may prepare drafts for these documents:
 
 - `docs/projects/{project}/work/work-candidates.md`
 - `docs/projects/{project}/work/work-roadmap.md`
+- `docs/projects/{project}/work/work-packages.md`
+- `docs/projects/{project}/work/work-tasks.md`
 
 Plan actions do not directly update:
 
 - `docs/projects/{project}/work/work-index.md`
 - actual code files
 - test execution results
-- Git commit / push / PR
+- version-control outputs
 - session save files
 
 ---
 
-## 10. Boundaries
+## 9. Boundaries
 
 - Do not code.
 - Do not run tests.

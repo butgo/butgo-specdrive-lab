@@ -1,6 +1,6 @@
 ---
 name: dev
-description: Route specdrive dev actions by argument. Use when the user invokes $dev, $dev start, $dev run, $dev test, or $dev sync.
+description: Route specdrive dev actions by argument. Use when the user invokes $dev, $dev start, $dev impl-run, $dev run, $dev test, or $dev sync.
 ---
 
 # Dev
@@ -22,6 +22,7 @@ Immediately print the no-action output below and stop.
 Supported actions:
 
 - `start`
+- `impl-run`
 - `run`
 - `test`
 - `sync`
@@ -29,6 +30,7 @@ Supported actions:
 Aliases:
 
 - `start` -> `start`
+- `impl-run` -> `run`
 - `run` -> `run`
 - `test` -> `test`
 - `verify` -> `test`
@@ -61,12 +63,14 @@ Use this concrete shape:
 사용 가능한 $dev action:
 
 - start: 승인된 plan 결과에서 현재 Work Package를 선택하고 work-index.md 설정 초안을 준비합니다.
-- run: 현재 Work Package 기준으로 코딩을 진행합니다.
+- impl-run: 현재 Work Package 기준으로 구현을 진행합니다.
+- run: impl-run과 같은 구현 실행 action입니다.
 - test: 현재 Work Package 기준으로 테스트/검증을 실행합니다.
 - sync: 실행/테스트 결과를 work-log/status/manual 반영 후보로 정리합니다.
 
 예시:
 $dev start
+$dev impl-run
 $dev run
 $dev test
 $dev sync
@@ -76,6 +80,7 @@ Examples:
 
 ```text
 $dev start
+$dev impl-run
 $dev run
 $dev test
 $dev sync

@@ -1,16 +1,19 @@
 # Dev Run
 
-Use this action to code within the current Work Package.
+Use this action to implement within the current Work Package.
 
 Preferred argument-based invocation:
 
 ```text
+$dev impl-run
 $dev run
 ```
 
 ## Purpose
 
 Perform implementation work inside the current Work Package from `work-index.md`.
+
+`$dev run` is a compatibility alias for `$dev impl-run`.
 
 ## Read First
 

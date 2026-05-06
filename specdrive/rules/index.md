@@ -33,7 +33,7 @@
 
 - `plan-policy.md`
   - plan 계열 작업의 읽기 범위와 금지 범위를 정의한다.
-  - extract-candidates/phase-split/cycle-split/wp-split/task-split을 top-down 분해로 제한한다.
+  - extract-candidates/phase-split/cycle-split/task-split/wp를 top-down 계획/패키징 흐름으로 제한한다.
 
 - `skill-wizard-rule.md`
   - skill action의 자동 연쇄 실행을 막는다.

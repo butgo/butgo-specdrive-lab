@@ -196,7 +196,7 @@
         ".agents/skills/plan/actions/extract-candidates.md",
         ".agents/skills/plan/actions/phase-split.md",
         ".agents/skills/plan/actions/cycle-split.md",
-        ".agents/skills/plan/actions/wp-split.md",
+        ".agents/skills/plan/actions/wp.md",
         ".agents/skills/plan/actions/task-split.md"
       ]
     },

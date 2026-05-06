@@ -158,15 +158,15 @@ AI가 보강한 문서는 초안 또는 보강안일 뿐이다.
 핵심 흐름:
 
 - extract-candidates
-- wp-split
 - phase-split
 - cycle-split
 - task-split
+- wp
 
 기본 의미:
 
 - 개발 문서에서 일반 작업 후보를 추출한다.
-- 작업 후보를 Work Package 후보로 분해한다.
+- Task 후보를 AI 작업 단위인 Work Package로 패키징한다.
 - Work Package 후보를 Phase / Cycle 구조에 배치한다.
 - 선택된 Work Package를 실행 가능한 Task로 분해한다.
 - 코딩 시작 전 `work-candidates.md`, `work-roadmap.md` 를 준비한다.
@@ -373,8 +373,8 @@ skill, script, config 는 필요한 경우 그 기준을 실행 가능한 형태
 ### 우선순위 3
 - 최소 repo-local skill 흐름 검증
 - `doc reinforce / confirm-prompt / apply-prompt`
-- `plan extract-candidates / wp-split / phase-split / cycle-split / task-split`
-- `dev start / run / test / sync`
+- `plan extract-candidates / phase-split / cycle-split / task-split / wp`
+- `dev start / impl-run / test / sync`
 - `$session start-lite / $session restore / $session start / $session status / $session save`
 - `$git-commit / $github-pr`
 

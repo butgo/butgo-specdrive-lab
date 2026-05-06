@@ -53,14 +53,15 @@ plan 계열 명령은 다음 원칙을 따른다.
    - 예: Minimal Implementation, Stability, Operational Readiness
 
 3. Work Package (WP)
-   - dev가 실행할 수 있는 의미 있는 작업 묶음이다.
-   - 하나의 기능 흐름, 변경 묶음, 또는 검증 가능한 개발 단위다.
-   - 너무 작게 쪼개지 않고, 실패 시 되돌리기 쉬운 범위로 유지한다.
+   - AI에게 맡길 수 있는 실행 단위다.
+   - 관련 Task 후보들을 묶은 작업 패키지다.
+   - Codex/Gemini/Ollama/Antigravity Runner가 사용할 수 있는 단위다.
 
 4. Task
-   - Work Package 안의 최소 실행 단위다.
-   - dev agent가 순서대로 처리할 수 있는 작업 항목이다.
-   - 하나의 명확한 입력, 출력, 검증 기준을 가진다.
+   - 해야 할 일의 최소 후보다.
+   - CAND 후보에서 파생된 작업 항목이다.
+   - WP 구성을 위한 재료다.
+   - 반드시 source CAND key와 연결되어야 한다.
 
 ---
 
@@ -71,16 +72,16 @@ plan 계열 명령은 다음으로 나눈다.
 - `plan extract-candidates`
 - `plan phase-split`
 - `plan cycle-split`
-- `plan wp-split`
 - `plan task-split`
+- `plan wp`
 
 권장 실행 순서:
 
 1. `plan extract-candidates`
 2. `plan phase-split`
 3. `plan cycle-split`
-4. `plan wp-split`
-5. `plan task-split`
+4. `plan task-split`
+5. `plan wp`
 
 단, 이미 상위 계층이 확정되어 있으면 필요한 하위 action부터 실행할 수 있다.
 
@@ -261,21 +262,26 @@ plan 계열 명령은 다음으로 나눈다.
 
 ### 7.6 Next Prompt Condition
 
-다음 조건을 모두 만족할 때만 `plan wp-split`용 copy-ready prompt를 출력할 수 있다.
+다음 조건을 모두 만족할 때만 `plan task-split`용 copy-ready prompt를 출력할 수 있다.
 
 - 대상 Cycle이 명확한 경우
 - Cycle 구성이 사용자 검토 없이 다음 단계로 진행 가능하다고 판단되는 경우
-- 다음 단계가 특정 Cycle의 WP 분해로 명확한 경우
+- 다음 단계가 특정 Cycle의 Task 후보 추출로 명확한 경우
 
 사람 검토 또는 Cycle 확정이 먼저 필요하면 copy-ready prompt를 출력하지 않는다.
 
 ---
 
-## 8. plan wp-split
+## 8. plan task-split
 
 ### 8.1 Purpose
 
-특정 Cycle을 dev가 실행 가능한 Work Package 단위로 분해한다.
+현재 plan 문서의 CAND 후보를 Task 후보 단위로 나눈다.
+
+이 단계의 Task는 최종 실행 Task가 아니다.  
+이 단계의 Task는 WP 구성을 위한 Task 후보이다.
+아직 WP 소속, 실행 순서, Codex 실행 단위는 확정하지 않는다.
+각 Task 후보는 반드시 어떤 `CAND-xxx`에서 나왔는지 연결해야 한다.
 
 ### 8.2 Read Scope
 
@@ -283,7 +289,7 @@ plan 계열 명령은 다음으로 나눈다.
 
 - `docs/AI_CONTEXT.compact.md`
 - 현재 project의 `work/work-roadmap.md`
-- 대상 Cycle
+- 필요한 경우 현재 project의 `work/work-candidates.md`
 - 필요한 최소 참조 문서
 
 읽지 않기:
@@ -297,16 +303,20 @@ plan 계열 명령은 다음으로 나눈다.
 
 ### 8.3 Allowed
 
-- WP ID 부여
-- WP 목표 정의
-- 포함 작업 범위 정리
-- Affected Area 후보 표시
-- 검증 기준 정리
-- 선행/후행 관계 정리
+- Task 후보 ID 부여
+- Source Candidate key 연결
+- Task 후보 목표 정의
+- Task 후보 범위 정리
+- 예상 산출물 후보 표시
+- 검증 기준 후보 정리
+- 명확한 의존성 후보 표시
+- CAND별 분해 개수와 이유를 `Task Split Map`으로 표시
 
 ### 8.4 Forbidden
 
-- Task 수준의 세부 분해
+- WP 소속 확정
+- 최종 실행 순서 확정
+- Codex 실행 단위 확정
 - 소스 코드 레벨 구현 지시
 - 구체 코드 작성
 - 실제 파일 수정
@@ -314,40 +324,68 @@ plan 계열 명령은 다음으로 나눈다.
 
 ### 8.5 Output Focus
 
-- WP ID
-- WP Goal
-- Source Anchor
-- Scope
-- Affected Area
-- Verification
-- Dependency
-- Out of Scope
+- Task Candidate ID
+- Source Candidate
+- Task Candidate Goal
+- Expected Output
+- WP Packaging Note
+
+기본 출력 필드는 다음으로 제한한다.
+
+- ID
+- Source Candidate
+- Goal
+- Expected Output
+- WP Packaging Note
+
+`Scope`, `Verification`, `Dependency`는 Work Package 패키징 판단에 꼭 필요할 때만 추가한다.
+
+### 8.5.1 Split Granularity
+
+토큰 절약을 위해 다음 분해 기준을 따른다.
+
+- 먼저 `Task Split Map`을 만든다.
+- CAND마다 최소 1개 Task 후보를 만든다.
+- 하나의 CAND가 여러 의미 있는 작업 항목을 포함하면 여러 Task 후보로 나눈다.
+- Task ID는 source CAND key를 보존한다. 예: `TASK-CAND-002-01`.
+- 원자적 코드 단계까지 쪼개지 않고, `$plan wp` 패키징에 필요한 정도까지만 나눈다.
+
+### 8.5.2 Update Target
+
+`plan task-split`의 기본 반영 후보 파일은 다음이다.
+
+- `docs/projects/{project}/work/work-tasks.md`
 
 ### 8.6 Next Prompt Condition
 
-다음 조건을 모두 만족할 때만 `plan task-split`용 copy-ready prompt를 출력할 수 있다.
+다음 조건을 모두 만족할 때만 `plan wp`용 copy-ready prompt를 출력할 수 있다.
 
-- 대상 WP가 명확한 경우
-- WP 범위가 충분히 작고 dev 실행 단위로 적합한 경우
-- 다음 단계가 특정 WP의 Task 분해로 명확한 경우
+- 대상 CAND 범위가 명확한 경우
+- Task 후보 목록이 충분히 정리된 경우
+- 다음 단계가 Task 후보의 Work Package 패키징으로 명확한 경우
 
-사람 검토 또는 WP 확정이 먼저 필요하면 copy-ready prompt를 출력하지 않는다.
+사람 검토 또는 Task 후보 확정이 먼저 필요하면 copy-ready prompt를 출력하지 않는다.
 
 ---
 
-## 9. plan task-split
+## 9. plan wp
 
 ### 9.1 Purpose
 
-특정 Work Package를 dev agent가 순서대로 실행할 수 있는 Task 단위로 분해한다.
+Task 후보를 AI 작업 단위인 Work Package로 묶는다.
+
+WP는 작업을 다시 쪼개는 단계가 아니라, Task 후보를 실행 가능한 묶음으로 패키징하는 단계다.  
+WP별 scope, target files, reference docs, verification 기준을 정한다.
 
 ### 9.2 Read Scope
 
 읽기:
 
 - `docs/AI_CONTEXT.compact.md`
-- 대상 Work Package
-- 해당 WP와 직접 연관된 설계/API/DB 문서
+- 현재 project의 `work/work-tasks.md`
+- 필요한 경우 현재 project의 `work/work-roadmap.md`
+- Task 후보와 연결된 CAND key
+- 해당 WP 후보와 직접 연관된 설계/API/DB 문서
 - 필요한 최소 참조 문서
 
 읽지 않기:
@@ -361,15 +399,19 @@ plan 계열 명령은 다음으로 나눈다.
 
 ### 9.3 Allowed
 
-- Task ID 부여
-- 실행 순서 정리
-- 의존 Task 명시
-- 검증 항목 추가
-- 예상 변경 영역 표시
-- dev handoff 후보 작성
+- WP ID 부여
+- WP 목표 정의
+- 포함 Task 후보 정리
+- scope 정의
+- target files 후보 표시
+- reference docs 표시
+- verification 기준 정리
+- 선행/후행 WP 후보 표시
 
 ### 9.4 Forbidden
 
+- Task 후보를 새로 분해
+- 최종 구현 Task 확정
 - pseudocode 작성
 - 실제 파일 수정
 - 코드 구현
@@ -379,24 +421,25 @@ plan 계열 명령은 다음으로 나눈다.
 
 ### 9.5 Output Focus
 
-- Task ID
-- Task Goal
-- Source Anchor
-- Input
-- Expected Output
+- WP ID
+- WP Goal
+- Source Tasks
+- Scope
+- Target Files
+- Reference Docs
 - Verification
 - Dependency
-- Dev Handoff Note
+- Out of Scope
 
 ### 9.6 Next Prompt Condition
 
-`plan task-split`은 plan 계열의 마지막 분해 action이다.
+`plan wp`는 plan 계열의 마지막 패키징 action이다.
 
 기본적으로 copy-ready prompt를 출력하지 않는다.
 
-단, 사용자가 명시적으로 dev 전환을 요청한 경우에만 dev handoff용 copy-ready prompt를 출력할 수 있다.
+단, 사용자가 명시적으로 dev 전환을 요청한 경우에만 `$dev impl-run` 준비용 copy-ready prompt를 출력할 수 있다.
 
-사람 검토 또는 Task 확정이 먼저 필요하면 copy-ready prompt를 출력하지 않는다.
+사람 검토 또는 WP 확정이 먼저 필요하면 copy-ready prompt를 출력하지 않는다.
 
 ---
 
